@@ -5,8 +5,6 @@ import {
   Shield, 
   ArrowUpRight, 
   Users, 
-  DollarSign, 
-  CheckCircle,
   ArrowRight,
   Sparkles,
   Zap,
@@ -16,7 +14,6 @@ import {
             
 const Landing = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -24,7 +21,6 @@ const Landing = () => {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    setIsLoaded(true);
 
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
