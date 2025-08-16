@@ -179,7 +179,7 @@ const Landing = () => {
           <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center fade-in-up stagger-3`}>
             <Link 
               to="/register" 
-              className="blue-gradient text-white px-10 py-4 rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+              className="border border-gray-200 text-gray-700 px-10 py-4 rounded-full font-light text-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300 hover:scale-105 group"
             >
               <Zap className="mr-3 h-6 w-6" />
               Start Building Trusts
@@ -323,7 +323,7 @@ const Landing = () => {
           </p>
           <Link 
             to="/register" 
-            className={`inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xl font-medium rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 fade-in-up stagger-3`}
+            className={`inline-flex items-center px-10 py-4 border border-gray-200 text-gray-700 rounded-full font-light text-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300 hover:scale-105 fade-in-up stagger-3`}
           >
             <Sparkles className="mr-3 h-6 w-6" />
             Get Started Free
