@@ -5,13 +5,8 @@ import {
   Building2, 
   Users, 
   DollarSign, 
-  TrendingUp, 
-  Shield, 
-  Plus,
-  ArrowRight,
-  CheckCircle,
-  Clock,
-  AlertCircle
+  ArrowUpRight,
+  Plus
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -149,7 +144,7 @@ const Dashboard = () => {
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className="p-2 bg-orange-100 rounded-lg">
-                <TrendingUp className="h-6 w-6 text-orange-600" />
+                <ArrowUpRight className="h-6 w-6 text-orange-600" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Recent Transfers</p>
@@ -175,19 +170,19 @@ const Dashboard = () => {
                   <h3 className="font-medium text-gray-900">Create Trust</h3>
                   <p className="text-sm text-gray-600">Set up a new trust account</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-gray-400 ml-auto" />
+                <ArrowUpRight className="h-5 w-5 text-gray-400 ml-auto" />
               </Link>
 
               <Link
                 to="/transfers"
                 className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors duration-200"
               >
-                <TrendingUp className="h-6 w-6 text-green-600 mr-3" />
+                <ArrowUpRight className="h-6 w-6 text-green-600 mr-3" />
                 <div>
                   <h3 className="font-medium text-gray-900">Process Transfer</h3>
                   <p className="text-sm text-gray-600">Initiate wealth transfer</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-gray-400 ml-auto" />
+                <ArrowUpRight className="h-5 w-5 text-gray-400 ml-auto" />
               </Link>
 
               <div className="flex items-center p-4 border border-gray-200 rounded-lg bg-gray-50">
@@ -262,7 +257,7 @@ const Dashboard = () => {
                         className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
                       >
                         View Details
-                        <ArrowRight className="h-4 w-4 ml-1" />
+                        <ArrowUpRight className="h-4 w-4 ml-1" />
                       </Link>
                     </div>
                   </div>

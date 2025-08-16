@@ -3,12 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   Building2, 
   Plus, 
-  Users, 
-  DollarSign, 
-  Calendar,
-  ArrowRight,
-  Edit,
-  Trash2
+  ArrowRight
 } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -49,7 +44,7 @@ const Trusts = () => {
     }
 
     try {
-      const response = await axios.post('/api/trusts', formData);
+      await axios.post('/api/trusts', formData);
       toast.success('Trust account created successfully!');
       setShowCreateForm(false);
       setFormData({

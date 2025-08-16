@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { 
   Building2, 
-  Users, 
   TrendingUp, 
   Home, 
   Menu, 

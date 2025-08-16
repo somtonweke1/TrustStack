@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   ArrowUpRight, 
   Plus, 
-  DollarSign, 
   Calendar,
   User,
   Building2,
@@ -54,7 +53,7 @@ const Transfers = () => {
     }
 
     try {
-      const response = await axios.post('/api/transfers', formData);
+      await axios.post('/api/transfers', formData);
       toast.success('Transfer initiated successfully!');
       setShowCreateForm(false);
       setFormData({

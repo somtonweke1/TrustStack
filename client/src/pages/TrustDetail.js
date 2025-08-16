@@ -5,12 +5,7 @@ import {
   Users, 
   DollarSign, 
   Plus, 
-  ArrowLeft,
-  Edit,
-  Trash2,
-  TrendingUp,
-  Shield,
-  Calendar
+  ArrowLeft
 } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
