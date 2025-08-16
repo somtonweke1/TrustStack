@@ -210,7 +210,7 @@ const Landing = () => {
               Start Building Trusts
               <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
             </Link>
-            <button className="border-2 border-gray-300 text-gray-700 px-12 py-5 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white min-w-[240px] text-center flex items-center justify-center">
+            <button className="border-2 border-gray-300 text-gray-700 px-12 py-5 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white min-w-[240px] text-center flex items-center justify-center shadow-md hover:shadow-lg border border-gray-200 hover:border-gray-300">
               Watch Demo
             </button>
           </div>
