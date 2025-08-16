@@ -19,12 +19,9 @@ export const AuthProvider = ({ children }) => {
   // Set up axios defaults
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       fetchUserProfile();
-    } else {
-      setLoading(false);
     }
-  }, [token]);
+  }, [token, fetchUserProfile]);
 
   const fetchUserProfile = async () => {
     try {

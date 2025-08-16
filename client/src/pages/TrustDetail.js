@@ -27,7 +27,8 @@ const TrustDetail = () => {
 
   useEffect(() => {
     fetchTrustDetails();
-  }, [id]);
+    fetchBeneficiaries();
+  }, [fetchTrustDetails, fetchBeneficiaries]);
 
   const fetchTrustDetails = async () => {
     try {
