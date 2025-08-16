@@ -83,26 +83,24 @@ const TrustDetail = () => {
       return;
     }
 
-    try {
-      await axios.post('/api/beneficiaries', {
-        ...beneficiaryForm,
-        trustId: id
-      });
-      toast.success('Beneficiary added successfully!');
-      setShowAddBeneficiary(false);
-      setBeneficiaryForm({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        relationship: '',
-        allocationPercentage: ''
-      });
-      fetchTrustDetails();
-    } catch (error) {
-      console.error('Error adding beneficiary:', error);
-      toast.error('Failed to add beneficiary');
-    }
+    // Mock creation instead of API call
+    const newBeneficiary = {
+      id: `beneficiary-${Date.now()}`,
+      ...beneficiaryForm,
+      trustId: id
+    };
+    
+    setBeneficiaries([...beneficiaries, newBeneficiary]);
+    toast.success('Beneficiary added successfully!');
+    setShowAddBeneficiary(false);
+    setBeneficiaryForm({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      relationship: '',
+      allocationPercentage: ''
+    });
   };
 
   const handleChange = (e) => {

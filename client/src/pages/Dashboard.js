@@ -8,13 +8,20 @@ import {
   Plus,
   Eye,
   Edit,
-  Trash2
+  Trash2,
+  ArrowUpRight
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Dashboard = () => {
   const [trusts, setTrusts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalTrusts: 0,
+    totalBalance: 0,
+    totalBeneficiaries: 0,
+    recentTransfers: 0
+  });
 
   useEffect(() => {
     // Mock data instead of API call
@@ -46,6 +53,18 @@ const Dashboard = () => {
     ];
     
     setTrusts(mockTrusts);
+    
+    // Calculate stats from mock data
+    const totalBalance = mockTrusts.reduce((sum, trust) => sum + trust.balance, 0);
+    const totalBeneficiaries = mockTrusts.reduce((sum, trust) => sum + trust.beneficiaries, 0);
+    
+    setStats({
+      totalTrusts: mockTrusts.length,
+      totalBalance,
+      totalBeneficiaries,
+      recentTransfers: 2
+    });
+    
     setLoading(false);
   }, []);
 

@@ -6,7 +6,12 @@ import {
   Calendar,
   Filter,
   Search,
-  Plus
+  Plus,
+  CheckCircle,
+  Clock,
+  XCircle,
+  Building2,
+  User
 } from 'lucide-react';
 
 const Transfers = () => {

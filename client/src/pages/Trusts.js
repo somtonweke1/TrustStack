@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Eye, Edit, Trash2, Users, DollarSign, Calendar } from 'lucide-react';
+import { Plus, Eye, Edit, Trash2, Users, DollarSign, Calendar, Building2, ArrowRight } from 'lucide-react';
 
 const Trusts = () => {
   const [trusts, setTrusts] = useState([]);
