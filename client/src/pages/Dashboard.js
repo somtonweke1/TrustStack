@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { 
   Building2, 
   Users, 
   DollarSign, 
   ArrowUpRight,
-  Plus
+  Plus,
+  Shield,
+  CheckCircle
 } from 'lucide-react';
 import axios from 'axios';
 
