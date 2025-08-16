@@ -179,13 +179,13 @@ const Landing = () => {
           <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center fade-in-up stagger-3`}>
             <Link 
               to="/register" 
-              className="premium-button text-white px-12 py-6 rounded-2xl font-medium text-xl group"
+              className="blue-gradient text-white px-10 py-4 rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
             >
               <Zap className="mr-3 h-6 w-6" />
               Start Building Trusts
-              <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-2" />
+              <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
             </Link>
-            <button className="border border-gray-200 text-gray-700 px-12 py-6 rounded-2xl font-light text-xl hover:border-blue-300 hover:text-blue-600 transition-all duration-300 hover:scale-105">
+            <button className="border border-gray-200 text-gray-700 px-10 py-4 rounded-full font-light text-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300">
               Watch Demo
             </button>
           </div>
@@ -323,11 +323,11 @@ const Landing = () => {
           </p>
           <Link 
             to="/register" 
-            className={`inline-flex items-center px-16 py-7 premium-button text-white text-2xl font-medium rounded-2xl fade-in-up stagger-3`}
+            className={`inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xl font-medium rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 fade-in-up stagger-3`}
           >
-            <Sparkles className="mr-4 h-7 w-7" />
+            <Sparkles className="mr-3 h-6 w-6" />
             Get Started Free
-            <ArrowRight className="ml-4 h-7 w-7 transition-transform group-hover:translate-x-2" />
+            <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </section>
