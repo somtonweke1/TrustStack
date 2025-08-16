@@ -122,6 +122,13 @@ const Landing = () => {
           letter-spacing: -0.03em;
         }
         
+        .company-underline {
+          text-decoration: underline;
+          text-decoration-thickness: 4px;
+          text-underline-offset: 8px;
+          text-decoration-color: currentColor;
+        }
+        
         .premium-button {
           background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
           box-shadow: 0 20px 40px -12px rgba(37, 99, 235, 0.3);
@@ -167,13 +174,13 @@ const Landing = () => {
             <div className="flex items-center space-x-8">
               <Link 
                 to="/login" 
-                className="text-gray-600 hover:text-gray-900 font-light transition-all duration-300 hover:scale-105"
+                className="text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 px-6 py-3 rounded-full hover:bg-gray-100"
               >
                 Sign In
               </Link>
               <Link 
                 to="/register" 
-                className="premium-button text-white px-10 py-4 rounded-2xl font-medium text-lg"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800"
               >
                 Get Started
               </Link>
@@ -186,7 +193,7 @@ const Landing = () => {
       <section className="pt-40 pb-32 px-8 relative">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className={`text-7xl md:text-8xl font-light text-gray-900 mb-12 leading-tight fade-in-up stagger-1`}>
-            <span className={`bg-gradient-to-r ${companies[currentCompanyIndex].color} bg-clip-text text-transparent font-semibold transition-all duration-1000 underline decoration-4 underline-offset-8`}>
+            <span className={`bg-gradient-to-r ${companies[currentCompanyIndex].color} bg-clip-text text-transparent font-semibold transition-all duration-1000 company-underline`}>
               {companies[currentCompanyIndex].name}
             </span> for Inheritance Rails
           </h1>
@@ -194,16 +201,16 @@ const Landing = () => {
             Transform wealth transfer visions into concrete payment rails. Make inheritance and trust management as seamless as online payments.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center fade-in-up stagger-3`}>
+          <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center fade-in-up stagger-3`}>
             <Link 
               to="/register" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-12 py-5 rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 group border-0"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-4 rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 group border-0 min-w-[200px] text-center"
             >
               <Zap className="mr-3 h-6 w-6" />
               Start Building Trusts
               <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
             </Link>
-            <button className="border-2 border-gray-300 text-gray-700 px-12 py-5 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white">
+            <button className="border-2 border-gray-300 text-gray-700 px-10 py-4 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white min-w-[200px] text-center">
               Watch Demo
             </button>
           </div>
@@ -316,7 +323,7 @@ const Landing = () => {
             </div>
             
             <div className={`text-center fade-in-up stagger-4`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto shadow-xl">
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
                 <span className="text-white text-3xl font-light">3</span>
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Monitor & Manage</h3>
@@ -341,7 +348,7 @@ const Landing = () => {
           </p>
           <Link 
             to="/register" 
-            className={`inline-flex items-center px-16 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-medium text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0`}
+            className={`inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-medium text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0`}
           >
             <Sparkles className="mr-4 h-6 w-6" />
             Get Started Free
