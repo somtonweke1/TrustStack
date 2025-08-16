@@ -174,7 +174,7 @@ const Landing = () => {
             <div className="flex items-center space-x-8">
               <Link 
                 to="/login" 
-                className="text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 px-6 py-3 rounded-full hover:bg-gray-100"
+                className="text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 px-6 py-3 rounded-full hover:bg-gray-100 shadow-md hover:shadow-lg border border-gray-200 hover:border-gray-300"
               >
                 Sign In
               </Link>
