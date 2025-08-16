@@ -4,11 +4,7 @@ import {
   Building2, 
   Users, 
   DollarSign, 
-  TrendingUp, 
   Plus,
-  Eye,
-  Edit,
-  Trash2,
   ArrowUpRight
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';

@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   ArrowUpRight, 
-  ArrowDownLeft, 
-  DollarSign, 
   Calendar,
-  Filter,
-  Search,
   Plus,
   CheckCircle,
   Clock,
