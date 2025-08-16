@@ -123,7 +123,7 @@ const Trusts = () => {
           </div>
           <button
             onClick={() => setShowCreateForm(true)}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Trust
@@ -144,13 +144,12 @@ const Trusts = () => {
                   </label>
                   <input
                     type="text"
-                    id="trustName"
                     name="trustName"
-                    required
                     value={formData.trustName}
                     onChange={handleChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="e.g., Family Legacy Trust"
+                    placeholder="Enter trust name"
+                    required
                   />
                 </div>
                 <div>
@@ -213,9 +212,10 @@ const Trusts = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                  Create Trust
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Trust Account
                 </button>
               </div>
             </form>

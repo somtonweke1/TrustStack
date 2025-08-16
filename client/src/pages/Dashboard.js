@@ -87,7 +87,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-teal-600"></div>
       </div>
     );
   }
@@ -177,24 +177,15 @@ const Dashboard = () => {
 
               <Link
                 to="/transfers"
-                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors duration-200"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors duration-200"
               >
-                <ArrowUpRight className="h-6 w-6 text-green-600 mr-3" />
+                <ArrowUpRight className="h-6 w-6 text-blue-600 mr-3" />
                 <div>
                   <h3 className="font-medium text-gray-900">Process Transfer</h3>
                   <p className="text-sm text-gray-600">Initiate wealth transfer</p>
                 </div>
                 <ArrowUpRight className="h-5 w-5 text-gray-400 ml-auto" />
               </Link>
-
-              <div className="flex items-center p-4 border border-gray-200 rounded-lg bg-gray-50">
-                <Shield className="h-6 w-6 text-purple-600 mr-3" />
-                <div>
-                  <h3 className="font-medium text-gray-900">Compliance</h3>
-                  <p className="text-sm text-gray-600">View compliance status</p>
-                </div>
-                <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
-              </div>
             </div>
           </div>
         </div>
