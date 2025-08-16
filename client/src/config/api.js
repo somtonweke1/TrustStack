@@ -5,9 +5,9 @@ const API_CONFIG = {
     baseURL: 'http://localhost:3001',
     timeout: 10000
   },
-  // Production (using working backend)
+  // Production (Vercel - same domain)
   production: {
-    baseURL: 'https://truststack-api.onrender.com', // Working backend
+    baseURL: '', // Same domain as frontend
     timeout: 15000
   }
 };
