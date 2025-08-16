@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { 
   ArrowUpRight, 
-  Plus, 
+  ArrowDownLeft, 
+  DollarSign, 
   Calendar,
-  User,
-  Building2,
-  CheckCircle,
-  Clock,
-  XCircle
+  Filter,
+  Search,
+  Plus
 } from 'lucide-react';
-import axios from 'axios';
-import toast from 'react-hot-toast';
 
 const Transfers = () => {
   const [transfers, setTransfers] = useState([]);
@@ -21,52 +18,74 @@ const Transfers = () => {
     trustId: '',
     beneficiaryId: '',
     amount: '',
-    description: ''
+    description: '',
+    transferType: 'outgoing'
   });
 
   useEffect(() => {
-    fetchData();
+    // Mock data instead of API calls
+    const mockTrusts = [
+      { id: '1', name: 'Family Trust Fund' },
+      { id: '2', name: 'Education Trust' },
+      { id: '3', name: 'Retirement Trust' }
+    ];
+    
+    const mockTransfers = [
+      {
+        id: '1',
+        trustName: 'Family Trust Fund',
+        beneficiaryName: 'John Smith',
+        amount: 5000,
+        type: 'outgoing',
+        status: 'completed',
+        date: '2024-01-20',
+        description: 'Monthly distribution'
+      },
+      {
+        id: '2',
+        trustName: 'Education Trust',
+        beneficiaryName: 'Sarah Johnson',
+        amount: 2500,
+        type: 'outgoing',
+        status: 'pending',
+        date: '2024-01-18',
+        description: 'Tuition payment'
+      },
+      {
+        id: '3',
+        trustName: 'Family Trust Fund',
+        beneficiaryName: 'Mike Wilson',
+        amount: 10000,
+        type: 'incoming',
+        status: 'completed',
+        date: '2024-01-15',
+        description: 'Additional funding'
+      }
+    ];
+    
+    setTrusts(mockTrusts);
+    setTransfers(mockTransfers);
+    setLoading(false);
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const [transfersRes, trustsRes] = await Promise.all([
-        axios.get('/api/transfers'),
-        axios.get('/api/trusts')
-      ]);
-      setTransfers(transfersRes.data.transfers);
-      setTrusts(trustsRes.data.trusts);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      toast.error('Failed to load transfers');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.trustId || !formData.beneficiaryId || !formData.amount) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
-
-    try {
-      await axios.post('/api/transfers', formData);
-      toast.success('Transfer initiated successfully!');
-      setShowCreateForm(false);
-      setFormData({
-        trustId: '',
-        beneficiaryId: '',
-        amount: '',
-        description: ''
-      });
-      fetchData();
-    } catch (error) {
-      console.error('Error initiating transfer:', error);
-      toast.error('Failed to initiate transfer');
-    }
+    // Mock creation instead of API call
+    const newTransfer = {
+      id: `transfer-${Date.now()}`,
+      trustName: trusts.find(t => t.id === formData.trustId)?.name || 'Unknown Trust',
+      beneficiaryName: 'New Beneficiary',
+      amount: parseFloat(formData.amount),
+      type: formData.transferType,
+      status: 'pending',
+      date: new Date().toISOString().split('T')[0],
+      description: formData.description
+    };
+    
+    setTransfers([newTransfer, ...transfers]);
+    setFormData({ trustId: '', beneficiaryId: '', amount: '', description: '', transferType: 'outgoing' });
+    setShowCreateForm(false);
   };
 
   const handleChange = (e) => {
@@ -162,7 +181,7 @@ const Transfers = () => {
                     <option value="">Select a trust account</option>
                     {trusts.map((trust) => (
                       <option key={trust.id} value={trust.id}>
-                        {trust.trustName} - {formatCurrency(trust.currentBalance)}
+                        {trust.name} - {formatCurrency(trust.currentBalance)}
                       </option>
                     ))}
                   </select>

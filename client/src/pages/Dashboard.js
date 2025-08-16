@@ -1,51 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { 
   Building2, 
   Users, 
   DollarSign, 
-  ArrowUpRight,
-  Plus
+  TrendingUp, 
+  Plus,
+  Eye,
+  Edit,
+  Trash2
 } from 'lucide-react';
-import axios from 'axios';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Dashboard = () => {
-  const { user } = useAuth();
   const [trusts, setTrusts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
-    totalTrusts: 0,
-    totalBalance: 0,
-    totalBeneficiaries: 0,
-    recentTransfers: 0
-  });
 
   useEffect(() => {
-    fetchTrusts();
+    // Mock data instead of API call
+    const mockTrusts = [
+      {
+        id: '1',
+        name: 'Family Trust Fund',
+        balance: 250000,
+        beneficiaries: 3,
+        status: 'active',
+        created_at: '2024-01-15'
+      },
+      {
+        id: '2',
+        name: 'Education Trust',
+        balance: 75000,
+        beneficiaries: 2,
+        status: 'active',
+        created_at: '2024-02-20'
+      },
+      {
+        id: '3',
+        name: 'Retirement Trust',
+        balance: 500000,
+        beneficiaries: 1,
+        status: 'pending',
+        created_at: '2024-03-10'
+      }
+    ];
+    
+    setTrusts(mockTrusts);
+    setLoading(false);
   }, []);
-
-  const fetchTrusts = async () => {
-    try {
-      const response = await axios.get('/api/trusts');
-      setTrusts(response.data.trusts);
-      
-      // Calculate stats
-      const totalBalance = response.data.trusts.reduce((sum, trust) => sum + parseFloat(trust.currentBalance), 0);
-      const totalBeneficiaries = response.data.trusts.length * 2; // Approximate for demo
-      
-      setStats({
-        totalTrusts: response.data.trusts.length,
-        totalBalance,
-        totalBeneficiaries,
-        recentTransfers: 2 // Demo data
-      });
-    } catch (error) {
-      console.error('Error fetching trusts:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {

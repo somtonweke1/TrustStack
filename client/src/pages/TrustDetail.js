@@ -7,7 +7,6 @@ import {
   Plus, 
   ArrowLeft
 } from 'lucide-react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const TrustDetail = () => {
@@ -26,16 +25,50 @@ const TrustDetail = () => {
   });
 
   const fetchTrustDetails = useCallback(async () => {
-    try {
-      const response = await axios.get(`/api/trusts/${id}`);
-      setTrust(response.data.trust);
-      setBeneficiaries(response.data.beneficiaries);
-    } catch (error) {
-      console.error('Error fetching trust details:', error);
-      toast.error('Failed to load trust details');
-    } finally {
-      setLoading(false);
-    }
+    // Mock data instead of API call
+    const mockTrust = {
+      id: id,
+      name: 'Family Trust Fund',
+      description: 'Multi-generational family wealth preservation',
+      currentBalance: 250000,
+      status: 'active',
+      created_at: '2024-01-15',
+      last_activity: '2024-01-20'
+    };
+    
+    const mockBeneficiaries = [
+      {
+        id: '1',
+        firstName: 'John',
+        lastName: 'Smith',
+        email: 'john@example.com',
+        phone: '+1-555-0123',
+        relationship: 'Son',
+        allocationPercentage: 40
+      },
+      {
+        id: '2',
+        firstName: 'Sarah',
+        lastName: 'Johnson',
+        email: 'sarah@example.com',
+        phone: '+1-555-0124',
+        relationship: 'Daughter',
+        allocationPercentage: 35
+      },
+      {
+        id: '3',
+        firstName: 'Mike',
+        lastName: 'Wilson',
+        email: 'mike@example.com',
+        phone: '+1-555-0125',
+        relationship: 'Nephew',
+        allocationPercentage: 25
+      }
+    ];
+    
+    setTrust(mockTrust);
+    setBeneficiaries(mockBeneficiaries);
+    setLoading(false);
   }, [id]);
 
   useEffect(() => {

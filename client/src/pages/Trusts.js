@@ -1,63 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Building2, 
-  Plus, 
-  ArrowRight
-} from 'lucide-react';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import { Plus, Eye, Edit, Trash2, Users, DollarSign, Calendar } from 'lucide-react';
 
 const Trusts = () => {
   const [trusts, setTrusts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formData, setFormData] = useState({
-    trustName: '',
-    trustType: 'revocable',
-    trustPurpose: '',
-    initialFundingAmount: ''
+    name: '',
+    description: '',
+    initialAmount: '',
+    beneficiaryCount: ''
   });
 
   useEffect(() => {
-    fetchTrusts();
+    // Mock data instead of API call
+    const mockTrusts = [
+      {
+        id: '1',
+        name: 'Family Trust Fund',
+        description: 'Multi-generational family wealth preservation',
+        currentBalance: 250000,
+        beneficiaryCount: 3,
+        status: 'active',
+        created_at: '2024-01-15',
+        last_activity: '2024-01-20'
+      },
+      {
+        id: '2',
+        name: 'Education Trust',
+        description: 'Funding for children\'s education expenses',
+        currentBalance: 75000,
+        beneficiaryCount: 2,
+        status: 'active',
+        created_at: '2024-02-20',
+        last_activity: '2024-02-25'
+      },
+      {
+        id: '3',
+        name: 'Retirement Trust',
+        description: 'Secure retirement income stream',
+        currentBalance: 500000,
+        beneficiaryCount: 1,
+        status: 'pending',
+        created_at: '2024-03-10',
+        last_activity: '2024-03-10'
+      }
+    ];
+    
+    setTrusts(mockTrusts);
+    setLoading(false);
   }, []);
-
-  const fetchTrusts = async () => {
-    try {
-      const response = await axios.get('/api/trusts');
-      setTrusts(response.data.trusts);
-    } catch (error) {
-      console.error('Error fetching trusts:', error);
-      toast.error('Failed to load trust accounts');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.trustName.trim()) {
-      toast.error('Trust name is required');
-      return;
-    }
-
-    try {
-      await axios.post('/api/trusts', formData);
-      toast.success('Trust account created successfully!');
-      setShowCreateForm(false);
-      setFormData({
-        trustName: '',
-        trustType: 'revocable',
-        trustPurpose: '',
-        initialFundingAmount: ''
-      });
-      fetchTrusts();
-    } catch (error) {
-      console.error('Error creating trust:', error);
-      toast.error('Failed to create trust account');
-    }
+    // Mock creation instead of API call
+    const newTrust = {
+      id: `trust-${Date.now()}`,
+      name: formData.name,
+      description: formData.description,
+      currentBalance: parseFloat(formData.initialAmount),
+      beneficiaryCount: parseInt(formData.beneficiaryCount),
+      status: 'active',
+      created_at: new Date().toISOString().split('T')[0],
+      last_activity: new Date().toISOString().split('T')[0]
+    };
+    
+    setTrusts([newTrust, ...trusts]);
+    setFormData({ name: '', description: '', initialAmount: '', beneficiaryCount: '' });
+    setShowCreateForm(false);
   };
 
   const handleChange = (e) => {
@@ -144,8 +156,8 @@ const Trusts = () => {
                   </label>
                   <input
                     type="text"
-                    name="trustName"
-                    value={formData.trustName}
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter trust name"
@@ -178,9 +190,9 @@ const Trusts = () => {
                 </label>
                 <textarea
                   id="trustPurpose"
-                  name="trustPurpose"
+                  name="description"
                   rows={3}
-                  value={formData.trustPurpose}
+                  value={formData.description}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Describe the purpose of this trust..."
@@ -193,10 +205,10 @@ const Trusts = () => {
                 <input
                   type="number"
                   id="initialFundingAmount"
-                  name="initialFundingAmount"
+                  name="initialAmount"
                   min="0"
                   step="0.01"
-                  value={formData.initialFundingAmount}
+                  value={formData.initialAmount}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="0.00"
@@ -252,7 +264,7 @@ const Trusts = () => {
                       <div className="flex-1">
                         <div className="flex items-center mb-3">
                           <Building2 className="h-6 w-6 text-blue-600 mr-3" />
-                          <h3 className="text-xl font-semibold text-gray-900">{trust.trustName}</h3>
+                          <h3 className="text-xl font-semibold text-gray-900">{trust.name}</h3>
                           <span className={`ml-3 px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(trust.status)}`}>
                             {trust.status}
                           </span>
@@ -260,7 +272,7 @@ const Trusts = () => {
                             {trust.complianceStatus}
                           </span>
                         </div>
-                        <p className="text-gray-600 mb-4">{trust.trustPurpose || 'No description provided'}</p>
+                        <p className="text-gray-600 mb-4">{trust.description || 'No description provided'}</p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-500">
                           <div className="flex items-center">
                             <span className="font-medium text-gray-700">Type:</span>
@@ -268,7 +280,7 @@ const Trusts = () => {
                           </div>
                           <div className="flex items-center">
                             <span className="font-medium text-gray-700">Created:</span>
-                            <span className="ml-2">{new Date(trust.createdAt).toLocaleDateString()}</span>
+                            <span className="ml-2">{new Date(trust.created_at).toLocaleDateString()}</span>
                           </div>
                           <div className="flex items-center">
                             <span className="font-medium text-gray-700">Balance:</span>
