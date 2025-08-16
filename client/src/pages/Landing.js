@@ -174,13 +174,13 @@ const Landing = () => {
             <div className="flex items-center space-x-8">
               <Link 
                 to="/login" 
-                className="text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 px-6 py-3 rounded-full hover:bg-gray-100 shadow-md hover:shadow-lg border border-gray-200 hover:border-gray-300"
+                className="text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 px-8 py-3 rounded-full hover:bg-gray-100 shadow-md hover:shadow-lg border border-gray-200 hover:border-gray-300 min-w-[120px] text-center"
               >
                 Sign In
               </Link>
               <Link 
                 to="/register" 
-                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 min-w-[120px] text-center"
               >
                 Get Started
               </Link>
@@ -204,13 +204,13 @@ const Landing = () => {
           <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center fade-in-up stagger-3`}>
             <Link 
               to="/register" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-12 py-5 rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 group border-0 min-w-[220px] text-center flex items-center justify-center"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-12 py-5 rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 group border-0 min-w-[240px] text-center flex items-center justify-center"
             >
               <Zap className="mr-3 h-6 w-6" />
               Start Building Trusts
               <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
             </Link>
-            <button className="border-2 border-gray-300 text-gray-700 px-12 py-5 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white min-w-[220px] text-center flex items-center justify-center">
+            <button className="border-2 border-gray-300 text-gray-700 px-12 py-5 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white min-w-[240px] text-center flex items-center justify-center">
               Watch Demo
             </button>
           </div>
@@ -348,7 +348,7 @@ const Landing = () => {
           </p>
           <Link 
             to="/register" 
-            className={`inline-flex items-center px-16 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0`}
+            className={`inline-flex items-center px-16 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0 min-w-[280px] justify-center`}
           >
             <Sparkles className="mr-4 h-6 w-6" />
             Get Started Free
@@ -360,15 +360,80 @@ const Landing = () => {
       {/* Premium Footer */}
       <footer className="py-20 px-8 bg-white border-t border-gray-100">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-4 mb-8 md:mb-0">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Building2 className="h-7 w-7 text-white" />
+          {/* Main Footer Content */}
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            {/* Company Info */}
+            <div className="md:col-span-2">
+              <div className="flex items-center space-x-4 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <Building2 className="h-7 w-7 text-white" />
+                </div>
+                <span className="text-2xl font-light text-gray-600">TrustStack</span>
               </div>
-              <span className="text-2xl font-light text-gray-600">TrustStack</span>
+              <p className="text-gray-600 mb-6 max-w-md">
+                Transform wealth transfer visions into concrete payment rails. Making inheritance and trust management as seamless as online payments.
+              </p>
+              <div className="flex space-x-4">
+                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                  <span className="text-gray-600 font-medium">FDIC</span>
+                </div>
+                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                  <span className="text-gray-600 font-medium">SOC2</span>
+                </div>
+                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                  <span className="text-gray-600 font-medium">PCI</span>
+                </div>
+              </div>
             </div>
-            <div className="text-base font-light text-gray-500">
-              © 2024 TrustStack. All rights reserved.
+
+            {/* Product Links */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-4">Product</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Trust Management</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Beneficiary Services</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Wealth Transfers</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Compliance Tools</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">API Documentation</a></li>
+              </ul>
+            </div>
+
+            {/* Company Links */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-4">Company</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">About Us</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Careers</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Press</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Partners</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Legal Links */}
+          <div className="border-t border-gray-200 pt-8 mb-8">
+            <div className="flex flex-wrap gap-6 text-sm text-gray-500">
+              <a href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Cookie Policy</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Data Processing Agreement</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Acceptable Use Policy</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Security</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Compliance</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Regulatory Disclosures</a>
+            </div>
+          </div>
+
+          {/* Bottom Footer */}
+          <div className="border-t border-gray-200 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="text-sm text-gray-500 mb-4 md:mb-0">
+                © 2025 TrustStack. All rights reserved.
+              </div>
+              <div className="text-sm text-gray-500">
+                TrustStack is a financial technology company, not a bank. Banking services provided by our partner banks, Members FDIC.
+              </div>
             </div>
           </div>
         </div>
