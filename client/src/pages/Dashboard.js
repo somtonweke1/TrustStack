@@ -22,6 +22,9 @@ const Dashboard = () => {
     totalBeneficiaries: 0,
     recentTransfers: 0
   });
+  
+  // Mock user for demo
+  const user = { firstName: 'Demo' };
 
   useEffect(() => {
     // Mock data instead of API call
