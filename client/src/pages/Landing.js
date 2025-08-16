@@ -7,9 +7,7 @@ import {
   Users, 
   DollarSign, 
   CheckCircle,
-  ArrowRight,
-  TrendingUp,
-  Lock
+  ArrowRight
 } from 'lucide-react';
 
 const Landing = () => {
