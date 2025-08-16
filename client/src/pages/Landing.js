@@ -348,11 +348,11 @@ const Landing = () => {
           </p>
           <Link 
             to="/register" 
-            className={`inline-flex items-center px-16 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0 min-w-[280px] justify-center`}
+            className={`inline-flex items-center px-16 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0 min-w-[280px] justify-center group`}
           >
             <Sparkles className="mr-4 h-6 w-6" />
             Get Started Free
-            <ArrowRight className="ml-4 h-6 w-6 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="ml-4 h-6 w-6 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-80" />
           </Link>
         </div>
       </section>
