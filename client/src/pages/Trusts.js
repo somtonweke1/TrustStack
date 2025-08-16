@@ -1,75 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Building2, ArrowRight } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { Plus, Building2, ArrowRight, Users, DollarSign, Calendar, Edit, Trash2, Eye } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const Trusts = () => {
+  const { user } = useAuth();
   const [trusts, setTrusts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    type: 'Revocable Living Trust',
     initialAmount: '',
-    beneficiaryCount: ''
+    beneficiaryCount: '',
+    purpose: ''
   });
 
   useEffect(() => {
-    // Mock data instead of API call
-    const mockTrusts = [
-      {
-        id: '1',
-        name: 'Family Trust Fund',
-        description: 'Multi-generational family wealth preservation',
-        currentBalance: 250000,
-        beneficiaryCount: 3,
-        status: 'active',
-        created_at: '2024-01-15',
-        last_activity: '2024-01-20'
-      },
-      {
-        id: '2',
-        name: 'Education Trust',
-        description: 'Funding for children\'s education expenses',
-        currentBalance: 75000,
-        beneficiaryCount: 2,
-        status: 'active',
-        created_at: '2024-02-20',
-        last_activity: '2024-02-25'
-      },
-      {
-        id: '3',
-        name: 'Retirement Trust',
-        description: 'Secure retirement income stream',
-        currentBalance: 500000,
-        beneficiaryCount: 1,
-        status: 'pending',
-        created_at: '2024-03-10',
-        last_activity: '2024-03-10'
-      }
-    ];
-    
-    setTrusts(mockTrusts);
-    setLoading(false);
+    loadTrusts();
   }, []);
+
+  const loadTrusts = () => {
+    try {
+      const savedTrusts = JSON.parse(localStorage.getItem('userTrusts') || '[]');
+      setTrusts(savedTrusts);
+    } catch (error) {
+      console.error('Error loading trusts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Mock creation instead of API call
+    if (!formData.name.trim()) {
+      toast.error('Trust name is required');
+      return;
+    }
+
+    if (!formData.initialAmount || parseFloat(formData.initialAmount) <= 0) {
+      toast.error('Initial amount must be greater than 0');
+      return;
+    }
+
+    // Create new trust
     const newTrust = {
       id: `trust-${Date.now()}`,
       name: formData.name,
       description: formData.description,
-      currentBalance: parseFloat(formData.initialAmount),
-      beneficiaryCount: parseInt(formData.beneficiaryCount),
+      type: formData.type,
+      balance: parseFloat(formData.initialAmount),
+      beneficiaryCount: parseInt(formData.beneficiaryCount) || 0,
+      purpose: formData.purpose,
       status: 'active',
-      created_at: new Date().toISOString().split('T')[0],
-      last_activity: new Date().toISOString().split('T')[0]
+      created_at: new Date().toISOString(),
+      last_activity: new Date().toISOString(),
+      beneficiaries: []
     };
     
-    setTrusts([newTrust, ...trusts]);
-    setFormData({ name: '', description: '', initialAmount: '', beneficiaryCount: '' });
+    // Save to localStorage
+    const updatedTrusts = [newTrust, ...trusts];
+    localStorage.setItem('userTrusts', JSON.stringify(updatedTrusts));
+    
+    setTrusts(updatedTrusts);
+    setFormData({ name: '', description: '', type: 'Revocable Living Trust', initialAmount: '', beneficiaryCount: '', purpose: '' });
     setShowCreateForm(false);
+    
+    toast.success('Trust account created successfully!');
   };
 
   const handleChange = (e) => {
@@ -77,6 +77,15 @@ const Trusts = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const deleteTrust = (trustId) => {
+    if (window.confirm('Are you sure you want to delete this trust account? This action cannot be undone.')) {
+      const updatedTrusts = trusts.filter(trust => trust.id !== trustId);
+      localStorage.setItem('userTrusts', JSON.stringify(updatedTrusts));
+      setTrusts(updatedTrusts);
+      toast.success('Trust account deleted successfully');
+    }
   };
 
   const formatCurrency = (amount) => {
@@ -88,6 +97,14 @@ const Trusts = () => {
     }).format(amount);
   };
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'active':
@@ -95,19 +112,6 @@ const Trusts = () => {
       case 'pending':
         return 'text-yellow-600 bg-yellow-100';
       case 'suspended':
-        return 'text-red-600 bg-red-100';
-      default:
-        return 'text-gray-600 bg-gray-100';
-    }
-  };
-
-  const getComplianceColor = (status) => {
-    switch (status) {
-      case 'approved':
-        return 'text-green-600 bg-green-100';
-      case 'pending':
-        return 'text-yellow-600 bg-yellow-100';
-      case 'rejected':
         return 'text-red-600 bg-red-100';
       default:
         return 'text-gray-600 bg-gray-100';
@@ -126,20 +130,22 @@ const Trusts = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Trust Accounts</h1>
-            <p className="text-gray-600 mt-2">
-              Manage your trust accounts and beneficiaries
-            </p>
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Trust Management</h1>
+              <p className="text-gray-600 mt-2">
+                Create and manage your trust accounts for wealth preservation
+              </p>
+            </div>
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <Plus className="-ml-1 mr-2 h-5 w-5" />
+              Create Trust
+            </button>
           </div>
-          <button
-            onClick={() => setShowCreateForm(true)}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Create Trust
-          </button>
         </div>
 
         {/* Create Trust Form */}
@@ -148,10 +154,10 @@ const Trusts = () => {
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-lg font-medium text-gray-900">Create New Trust Account</h2>
             </div>
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="trustName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                     Trust Name *
                   </label>
                   <input
@@ -160,74 +166,89 @@ const Trusts = () => {
                     value={formData.name}
                     onChange={handleChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter trust name"
+                    placeholder="e.g., Family Trust Fund"
                     required
                   />
                 </div>
+
                 <div>
-                  <label htmlFor="trustType" className="block text-sm font-medium text-gray-700">
-                    Trust Type *
+                  <label htmlFor="type" className="block text-sm font-medium text-gray-700">
+                    Trust Type
                   </label>
                   <select
-                    id="trustType"
-                    name="trustType"
-                    required
-                    value={formData.trustType}
+                    name="type"
+                    value={formData.type}
                     onChange={handleChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value="revocable">Revocable</option>
-                    <option value="irrevocable">Irrevocable</option>
-                    <option value="charitable">Charitable</option>
-                    <option value="special_needs">Special Needs</option>
-                    <option value="life_insurance">Life Insurance</option>
+                    <option value="Revocable Living Trust">Revocable Living Trust</option>
+                    <option value="Irrevocable Trust">Irrevocable Trust</option>
+                    <option value="Education Trust">Education Trust</option>
+                    <option value="Charitable Trust">Charitable Trust</option>
+                    <option value="Special Needs Trust">Special Needs Trust</option>
                   </select>
                 </div>
+
+                <div>
+                  <label htmlFor="initialAmount" className="block text-sm font-medium text-gray-700">
+                    Initial Funding Amount *
+                  </label>
+                  <input
+                    type="number"
+                    name="initialAmount"
+                    min="0"
+                    step="0.01"
+                    value={formData.initialAmount}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="0.00"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="beneficiaryCount" className="block text-sm font-medium text-gray-700">
+                    Number of Beneficiaries
+                  </label>
+                  <input
+                    type="number"
+                    name="beneficiaryCount"
+                    min="0"
+                    value={formData.beneficiaryCount}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="0"
+                  />
+                </div>
               </div>
+
               <div>
-                <label htmlFor="trustPurpose" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="purpose" className="block text-sm font-medium text-gray-700">
                   Trust Purpose
                 </label>
                 <textarea
-                  id="trustPurpose"
-                  name="description"
+                  name="purpose"
                   rows={3}
-                  value={formData.description}
+                  value={formData.purpose}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Describe the purpose of this trust..."
                 />
               </div>
-              <div>
-                <label htmlFor="initialFundingAmount" className="block text-sm font-medium text-gray-700">
-                  Initial Funding Amount
-                </label>
-                <input
-                  type="number"
-                  id="initialFundingAmount"
-                  name="initialAmount"
-                  min="0"
-                  step="0.01"
-                  value={formData.initialAmount}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="0.00"
-                />
-              </div>
+
               <div className="flex justify-end space-x-3">
                 <button
                   type="button"
                   onClick={() => setShowCreateForm(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Trust Account
+                  Create Trust
                 </button>
               </div>
             </form>
@@ -241,61 +262,77 @@ const Trusts = () => {
           </div>
           <div className="p-6">
             {trusts.length === 0 ? (
-              <div className="text-center py-8">
-                <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No trust accounts yet</h3>
-                <p className="text-gray-600 mb-4">Create your first trust account to get started</p>
+              <div className="text-center py-12">
+                <Building2 className="mx-auto h-16 w-16 text-gray-400" />
+                <h3 className="mt-4 text-lg font-medium text-gray-900">No trust accounts yet</h3>
+                <p className="mt-2 text-gray-600">Create your first trust account to get started with wealth preservation.</p>
                 <button
                   onClick={() => setShowCreateForm(true)}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="-ml-1 mr-2 h-5 w-5" />
                   Create Trust Account
                 </button>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {trusts.map((trust) => (
-                  <div
-                    key={trust.id}
-                    className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow duration-200"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center mb-3">
-                          <Building2 className="h-6 w-6 text-blue-600 mr-3" />
+                  <div key={trust.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center">
+                        <Building2 className="h-10 w-10 text-blue-600 mr-4" />
+                        <div>
                           <h3 className="text-xl font-semibold text-gray-900">{trust.name}</h3>
-                          <span className={`ml-3 px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(trust.status)}`}>
-                            {trust.status}
-                          </span>
-                          <span className={`ml-2 px-2 py-1 text-xs font-medium rounded-full ${getComplianceColor(trust.complianceStatus)}`}>
-                            {trust.complianceStatus}
-                          </span>
-                        </div>
-                        <p className="text-gray-600 mb-4">{trust.description || 'No description provided'}</p>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-500">
-                          <div className="flex items-center">
-                            <span className="font-medium text-gray-700">Type:</span>
-                            <span className="ml-2 capitalize">{trust.trustType.replace('_', ' ')}</span>
-                          </div>
-                          <div className="flex items-center">
-                            <span className="font-medium text-gray-700">Created:</span>
-                            <span className="ml-2">{new Date(trust.created_at).toLocaleDateString()}</span>
-                          </div>
-                          <div className="flex items-center">
-                            <span className="font-medium text-gray-700">Balance:</span>
-                            <span className="ml-2 text-lg font-semibold text-gray-900">{formatCurrency(trust.currentBalance)}</span>
-                          </div>
+                          <p className="text-gray-600">{trust.purpose || 'No description provided'}</p>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <span className={`px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(trust.status)}`}>
+                        {trust.status}
+                      </span>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 text-sm">
+                      <div className="flex items-center">
+                        <DollarSign className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="text-gray-500">Balance:</span>
+                        <span className="ml-2 font-medium text-gray-900">{formatCurrency(trust.balance)}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Users className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="text-gray-500">Beneficiaries:</span>
+                        <span className="ml-2 font-medium text-gray-900">{trust.beneficiaryCount}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Building2 className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="text-gray-500">Type:</span>
+                        <span className="ml-2 font-medium text-gray-900">{trust.type}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Calendar className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="text-gray-500">Created:</span>
+                        <span className="ml-2 font-medium text-gray-900">{formatDate(trust.created_at)}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="text-sm text-gray-500">
+                        Last activity: {formatDate(trust.last_activity)}
+                      </div>
+                      <div className="flex space-x-2">
                         <Link
                           to={`/trusts/${trust.id}`}
                           className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
                         >
-                          <ArrowRight className="h-4 w-4 mr-1" />
-                          View
+                          <Eye className="h-4 w-4 mr-2" />
+                          View Details
                         </Link>
+                        <button
+                          onClick={() => deleteTrust(trust.id)}
+                          className="inline-flex items-center px-3 py-2 border border-red-300 rounded-md text-sm font-medium text-red-700 hover:bg-red-50"
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Delete
+                        </button>
                       </div>
                     </div>
                   </div>
