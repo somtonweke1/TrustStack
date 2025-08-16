@@ -7,11 +7,14 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Trust proxy for rate limiting behind load balancers
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet());
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://truststack.com', 'https://app.truststack.com']
+    ? ['https://trust-stack.vercel.app', 'https://truststack.com', 'https://app.truststack.com']
     : ['http://localhost:3000'],
   credentials: true
 }));
