@@ -1,59 +1,60 @@
 const { Pool } = require('pg');
+const mockDb = require('./mock-db');
 require('dotenv').config();
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+let pool = null;
 
-// Handle connection events
-pool.on('connect', () => {
-  console.log('✅ Connected to PostgreSQL database');
-});
+// Try to create real database connection
+try {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
+  });
 
-pool.on('error', (err) => {
-  console.error('❌ Database connection error:', err);
-});
-
-pool.on('remove', () => {
-  console.log('🔌 Database connection removed');
-});
+  // Test the connection
+  pool.query('SELECT NOW()', (err) => {
+    if (err) {
+      console.log('⚠️ Real database connection failed, using mock database');
+      pool = null;
+    } else {
+      console.log('✅ Connected to real PostgreSQL database');
+    }
+  });
+} catch (error) {
+  console.log('⚠️ Database configuration error, using mock database');
+  pool = null;
+}
 
 // Helper function to run queries
 const query = async (text, params) => {
-  const start = Date.now();
-  try {
-    const res = await pool.query(text, params);
-    const duration = Date.now() - start;
-    console.log(`📊 Executed query in ${duration}ms`);
-    return res;
-  } catch (error) {
-    console.error('❌ Query error:', error);
-    throw error;
+  if (pool) {
+    // Use real database
+    const start = Date.now();
+    try {
+      const res = await pool.query(text, params);
+      const duration = Date.now() - start;
+      console.log(`📊 Executed query in ${duration}ms`);
+      return res;
+    } catch (error) {
+      console.error('❌ Query error:', error);
+      throw error;
+    }
+  } else {
+    // Use mock database
+    return await mockDb.query(text, params);
   }
 };
 
 // Helper function to get a client for transactions
 const getClient = async () => {
-  const client = await pool.connect();
-  const query = client.query.bind(client);
-  const release = client.release.bind(client);
-  
-  // Monkey patch the client to log queries
-  client.query = (...args) => {
-    console.log('📝 QUERY:', args[0]);
-    return query.apply(client, args);
-  };
-  
-  client.release = () => {
-    console.log('🔌 Client released');
-    return release.apply(client);
-  };
-  
-  return client;
+  if (pool) {
+    return await pool.connect();
+  } else {
+    return await mockDb.getClient();
+  }
 };
 
 module.exports = { query, getClient, pool }; 

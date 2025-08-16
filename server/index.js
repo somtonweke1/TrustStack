@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const { setupDatabase } = require('./database/setup-db');
 require('dotenv').config();
 
 const app = express();
@@ -31,13 +32,25 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Initialize database
+let dbPool = null;
+setupDatabase().then(pool => {
+  dbPool = pool;
+  if (pool) {
+    console.log('✅ Database initialized successfully');
+  } else {
+    console.log('⚠️ Database not available - some features may not work');
+  }
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'healthy',
     service: 'TrustStack API',
     version: '1.0.0',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    database: dbPool ? 'connected' : 'disconnected'
   });
 });
 

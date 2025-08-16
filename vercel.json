@@ -22,14 +22,5 @@
       "src": "/(.*)",
       "dest": "/client/build/$1"
     }
-  ],
-  "functions": {
-    "server/index.js": {
-      "maxDuration": 30
-    }
-  },
-  "env": {
-    "NODE_ENV": "production",
-    "BCRYPT_ROUNDS": "12"
-  }
+  ]
 }
