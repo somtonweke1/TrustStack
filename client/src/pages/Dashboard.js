@@ -9,7 +9,6 @@ import {
   Plus
 } from 'lucide-react';
 import axios from 'axios';
-import toast from 'react-hot-toast';
 
 const Dashboard = () => {
   const { user } = useAuth();
