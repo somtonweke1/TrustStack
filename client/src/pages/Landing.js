@@ -14,16 +14,32 @@ import {
             
 const Landing = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [currentCompanyIndex, setCurrentCompanyIndex] = useState(0);
+
+  const companies = [
+    { name: 'Stripe', color: 'from-purple-500 to-indigo-600' },
+    { name: 'PayPal', color: 'from-blue-500 to-blue-600' },
+    { name: 'Square', color: 'from-green-500 to-emerald-600' },
+    { name: 'Adyen', color: 'from-orange-500 to-red-600' },
+    { name: 'Plaid', color: 'from-teal-500 to-cyan-600' }
+  ];
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
+    const companyInterval = setInterval(() => {
+      setCurrentCompanyIndex((prev) => (prev + 1) % companies.length);
+    }, 3000);
+
     window.addEventListener('mousemove', handleMouseMove);
 
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      clearInterval(companyInterval);
+    };
+  }, [companies.length]);
 
   return (
     <div className="min-h-screen bg-white font-sans antialiased overflow-hidden">
@@ -170,7 +186,9 @@ const Landing = () => {
       <section className="pt-40 pb-32 px-8 relative">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className={`text-7xl md:text-8xl font-light text-gray-900 mb-12 leading-tight fade-in-up stagger-1`}>
-            <span className="stripe-text">Stripe</span> for Inheritance Rails
+            <span className={`bg-gradient-to-r ${companies[currentCompanyIndex].color} bg-clip-text text-transparent font-semibold transition-all duration-1000`}>
+              {companies[currentCompanyIndex].name}
+            </span> for Inheritance Rails
           </h1>
           <p className={`text-2xl md:text-3xl font-light text-gray-600 mb-16 leading-relaxed max-w-5xl mx-auto fade-in-up stagger-2`}>
             Transform wealth transfer visions into concrete payment rails. Make inheritance and trust management as seamless as online payments.
@@ -179,13 +197,13 @@ const Landing = () => {
           <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center fade-in-up stagger-3`}>
             <Link 
               to="/register" 
-              className="border border-gray-200 text-gray-700 px-10 py-4 rounded-full font-light text-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300 hover:scale-105 group"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-12 py-5 rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 group border-0"
             >
               <Zap className="mr-3 h-6 w-6" />
               Start Building Trusts
               <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
             </Link>
-            <button className="border border-gray-200 text-gray-700 px-10 py-4 rounded-full font-light text-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300">
+            <button className="border-2 border-gray-300 text-gray-700 px-12 py-5 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white">
               Watch Demo
             </button>
           </div>
@@ -323,11 +341,11 @@ const Landing = () => {
           </p>
           <Link 
             to="/register" 
-            className={`inline-flex items-center px-10 py-4 border border-gray-200 text-gray-700 rounded-full font-light text-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300 hover:scale-105 fade-in-up stagger-3`}
+            className={`inline-flex items-center px-16 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-medium text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0`}
           >
-            <Sparkles className="mr-3 h-6 w-6" />
+            <Sparkles className="mr-4 h-6 w-6" />
             Get Started Free
-            <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="ml-4 h-6 w-6 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </section>
