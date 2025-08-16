@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   Building2, 
@@ -25,11 +25,7 @@ const TrustDetail = () => {
     allocationPercentage: ''
   });
 
-  useEffect(() => {
-    fetchTrustDetails();
-  }, [fetchTrustDetails]);
-
-  const fetchTrustDetails = async () => {
+  const fetchTrustDetails = useCallback(async () => {
     try {
       const response = await axios.get(`/api/trusts/${id}`);
       setTrust(response.data.trust);
@@ -40,7 +36,11 @@ const TrustDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchTrustDetails();
+  }, [fetchTrustDetails]);
 
   const handleAddBeneficiary = async (e) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
@@ -16,24 +16,27 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
-  // Set up axios defaults
-  useEffect(() => {
-    if (token) {
-      fetchUserProfile();
-    }
-  }, [token, fetchUserProfile]);
-
-  const fetchUserProfile = async () => {
+  const fetchUserProfile = useCallback(async () => {
     try {
       const response = await axios.get('/api/auth/profile');
       setUser(response.data.user);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } catch (error) {
-      console.error('Failed to fetch user profile:', error);
-      logout();
+      console.error('Error fetching user profile:', error);
+      setToken(null);
+      localStorage.removeItem('token');
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      fetchUserProfile();
+    } else {
+      setLoading(false);
+    }
+  }, [token, fetchUserProfile]);
 
   const login = async (email, password) => {
     try {
