@@ -55,7 +55,7 @@ const Register = () => {
       
       if (result.success) {
         toast.success('Account created successfully!');
-        navigate('/');
+        navigate('/dashboard');
       } else {
         toast.error(result.error);
       }
