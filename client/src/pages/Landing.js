@@ -190,27 +190,27 @@ const Landing = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-40 pb-32 px-8 relative">
+      <section className="pt-44 pb-36 px-8 relative">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className={`text-7xl md:text-8xl font-light text-gray-900 mb-12 leading-tight fade-in-up stagger-1`}>
+          <h1 className={`text-7xl md:text-8xl font-light text-gray-900 mb-16 leading-tight fade-in-up stagger-1`}>
             <span className={`bg-gradient-to-r ${companies[currentCompanyIndex].color} bg-clip-text text-transparent font-semibold transition-all duration-1000 company-underline`}>
               {companies[currentCompanyIndex].name}
             </span> for Inheritance Rails
           </h1>
-          <p className={`text-2xl md:text-3xl font-light text-gray-600 mb-16 leading-relaxed max-w-5xl mx-auto fade-in-up stagger-2`}>
+          <p className={`text-2xl md:text-3xl font-light text-gray-600 mb-20 leading-relaxed max-w-5xl mx-auto fade-in-up stagger-2`}>
             Transform wealth transfer visions into concrete payment rails. Make inheritance and trust management as seamless as online payments.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center fade-in-up stagger-3`}>
+          <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center fade-in-up stagger-3`}>
             <Link 
               to="/register" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-4 rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 group border-0 min-w-[200px] text-center"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-12 py-5 rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 group border-0 min-w-[220px] text-center flex items-center justify-center"
             >
               <Zap className="mr-3 h-6 w-6" />
               Start Building Trusts
               <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
             </Link>
-            <button className="border-2 border-gray-300 text-gray-700 px-10 py-4 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white min-w-[200px] text-center">
+            <button className="border-2 border-gray-300 text-gray-700 px-12 py-5 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white min-w-[220px] text-center flex items-center justify-center">
               Watch Demo
             </button>
           </div>
@@ -218,17 +218,17 @@ const Landing = () => {
       </section>
 
       {/* Premium Features Grid */}
-      <section className="py-32 px-8 bg-gradient-to-b from-white to-gray-50/30">
+      <section className="py-36 px-8 bg-gradient-to-b from-white to-gray-50/30">
         <div className="max-w-7xl mx-auto">
-          <h2 className={`text-5xl md:text-6xl font-light text-center text-gray-900 mb-24 fade-in-up stagger-1`}>
+          <h2 className={`text-5xl md:text-6xl font-light text-center text-gray-900 mb-28 fade-in-up stagger-1`}>
             Everything you need to manage wealth transfers
           </h2>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
             {/* Trust Management */}
-            <div className={`p-10 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-2`}>
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg">
-                <Building2 className="h-10 w-10 text-blue-600" />
+            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-2 group`}>
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <Building2 className="h-12 w-12 text-blue-600" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Trust Account Management</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
@@ -237,9 +237,9 @@ const Landing = () => {
             </div>
 
             {/* Beneficiary Management */}
-            <div className={`p-10 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-3`}>
-              <div className="w-20 h-20 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg">
-                <Users className="h-10 w-10 text-emerald-600" />
+            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-3 group`}>
+              <div className="w-24 h-24 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <Users className="h-12 w-12 text-emerald-600" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Beneficiary Management</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
@@ -248,9 +248,9 @@ const Landing = () => {
             </div>
 
             {/* Secure Transfers */}
-            <div className={`p-10 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-4`}>
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg">
-                <ArrowUpRight className="h-10 w-10 text-purple-600" />
+            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-4 group`}>
+              <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-purple-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <ArrowUpRight className="h-12 w-12 text-purple-600" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Secure Wealth Transfers</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
@@ -259,9 +259,9 @@ const Landing = () => {
             </div>
 
             {/* Compliance Engine */}
-            <div className={`p-10 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-5`}>
-              <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-orange-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg">
-                <Shield className="h-10 w-10 text-orange-600" />
+            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-5 group`}>
+              <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <Shield className="h-12 w-12 text-orange-600" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Built-in Compliance</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
@@ -270,9 +270,9 @@ const Landing = () => {
             </div>
 
             {/* Multi-Currency */}
-            <div className={`p-10 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-1`}>
-              <div className="w-20 h-20 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg">
-                <Globe className="h-10 w-10 text-indigo-600" />
+            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-1 group`}>
+              <div className="w-24 h-24 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <Globe className="h-12 w-12 text-indigo-600" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Multi-Currency Support</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
@@ -281,9 +281,9 @@ const Landing = () => {
             </div>
 
             {/* Audit Trail */}
-            <div className={`p-10 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-2`}>
-              <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-red-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg">
-                <Lock className="h-10 w-10 text-red-600" />
+            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-2 group`}>
+              <div className="w-24 h-24 bg-gradient-to-br from-red-100 to-red-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <Lock className="h-12 w-12 text-red-600" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Complete Audit Trail</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
@@ -295,16 +295,16 @@ const Landing = () => {
       </section>
 
       {/* Premium How It Works */}
-      <section className="py-32 px-8 bg-white">
+      <section className="py-36 px-8 bg-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-24 fade-in-up stagger-1`}>
+          <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-28 fade-in-up stagger-1`}>
             How TrustStack Works
           </h2>
           
-          <div className="grid md:grid-cols-3 gap-16">
-            <div className={`text-center fade-in-up stagger-2`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
-                <span className="text-white text-3xl font-light">1</span>
+          <div className="grid md:grid-cols-3 gap-20">
+            <div className={`text-center fade-in-up stagger-2 group`}>
+              <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl group-hover:shadow-2xl transition-all duration-300">
+                <span className="text-white text-4xl font-light">1</span>
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Create Trust Account</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
@@ -312,9 +312,9 @@ const Landing = () => {
               </p>
             </div>
             
-            <div className={`text-center fade-in-up stagger-3`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
-                <span className="text-white text-3xl font-light">2</span>
+            <div className={`text-center fade-in-up stagger-3 group`}>
+              <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl group-hover:shadow-2xl transition-all duration-300">
+                <span className="text-white text-4xl font-light">2</span>
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Process Transfers</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
@@ -322,9 +322,9 @@ const Landing = () => {
               </p>
             </div>
             
-            <div className={`text-center fade-in-up stagger-4`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
-                <span className="text-white text-3xl font-light">3</span>
+            <div className={`text-center fade-in-up stagger-4 group`}>
+              <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl group-hover:shadow-2xl transition-all duration-300">
+                <span className="text-white text-4xl font-light">3</span>
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Monitor & Manage</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
@@ -336,19 +336,19 @@ const Landing = () => {
       </section>
 
       {/* Premium Final CTA */}
-      <section className="py-32 px-8 bg-gradient-to-br from-blue-50 to-blue-100 relative overflow-hidden">
+      <section className="py-36 px-8 bg-gradient-to-br from-blue-50 to-blue-100 relative overflow-hidden">
         <div className="absolute inset-0 geometric-bg opacity-50"></div>
         
         <div className="max-w-6xl mx-auto text-center relative z-10">
-          <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-10 fade-in-up stagger-1`}>
+          <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-12 fade-in-up stagger-1`}>
             Ready to transform wealth transfers?
           </h2>
-          <p className={`text-2xl font-light text-gray-600 mb-16 fade-in-up stagger-2`}>
+          <p className={`text-2xl font-light text-gray-600 mb-20 fade-in-up stagger-2`}>
             Join the future of inheritance management with TrustStack
           </p>
           <Link 
             to="/register" 
-            className={`inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-medium text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0`}
+            className={`inline-flex items-center px-16 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0`}
           >
             <Sparkles className="mr-4 h-6 w-6" />
             Get Started Free
@@ -358,16 +358,16 @@ const Landing = () => {
       </section>
 
       {/* Premium Footer */}
-      <footer className="py-16 px-8 bg-white border-t border-gray-100">
+      <footer className="py-20 px-8 bg-white border-t border-gray-100">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-4 mb-6 md:mb-0">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center">
-                <Building2 className="h-6 w-6 text-white" />
+            <div className="flex items-center space-x-4 mb-8 md:mb-0">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Building2 className="h-7 w-7 text-white" />
               </div>
-              <span className="text-xl font-light text-gray-600">TrustStack</span>
+              <span className="text-2xl font-light text-gray-600">TrustStack</span>
             </div>
-            <div className="text-sm font-light text-gray-500">
+            <div className="text-base font-light text-gray-500">
               © 2024 TrustStack. All rights reserved.
             </div>
           </div>
