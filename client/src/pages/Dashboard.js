@@ -162,14 +162,14 @@ const Dashboard = () => {
             <h2 className="text-lg font-medium text-gray-900">Quick Actions</h2>
           </div>
           <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
               <Link
                 to="/trusts"
                 className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors duration-200"
               >
-                <Plus className="h-6 w-6 text-blue-600 mr-3" />
+                <Building2 className="h-6 w-6 text-blue-600 mr-3" />
                 <div>
-                  <h3 className="font-medium text-gray-900">Create Trust</h3>
+                  <h3 className="font-medium text-gray-900">Create Trust Account</h3>
                   <p className="text-sm text-gray-600">Set up a new trust account</p>
                 </div>
                 <ArrowUpRight className="h-5 w-5 text-gray-400 ml-auto" />

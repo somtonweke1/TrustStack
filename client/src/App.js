@@ -1,7 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { Toaster } from 'react-hot-toast';
+
+// Pages
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -12,7 +15,7 @@ import Layout from './components/Layout';
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { user, loading } = useAuth();
   
   if (loading) {
     return (
@@ -22,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
     );
   }
   
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/login" />;
 };
 
 function App() {
@@ -43,11 +46,12 @@ function App() {
           
           <Routes>
             {/* Public routes */}
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             
             {/* Protected routes */}
-            <Route path="/" element={
+            <Route path="/dashboard" element={
               <ProtectedRoute>
                 <Layout>
                   <Dashboard />
