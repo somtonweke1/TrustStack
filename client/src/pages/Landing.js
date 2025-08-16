@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Building2, 
@@ -12,12 +12,6 @@ import {
 } from 'lucide-react';
 
 const Landing = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
   return (
     <div className="min-h-screen bg-white font-sans antialiased">
       {/* CSS Variables for Theming */}
