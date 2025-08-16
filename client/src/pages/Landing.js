@@ -186,7 +186,7 @@ const Landing = () => {
       <section className="pt-40 pb-32 px-8 relative">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className={`text-7xl md:text-8xl font-light text-gray-900 mb-12 leading-tight fade-in-up stagger-1`}>
-            <span className={`bg-gradient-to-r ${companies[currentCompanyIndex].color} bg-clip-text text-transparent font-semibold transition-all duration-1000`}>
+            <span className={`bg-gradient-to-r ${companies[currentCompanyIndex].color} bg-clip-text text-transparent font-semibold transition-all duration-1000 underline decoration-4 underline-offset-8`}>
               {companies[currentCompanyIndex].name}
             </span> for Inheritance Rails
           </h1>
