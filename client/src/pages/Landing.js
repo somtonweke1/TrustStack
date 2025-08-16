@@ -390,11 +390,11 @@ const Landing = () => {
             <div>
               <h4 className="font-semibold text-gray-900 mb-4">Product</h4>
               <ul className="space-y-3">
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Trust Management</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Beneficiary Services</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Wealth Transfers</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Compliance Tools</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">API Documentation</a></li>
+                <li><a href="/trust-management" className="text-gray-600 hover:text-blue-600 transition-colors">Trust Management</a></li>
+                <li><a href="/beneficiary-services" className="text-gray-600 hover:text-blue-600 transition-colors">Beneficiary Services</a></li>
+                <li><a href="/wealth-transfers" className="text-gray-600 hover:text-blue-600 transition-colors">Wealth Transfers</a></li>
+                <li><a href="/compliance-tools" className="text-gray-600 hover:text-blue-600 transition-colors">Compliance Tools</a></li>
+                <li><a href="/api-docs" className="text-gray-600 hover:text-blue-600 transition-colors">API Documentation</a></li>
               </ul>
             </div>
 
@@ -402,11 +402,11 @@ const Landing = () => {
             <div>
               <h4 className="font-semibold text-gray-900 mb-4">Company</h4>
               <ul className="space-y-3">
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">About Us</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Careers</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Press</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Partners</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Contact</a></li>
+                <li><a href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">About Us</a></li>
+                <li><a href="/careers" className="text-gray-600 hover:text-blue-600 transition-colors">Careers</a></li>
+                <li><a href="/press" className="text-gray-600 hover:text-blue-600 transition-colors">Press</a></li>
+                <li><a href="/partners" className="text-gray-600 hover:text-blue-600 transition-colors">Partners</a></li>
+                <li><a href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors">Contact</a></li>
               </ul>
             </div>
           </div>
@@ -414,14 +414,14 @@ const Landing = () => {
           {/* Legal Links */}
           <div className="border-t border-gray-200 pt-8 mb-8">
             <div className="flex flex-wrap gap-6 text-sm text-gray-500">
-              <a href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Cookie Policy</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Data Processing Agreement</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Acceptable Use Policy</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Security</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Compliance</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Regulatory Disclosures</a>
+              <a href="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
+              <a href="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</a>
+              <a href="/cookies" className="hover:text-blue-600 transition-colors">Cookie Policy</a>
+              <a href="/dpa" className="hover:text-blue-600 transition-colors">Data Processing Agreement</a>
+              <a href="/aup" className="hover:text-blue-600 transition-colors">Acceptable Use Policy</a>
+              <a href="/security" className="hover:text-blue-600 transition-colors">Security</a>
+              <a href="/compliance" className="hover:text-blue-600 transition-colors">Compliance</a>
+              <a href="/regulatory" className="hover:text-blue-600 transition-colors">Regulatory Disclosures</a>
             </div>
           </div>
 
