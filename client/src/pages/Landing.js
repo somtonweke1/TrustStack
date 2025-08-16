@@ -126,8 +126,9 @@ const Landing = () => {
             <span className="stripe-text">Stripe</span> for Inheritance Rails
           </h1>
           <p className={`text-2xl md:text-3xl font-light text-gray-600 mb-12 leading-relaxed max-w-4xl mx-auto fade-in`} style={{animationDelay: '0.4s'}}>
-            Transform wealth transfer visions into concrete payment rails. 
-            Make inheritance and trust management as seamless as online payments.
+            <span className="text-3xl md:text-4xl font-medium text-gray-800">Transform wealth transfer visions into concrete payment rails.</span>
+            <br />
+            <span className="text-xl md:text-2xl font-light text-gray-600">Make inheritance and trust management as seamless as online payments.</span>
           </p>
           
           <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center fade-in`} style={{animationDelay: '0.6s'}}>
