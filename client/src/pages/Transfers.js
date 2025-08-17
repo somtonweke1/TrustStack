@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import { 
   ArrowUpRight, 
   Calendar,
@@ -8,14 +7,11 @@ import {
   Clock,
   XCircle,
   Building2,
-  User,
-  DollarSign,
-  AlertCircle
+  User
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Transfers = () => {
-  const { user } = useAuth();
   const [transfers, setTransfers] = useState([]);
   const [trusts, setTrusts] = useState([]);
   const [loading, setLoading] = useState(true);

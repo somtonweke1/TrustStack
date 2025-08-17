@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { Plus, Building2, ArrowRight, Users, DollarSign, Calendar, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Building2, Users, DollarSign, Calendar, Trash2, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Trusts = () => {
-  const { user } = useAuth();
   const [trusts, setTrusts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);

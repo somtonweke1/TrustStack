@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { 
@@ -7,11 +7,7 @@ import {
   DollarSign, 
   Plus,
   ArrowUpRight,
-  TrendingUp,
-  Shield,
-  Activity,
-  Calendar,
-  PieChart
+  Activity
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -20,12 +16,7 @@ const Dashboard = () => {
   const [recentTransfers, setRecentTransfers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Load user's actual data from localStorage
-    loadUserData();
-  }, []);
-
-  const loadUserData = () => {
+  const loadUserData = useCallback(() => {
     try {
       // Load trusts from localStorage
       const savedTrusts = JSON.parse(localStorage.getItem('userTrusts') || '[]');
@@ -108,7 +99,11 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.firstName]);
+
+  useEffect(() => {
+    loadUserData();
+  }, [loadUserData]);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
