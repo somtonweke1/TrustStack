@@ -6,7 +6,8 @@ import {
   ArrowUpRight, 
   Menu, 
   X,
-  User
+  User,
+  FileText
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
@@ -17,6 +18,7 @@ const Layout = ({ children }) => {
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     { name: 'Trusts', href: '/trusts', icon: Building2 },
     { name: 'Transfers', href: '/transfers', icon: ArrowUpRight },
+    { name: 'Documents', href: '/documents', icon: FileText },
   ];
 
   const isActive = (path) => location.pathname === path;

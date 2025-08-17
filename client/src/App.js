@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Trusts from './pages/Trusts';
 import TrustDetail from './pages/TrustDetail';
 import Transfers from './pages/Transfers';
+import Documents from './pages/Documents';
 import Layout from './components/Layout';
 
 // Protected route component
@@ -79,6 +80,14 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <Transfers />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/documents" element={
+              <ProtectedRoute>
+                <Layout>
+                  <Documents />
                 </Layout>
               </ProtectedRoute>
             } />
