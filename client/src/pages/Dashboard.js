@@ -205,7 +205,7 @@ const Dashboard = () => {
                 })()}!
               </h1>
               <p className="text-gray-600 mt-2">
-                Your wealth management command center
+                Secure trust management and wealth transfer platform
               </p>
               
               <div className="mt-4 flex items-center space-x-4">
