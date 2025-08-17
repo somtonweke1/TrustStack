@@ -409,6 +409,60 @@ const Dashboard = () => {
           </div>
         )}
 
+        {/* DEBUG SECTION - Show what data exists */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
+          <h3 className="text-lg font-semibold text-yellow-800 mb-4">🔍 DEBUG: Current Data Status</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="bg-white p-4 rounded-lg border border-yellow-200">
+              <h4 className="font-medium text-yellow-800 mb-2">Trusts Data:</h4>
+              <p className="text-sm text-yellow-700">Count: {trusts.length}</p>
+              <p className="text-sm text-yellow-700">Data: {JSON.stringify(trusts.slice(0, 2))}</p>
+            </div>
+            <div className="bg-white p-4 rounded-lg border border-yellow-200">
+              <h4 className="font-medium text-yellow-800 mb-2">Transfers Data:</h4>
+              <p className="text-sm text-yellow-700">Count: {recentTransfers.length}</p>
+              <p className="text-sm text-yellow-700">Data: {JSON.stringify(recentTransfers.slice(0, 2))}</p>
+            </div>
+          </div>
+          
+          <div className="flex flex-wrap gap-4">
+            <button
+              onClick={() => {
+                console.log('🧹 Clearing localStorage...');
+                localStorage.clear();
+                console.log('✅ localStorage cleared');
+                alert('All data cleared! Page will reload...');
+                window.location.reload();
+              }}
+              className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+            >
+              🗑️ FORCE CLEAR ALL DATA
+            </button>
+            
+            <button
+              onClick={() => {
+                console.log('📊 Current localStorage:', localStorage);
+                console.log('📊 Current user:', user);
+                console.log('📊 Current trusts:', trusts);
+                console.log('📊 Current transfers:', recentTransfers);
+                alert('Check browser console for data details!');
+              }}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            >
+              🔍 LOG DATA TO CONSOLE
+            </button>
+            
+            <button
+              onClick={() => {
+                window.location.reload();
+              }}
+              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+            >
+              🔄 RELOAD PAGE
+            </button>
+          </div>
+        </div>
+
         {/* Trust Accounts */}
         <div className="bg-white rounded-xl shadow-lg mb-8 border border-gray-100">
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
