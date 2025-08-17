@@ -211,7 +211,7 @@ const Dashboard = () => {
               <div className="mt-4 flex items-center space-x-4">
                 <div className="bg-white/20 rounded-lg px-4 py-2">
                   <span className="text-sm text-blue-100">Last Login</span>
-                  <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+                  <p className="text-sm text-blue-200">{new Date().toLocaleDateString()}</p>
                 </div>
                 <div className="bg-white/20 rounded-lg px-4 py-2">
                   <span className="text-sm text-blue-100">Platform Status</span>
