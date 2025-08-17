@@ -227,11 +227,11 @@ const Dashboard = () => {
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex flex-col h-full">
               <div className="flex items-center mb-4">
-                <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl">
-                  <Building2 className="h-8 w-8 text-white" />
+                <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg">
+                  <Building2 className="h-6 w-6 text-white" />
                 </div>
-                <div className="ml-4 flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-600 truncate">Trusts</p>
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-600">Trusts</p>
                   <p className="text-3xl font-bold text-gray-900">{stats.totalTrusts}</p>
                 </div>
               </div>
@@ -244,11 +244,11 @@ const Dashboard = () => {
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex flex-col h-full">
               <div className="flex items-center mb-4">
-                <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl">
-                  <DollarSign className="h-8 w-8 text-white" />
+                <div className="p-2 bg-gradient-to-br from-green-500 to-green-600 rounded-lg">
+                  <DollarSign className="h-6 w-6 text-white" />
                 </div>
-                <div className="ml-4 flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-600 truncate">Balance</p>
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-600">Balance</p>
                   <p className="text-3xl font-bold text-gray-900">{formatCurrency(stats.totalBalance)}</p>
                 </div>
               </div>
@@ -261,11 +261,11 @@ const Dashboard = () => {
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex flex-col h-full">
               <div className="flex items-center mb-4">
-                <div className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl">
-                  <Users className="h-8 w-8 text-white" />
+                <div className="p-2 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg">
+                  <Users className="h-6 w-6 text-white" />
                 </div>
-                <div className="ml-4 flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-600 truncate">Beneficiaries</p>
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-600">Beneficiaries</p>
                   <p className="text-3xl font-bold text-gray-900">{stats.totalBeneficiaries}</p>
                 </div>
               </div>
@@ -278,11 +278,11 @@ const Dashboard = () => {
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex flex-col h-full">
               <div className="flex items-center mb-4">
-                <div className="p-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl">
-                  <Activity className="h-8 w-8 text-white" />
+                <div className="p-2 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg">
+                  <Activity className="h-6 w-6 text-white" />
                 </div>
-                <div className="ml-4 flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-600 truncate">Transfers</p>
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-600">Transfers</p>
                   <p className="text-3xl font-bold text-gray-900">{stats.recentTransfers}</p>
                 </div>
               </div>
