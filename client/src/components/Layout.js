@@ -129,7 +129,7 @@ const Layout = ({ children }) => {
       <div className="lg:pl-64">
         {/* Top bar */}
         <div className="sticky top-0 z-40 bg-white border-b border-gray-200">
-          <div className="flex h-16 items-center justify-between px-6">
+          <div className="flex h-16 items-center px-6">
             <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden text-gray-400 hover:text-gray-600"
@@ -137,8 +137,9 @@ const Layout = ({ children }) => {
               <Menu className="h-6 w-6" />
             </button>
             
-            {/* Profile Section - Moved to Right */}
-            <div className="flex items-center space-x-4">
+            {/* Profile Section - Extreme Right */}
+            <div className="flex-1"></div>
+            <div className="flex items-center">
               <div className="relative" ref={profileDropdownRef}>
                 <button
                   onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
