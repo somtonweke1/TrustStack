@@ -208,7 +208,19 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Welcome back, {user?.firstName || user?.email?.split('@')[0] || 'User'}! 🚀
+                Welcome back, {(() => {
+                  // Debug logging
+                  console.log('🔍 Rendering user name:', { user, firstName: user?.firstName, email: user?.email });
+                  
+                  if (user?.firstName) {
+                    return user.firstName;
+                  } else if (user?.email) {
+                    const username = user.email.split('@')[0];
+                    return username.charAt(0).toUpperCase() + username.slice(1);
+                  } else {
+                    return 'User';
+                  }
+                })()}! 🚀
               </h1>
               <p className="text-gray-600 mt-2">
                 Your wealth management command center
@@ -238,6 +250,25 @@ const Dashboard = () => {
             >
               🗑️ Clear All Data
             </button>
+          </div>
+          
+          {/* Debug User Info */}
+          <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h3 className="text-sm font-semibold text-yellow-800 mb-2">🔍 Debug: User Data</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-yellow-700">
+              <div>
+                <strong>User Object:</strong> {user ? '✅ Loaded' : '❌ Not Loaded'}
+              </div>
+              <div>
+                <strong>First Name:</strong> {user?.firstName || 'Not Set'}
+              </div>
+              <div>
+                <strong>Email:</strong> {user?.email || 'Not Set'}
+              </div>
+            </div>
+            <div className="mt-2 text-xs text-yellow-600">
+              <strong>localStorage userData:</strong> {localStorage.getItem('userData') ? '✅ Found' : '❌ Not Found'}
+            </div>
           </div>
         </div>
 
