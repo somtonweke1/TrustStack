@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { 
@@ -22,14 +22,41 @@ const Dashboard = () => {
 
   const loadUserData = useCallback(() => {
     try {
-      // Load actual user data from localStorage
+      // Clear any old dummy data that might exist
       const savedTrusts = JSON.parse(localStorage.getItem('userTrusts') || '[]');
       const savedTransfers = JSON.parse(localStorage.getItem('userTransfers') || '[]');
       
-      setTrusts(savedTrusts);
-      setRecentTransfers(savedTransfers);
+      // Filter out any data that looks like dummy data (created before this session)
+      const currentSessionStart = new Date();
+      currentSessionStart.setHours(0, 0, 0, 0); // Start of today
+      
+      const realTrusts = savedTrusts.filter(trust => {
+        const trustDate = new Date(trust.created_at);
+        return trustDate >= currentSessionStart;
+      });
+      
+      const realTransfers = savedTransfers.filter(transfer => {
+        const transferDate = new Date(transfer.created_at);
+        return transferDate >= currentSessionStart;
+      });
+      
+      // Update localStorage with only real data
+      if (realTrusts.length !== savedTrusts.length) {
+        localStorage.setItem('userTrusts', JSON.stringify(realTrusts));
+      }
+      if (realTransfers.length !== savedTransfers.length) {
+        localStorage.setItem('userTransfers', JSON.stringify(realTransfers));
+      }
+      
+      setTrusts(realTrusts);
+      setRecentTransfers(realTransfers);
     } catch (error) {
       console.error('Error loading user data:', error);
+      // If there's an error, clear everything and start fresh
+      localStorage.removeItem('userTrusts');
+      localStorage.removeItem('userTransfers');
+      setTrusts([]);
+      setRecentTransfers([]);
     } finally {
       setLoading(false);
     }
@@ -112,13 +139,26 @@ const Dashboard = () => {
     }
   };
 
-  // Calculate stats from actual data
-  const stats = {
-    totalTrusts: trusts.length,
-    totalBalance: trusts.reduce((sum, trust) => sum + (trust.balance || 0), 0),
-    totalBeneficiaries: trusts.reduce((sum, trust) => sum + (trust.beneficiaries || 0), 0),
-    recentTransfers: recentTransfers.length
-  };
+  // Calculate real-time stats from actual user data
+  const stats = useMemo(() => {
+    const totalTrusts = trusts.length;
+    const totalBalance = trusts.reduce((sum, trust) => sum + (trust.balance || 0), 0);
+    const totalBeneficiaries = trusts.reduce((sum, trust) => sum + (trust.beneficiaryCount || 0), 0);
+    
+    // Calculate transfers in last 30 days
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const recentTransfers = recentTransfers.filter(transfer => 
+      new Date(transfer.date) >= thirtyDaysAgo
+    ).length;
+    
+    return {
+      totalTrusts,
+      totalBalance,
+      totalBeneficiaries,
+      recentTransfers
+    };
+  }, [trusts, recentTransfers]);
 
   if (loading) {
     return (
@@ -133,22 +173,20 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-8 text-white">
-            <h1 className="text-4xl font-bold mb-2">
-              Welcome back, {user?.firstName || 'User'}! 🚀
-            </h1>
-            <p className="text-blue-100 text-lg">
-              Your wealth management command center
-            </p>
-            <div className="mt-4 flex items-center space-x-4">
-              <div className="bg-white/20 rounded-lg px-4 py-2">
-                <span className="text-sm text-blue-100">Last Login</span>
-                <p className="font-semibold">{new Date().toLocaleDateString()}</p>
-              </div>
-              <div className="bg-white/20 rounded-lg px-4 py-2">
-                <span className="text-sm text-blue-100">Platform Status</span>
-                <p className="font-semibold text-green-300">● Active</p>
-              </div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Welcome back, {user?.firstName || 'User'}! 🚀
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Your wealth management command center
+          </p>
+          <div className="mt-4 flex items-center space-x-4">
+            <div className="bg-white/20 rounded-lg px-4 py-2">
+              <span className="text-sm text-blue-100">Last Login</span>
+              <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+            </div>
+            <div className="bg-white/20 rounded-lg px-4 py-2">
+              <span className="text-sm text-blue-100">Platform Status</span>
+              <p className="font-semibold text-green-300">● Active</p>
             </div>
           </div>
         </div>
