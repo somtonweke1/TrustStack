@@ -203,7 +203,7 @@ const Dashboard = () => {
                   } else {
                     return 'User';
                   }
-                })()}! 🚀
+                })()}!
               </h1>
               <p className="text-gray-600 mt-2">
                 Your wealth management command center
@@ -220,20 +220,6 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            
-            {/* Manual Clear Data Button */}
-            <button
-              onClick={() => {
-                if (window.confirm('Are you sure you want to clear all data? This will reset your dashboard to a clean state.')) {
-                  localStorage.clear();
-                  window.location.reload();
-                }
-              }}
-              className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium border border-red-200"
-              title="Clear all data and reset dashboard"
-            >
-              🗑️ Clear All Data
-            </button>
           </div>
         </div>
 
@@ -320,7 +306,6 @@ const Dashboard = () => {
               </div>
               <div className="ml-4">
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Create Trust</h3>
-                <p className="text-sm text-gray-600">Set up a new trust account</p>
               </div>
             </div>
           </Link>
@@ -335,7 +320,6 @@ const Dashboard = () => {
               </div>
               <div className="ml-4">
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors">Process Transfer</h3>
-                <p className="text-sm text-gray-600">Send wealth to beneficiaries</p>
               </div>
             </div>
           </Link>
@@ -350,7 +334,6 @@ const Dashboard = () => {
               </div>
               <div className="ml-4">
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">Add Beneficiary</h3>
-                <p className="text-sm text-gray-600">Manage trust beneficiaries</p>
               </div>
             </div>
           </Link>
@@ -365,7 +348,6 @@ const Dashboard = () => {
               </div>
               <div className="ml-4">
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">View Reports</h3>
-                <p className="text-sm text-gray-600">Analytics & insights</p>
               </div>
             </div>
           </Link>

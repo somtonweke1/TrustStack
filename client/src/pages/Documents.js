@@ -8,7 +8,6 @@ import {
   Shield,
   Search,
   Filter,
-  FolderOpen,
   Plus
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
