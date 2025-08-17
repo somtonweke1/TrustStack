@@ -231,12 +231,12 @@ const Dashboard = () => {
                   <Building2 className="h-8 w-8 text-white" />
                 </div>
                 <div className="ml-4 flex-1">
-                  <p className="text-sm font-medium text-gray-600">Total Trusts</p>
+                  <p className="text-sm font-medium text-gray-600">Trusts</p>
                   <p className="text-3xl font-bold text-gray-900">{stats.totalTrusts}</p>
                 </div>
               </div>
               <div className="mt-auto">
-                <span className="inline-block px-3 py-1 text-xs text-blue-600 font-medium bg-blue-50 rounded-full">Active accounts</span>
+                <span className="inline-block px-3 py-1 text-xs text-blue-600 font-medium bg-blue-50 rounded-full">Active</span>
               </div>
             </div>
           </div>
@@ -248,12 +248,12 @@ const Dashboard = () => {
                   <DollarSign className="h-8 w-8 text-white" />
                 </div>
                 <div className="ml-4 flex-1">
-                  <p className="text-sm font-medium text-gray-600">Total Balance</p>
+                  <p className="text-sm font-medium text-gray-600">Balance</p>
                   <p className="text-3xl font-bold text-gray-900">{formatCurrency(stats.totalBalance)}</p>
                 </div>
               </div>
               <div className="mt-auto">
-                <span className="inline-block px-3 py-1 text-xs text-green-600 font-medium bg-green-50 rounded-full">Combined value</span>
+                <span className="inline-block px-3 py-1 text-xs text-green-600 font-medium bg-green-50 rounded-full">Value</span>
               </div>
             </div>
           </div>
@@ -270,7 +270,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="mt-auto">
-                <span className="inline-block px-3 py-1 text-xs text-purple-600 font-medium bg-purple-50 rounded-full">Protected by TrustStack</span>
+                <span className="inline-block px-3 py-1 text-xs text-purple-600 font-medium bg-purple-50 rounded-full">Protected</span>
               </div>
             </div>
           </div>
@@ -282,12 +282,12 @@ const Dashboard = () => {
                   <Activity className="h-8 w-8 text-white" />
                 </div>
                 <div className="ml-4 flex-1">
-                  <p className="text-sm font-medium text-gray-600">Recent Transfers</p>
+                  <p className="text-sm font-medium text-gray-600">Transfers</p>
                   <p className="text-3xl font-bold text-gray-900">{stats.recentTransfers}</p>
                 </div>
               </div>
               <div className="mt-auto">
-                <span className="inline-block px-3 py-1 text-xs text-orange-600 font-medium bg-orange-50 rounded-full">Last 30 days</span>
+                <span className="inline-block px-3 py-1 text-xs text-orange-600 font-medium bg-orange-50 rounded-full">Recent</span>
               </div>
             </div>
           </div>
