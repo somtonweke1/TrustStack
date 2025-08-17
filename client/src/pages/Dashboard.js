@@ -22,91 +22,38 @@ const Dashboard = () => {
 
   const loadUserData = useCallback(() => {
     try {
-      // Load trusts from localStorage
+      // Load actual user data from localStorage
       const savedTrusts = JSON.parse(localStorage.getItem('userTrusts') || '[]');
       const savedTransfers = JSON.parse(localStorage.getItem('userTransfers') || '[]');
       
-      // If no trusts exist, create some demo trusts for the user
-      if (savedTrusts.length === 0) {
-        const demoTrusts = [
-          {
-            id: '1',
-            name: `${user?.firstName || 'Family'} Trust Fund`,
-            type: 'Revocable Living Trust',
-            balance: 250000,
-            beneficiaries: 3,
-            status: 'active',
-            created_at: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-            last_activity: new Date().toISOString(),
-            purpose: 'Multi-generational family wealth preservation'
-          },
-          {
-            id: '2',
-            name: `${user?.firstName || 'Education'} Trust`,
-            type: 'Education Trust',
-            balance: 75000,
-            beneficiaries: 2,
-            status: 'active',
-            created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-            last_activity: new Date().toISOString(),
-            purpose: 'Funding for children\'s education expenses'
-          },
-          {
-            id: '3',
-            name: `${user?.firstName || 'Retirement'} Trust`,
-            type: 'Retirement Trust',
-            balance: 500000,
-            beneficiaries: 1,
-            status: 'pending',
-            created_at: new Date().toISOString(),
-            last_activity: new Date().toISOString(),
-            purpose: 'Secure retirement income stream'
-          }
-        ];
-        localStorage.setItem('userTrusts', JSON.stringify(demoTrusts));
-        setTrusts(demoTrusts);
-      } else {
-        setTrusts(savedTrusts);
-      }
-
-      // If no transfers exist, create some demo transfers
-      if (savedTransfers.length === 0) {
-        const demoTransfers = [
-          {
-            id: '1',
-            trustName: 'Family Trust Fund',
-            beneficiaryName: 'John Smith',
-            amount: 5000,
-            type: 'outgoing',
-            status: 'completed',
-            date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-            description: 'Monthly distribution'
-          },
-          {
-            id: '2',
-            trustName: 'Education Trust',
-            beneficiaryName: 'Sarah Johnson',
-            amount: 2500,
-            type: 'outgoing',
-            status: 'pending',
-            date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-            description: 'Tuition payment'
-          }
-        ];
-        localStorage.setItem('userTransfers', JSON.stringify(demoTransfers));
-        setRecentTransfers(demoTransfers);
-      } else {
-        setRecentTransfers(savedTransfers);
-      }
+      setTrusts(savedTrusts);
+      setRecentTransfers(savedTransfers);
     } catch (error) {
       console.error('Error loading user data:', error);
     } finally {
       setLoading(false);
     }
-  }, [user?.firstName]);
+  }, []);
 
   useEffect(() => {
     loadUserData();
+    
+    // Set up real-time data refresh
+    const interval = setInterval(() => {
+      loadUserData();
+    }, 5000); // Refresh every 5 seconds
+    
+    // Listen for storage changes (when data is updated in other components)
+    const handleStorageChange = () => {
+      loadUserData();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, [loadUserData]);
 
   const formatCurrency = (amount) => {
@@ -216,7 +163,7 @@ const Dashboard = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Trusts</p>
                 <p className="text-3xl font-bold text-gray-900">{stats.totalTrusts}</p>
-                <p className="text-xs text-green-600 font-medium">+{Math.floor(Math.random() * 3) + 1} this month</p>
+                <p className="text-xs text-blue-600 font-medium">Active accounts</p>
               </div>
             </div>
           </div>
@@ -229,7 +176,7 @@ const Dashboard = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Balance</p>
                 <p className="text-3xl font-bold text-gray-900">{formatCurrency(stats.totalBalance)}</p>
-                <p className="text-xs text-green-600 font-medium">+{formatCurrency(Math.floor(stats.totalBalance * 0.02))} this month</p>
+                <p className="text-xs text-green-600 font-medium">Combined value</p>
               </div>
             </div>
           </div>
@@ -348,14 +295,14 @@ const Dashboard = () => {
                 <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Building2 className="h-10 w-10 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No trust accounts yet</h3>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">Create your first trust account to start building your wealth preservation strategy.</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Start Building Your Legacy</h3>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">Create your first trust account to begin your wealth preservation journey. TrustStack makes it simple and secure.</p>
                 <Link
                   to="/trusts"
                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105"
                 >
                   <Plus className="mr-2 h-5 w-5" />
-                  Create Trust Account
+                  Create Your First Trust
                 </Link>
               </div>
             ) : (
@@ -386,7 +333,7 @@ const Dashboard = () => {
                       <div className="text-center p-4 bg-gray-50 rounded-lg">
                         <Users className="h-6 w-6 text-gray-400 mx-auto mb-2" />
                         <span className="text-sm text-gray-500">Beneficiaries</span>
-                        <p className="text-lg font-semibold text-gray-900">{trust.beneficiaries}</p>
+                        <p className="text-lg font-semibold text-gray-900">{trust.beneficiaryCount}</p>
                       </div>
                       <div className="text-center p-4 bg-gray-50 rounded-lg">
                         <Building2 className="h-6 w-6 text-gray-400 mx-auto mb-2" />
@@ -440,14 +387,14 @@ const Dashboard = () => {
                 <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Activity className="h-10 w-10 text-green-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No transfers yet</h3>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">Start processing wealth transfers to see your activity history here.</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Ready to Transfer Wealth?</h3>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">Once you create trusts, you can start processing wealth transfers to beneficiaries. Every transfer is secure and tracked.</p>
                 <Link
                   to="/transfers"
                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
                 >
                   <Plus className="mr-2 h-5 w-5" />
-                  Create Transfer
+                  Start Your First Transfer
                 </Link>
               </div>
             ) : (
