@@ -208,7 +208,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Welcome back, {user?.firstName || 'User'}! 🚀
+                Welcome back, {user?.firstName || user?.email?.split('@')[0] || 'User'}! 🚀
               </h1>
               <p className="text-gray-600 mt-2">
                 Your wealth management command center
@@ -244,53 +244,69 @@ const Dashboard = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl">
-                <Building2 className="h-8 w-8 text-white" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl">
+                  <Building2 className="h-8 w-8 text-white" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Trusts</p>
+                  <p className="text-3xl font-bold text-gray-900">{stats.totalTrusts}</p>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Trusts</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.totalTrusts}</p>
-                <p className="text-xs text-blue-600 font-medium">Active accounts</p>
+              <div className="text-right">
+                <p className="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded-full">Active accounts</p>
               </div>
             </div>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl">
-                <DollarSign className="h-8 w-8 text-white" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl">
+                  <DollarSign className="h-8 w-8 text-white" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Balance</p>
+                  <p className="text-3xl font-bold text-gray-900">{formatCurrency(stats.totalBalance)}</p>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Balance</p>
-                <p className="text-3xl font-bold text-gray-900">{formatCurrency(stats.totalBalance)}</p>
-                <p className="text-xs text-green-600 font-medium">Combined value</p>
+              <div className="text-right">
+                <p className="text-xs text-green-600 font-medium bg-green-50 px-2 py-1 rounded-full">Combined value</p>
               </div>
             </div>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl">
-                <Users className="h-8 w-8 text-white" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl">
+                  <Users className="h-8 w-8 text-white" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Beneficiaries</p>
+                  <p className="text-3xl font-bold text-gray-900">{stats.totalBeneficiaries}</p>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Beneficiaries</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.totalBeneficiaries}</p>
-                <p className="text-xs text-blue-600 font-medium">Protected by TrustStack</p>
+              <div className="text-right">
+                <p className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full">Protected by TrustStack</p>
               </div>
             </div>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl">
-                <Activity className="h-8 w-8 text-white" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="p-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl">
+                  <Activity className="h-8 w-8 text-white" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Recent Transfers</p>
+                  <p className="text-3xl font-bold text-gray-900">{stats.recentTransfers}</p>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Recent Transfers</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.recentTransfers}</p>
-                <p className="text-xs text-orange-600 font-medium">Last 30 days</p>
+              <div className="text-right">
+                <p className="text-xs text-orange-600 font-medium bg-orange-50 px-2 py-1 rounded-full">Last 30 days</p>
               </div>
             </div>
           </div>
