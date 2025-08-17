@@ -11,7 +11,8 @@ import {
   Calendar,
   User,
   CheckCircle,
-  XCircle
+  XCircle,
+  BarChart3
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -22,39 +23,39 @@ const Dashboard = () => {
 
   const loadUserData = useCallback(() => {
     try {
-      // Clear any old dummy data that might exist
+      // Load user data from localStorage
       const savedTrusts = JSON.parse(localStorage.getItem('userTrusts') || '[]');
       const savedTransfers = JSON.parse(localStorage.getItem('userTransfers') || '[]');
       
-      // Filter out any data that looks like dummy data (created before this session)
-      const currentSessionStart = new Date();
-      currentSessionStart.setHours(0, 0, 0, 0); // Start of today
-      
+      // Filter out any obvious dummy data (very old data or data with suspicious patterns)
       const realTrusts = savedTrusts.filter(trust => {
+        // Keep data that's not obviously fake
+        if (!trust.created_at) return true; // Keep data without dates for now
+        
         const trustDate = new Date(trust.created_at);
-        return trustDate >= currentSessionStart;
+        const now = new Date();
+        const daysDiff = (now - trustDate) / (1000 * 60 * 60 * 24);
+        
+        // Remove data older than 30 days (likely old dummy data)
+        return daysDiff <= 30;
       });
       
       const realTransfers = savedTransfers.filter(transfer => {
+        // Keep data that's not obviously fake
+        if (!transfer.created_at) return true; // Keep data without dates for now
+        
         const transferDate = new Date(transfer.created_at);
-        return transferDate >= currentSessionStart;
+        const now = new Date();
+        const daysDiff = (now - transferDate) / (1000 * 60 * 60 * 24);
+        
+        // Remove data older than 30 days (likely old dummy data)
+        return daysDiff <= 30;
       });
-      
-      // Update localStorage with only real data
-      if (realTrusts.length !== savedTrusts.length) {
-        localStorage.setItem('userTrusts', JSON.stringify(realTrusts));
-      }
-      if (realTransfers.length !== savedTransfers.length) {
-        localStorage.setItem('userTransfers', JSON.stringify(realTransfers));
-      }
       
       setTrusts(realTrusts);
       setRecentTransfers(realTransfers);
     } catch (error) {
       console.error('Error loading user data:', error);
-      // If there's an error, clear everything and start fresh
-      localStorage.removeItem('userTrusts');
-      localStorage.removeItem('userTransfers');
       setTrusts([]);
       setRecentTransfers([]);
     } finally {
@@ -247,70 +248,117 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-xl shadow-lg mb-8 border border-gray-100">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
-            <p className="text-sm text-gray-600 mt-1">Get started with common tasks</p>
-          </div>
-          <div className="p-6">
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <Link
-                to="/trusts"
-                className="group flex items-center p-6 border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 hover:shadow-lg"
-              >
-                <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
-                  <Building2 className="h-8 w-8 text-white" />
-                </div>
-                <div className="ml-4 flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Create Trust Account</h3>
-                  <p className="text-gray-600">Set up a new trust account for wealth preservation</p>
-                </div>
-                <ArrowUpRight className="h-6 w-6 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" />
-              </Link>
-
-              <Link
-                to="/transfers"
-                className="group flex items-center p-6 border-2 border-gray-200 rounded-xl hover:border-green-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-300 hover:shadow-lg"
-              >
-                <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
-                  <ArrowUpRight className="h-8 w-8 text-white" />
-                </div>
-                <div className="ml-4 flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors">Process Transfer</h3>
-                  <p className="text-gray-600">Initiate wealth transfer to beneficiaries</p>
-                </div>
-                <ArrowUpRight className="h-6 w-6 text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all duration-300" />
-              </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Link
+            to="/trusts"
+            className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
+          >
+            <div className="flex items-center">
+              <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl group-hover:scale-110 transition-transform">
+                <Plus className="h-8 w-8 text-white" />
+              </div>
+              <div className="ml-4">
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Create Trust</h3>
+                <p className="text-sm text-gray-600">Set up a new trust account</p>
+              </div>
             </div>
-            
-            {/* Additional Quick Actions */}
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Users className="h-6 w-6 text-blue-600" />
-                </div>
-                <h4 className="font-medium text-gray-900">Add Beneficiary</h4>
+          </Link>
+
+          <Link
+            to="/transfers"
+            className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-100 hover:border-green-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
+          >
+            <div className="flex items-center">
+              <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl group-hover:scale-110 transition-transform">
+                <ArrowUpRight className="h-8 w-8 text-white" />
+              </div>
+              <div className="ml-4">
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors">Process Transfer</h3>
+                <p className="text-sm text-gray-600">Send wealth to beneficiaries</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            to="/trusts"
+            className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-100 hover:border-purple-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
+          >
+            <div className="flex items-center">
+              <div className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl group-hover:scale-110 transition-transform">
+                <Users className="h-8 w-8 text-white" />
+              </div>
+              <div className="ml-4">
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">Add Beneficiary</h3>
                 <p className="text-sm text-gray-600">Manage trust beneficiaries</p>
               </div>
-              
-              <div className="text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Activity className="h-6 w-6 text-green-600" />
-                </div>
-                <h4 className="font-medium text-gray-900">View Reports</h4>
+            </div>
+          </Link>
+
+          <Link
+            to="/dashboard"
+            className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-100 hover:border-orange-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
+          >
+            <div className="flex items-center">
+              <div className="p-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl group-hover:scale-110 transition-transform">
+                <BarChart3 className="h-8 w-8 text-white" />
+              </div>
+              <div className="ml-4">
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">View Reports</h3>
                 <p className="text-sm text-gray-600">Analytics & insights</p>
               </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* Testing Guide - Show when no data exists */}
+        {trusts.length === 0 && recentTransfers.length === 0 && (
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 mb-8 border border-blue-200">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BarChart3 className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">🚀 Ready to Test TrustStack?</h3>
+              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                Your dashboard is empty because you haven't created any trusts or transfers yet. Here's how to test the platform:
+              </p>
               
-              <div className="text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Building2 className="h-6 w-6 text-purple-600" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-blue-100">
+                  <div className="text-3xl mb-2">1️⃣</div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Create a Trust</h4>
+                  <p className="text-sm text-gray-600">Go to Trusts page and create your first trust account</p>
                 </div>
-                <h4 className="font-medium text-gray-900">Trust Settings</h4>
-                <p className="text-sm text-gray-600">Configure preferences</p>
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-blue-100">
+                  <div className="text-3xl mb-2">2️⃣</div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Add Beneficiaries</h4>
+                  <p className="text-sm text-gray-600">Add family members or loved ones to your trust</p>
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-blue-100">
+                  <div className="text-3xl mb-2">3️⃣</div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Process Transfers</h4>
+                  <p className="text-sm text-gray-600">Start transferring wealth to see your dashboard come alive</p>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  to="/trusts"
+                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  <Plus className="mr-2 h-5 w-5" />
+                  Create Your First Trust
+                </Link>
+                <Link
+                  to="/transfers"
+                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  <ArrowUpRight className="mr-2 h-5 w-5" />
+                  Start Transferring Wealth
+                </Link>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Trust Accounts */}
         <div className="bg-white rounded-xl shadow-lg mb-8 border border-gray-100">
