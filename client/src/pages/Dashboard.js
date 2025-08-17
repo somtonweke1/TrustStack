@@ -64,19 +64,27 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    // Clear any old dummy data on component mount
-    const clearOldData = () => {
+    // Clear ALL old data on component mount
+    const clearAllOldData = () => {
       try {
-        // Remove any data that looks like old dummy data
+        console.log('🧹 CLEARING ALL OLD DATA...');
+        
+        // Clear all localStorage items that might contain old data
         localStorage.removeItem('userTrusts');
         localStorage.removeItem('userTransfers');
-        console.log('🧹 Cleared old dummy data from localStorage');
+        localStorage.removeItem('demoTrusts');
+        localStorage.removeItem('demoTransfers');
+        localStorage.removeItem('trusts');
+        localStorage.removeItem('transfers');
+        
+        console.log('✅ All old data cleared successfully');
+        
       } catch (error) {
         console.error('Error clearing old data:', error);
       }
     };
     
-    clearOldData();
+    clearAllOldData();
     loadUserData();
     
     // Set up real-time data refresh
@@ -197,21 +205,39 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Welcome back, {user?.firstName || 'User'}! 🚀
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Your wealth management command center
-          </p>
-          <div className="mt-4 flex items-center space-x-4">
-            <div className="bg-white/20 rounded-lg px-4 py-2">
-              <span className="text-sm text-blue-100">Last Login</span>
-              <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Welcome back, {user?.firstName || 'User'}! 🚀
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Your wealth management command center
+              </p>
+              <div className="mt-4 flex items-center space-x-4">
+                <div className="bg-white/20 rounded-lg px-4 py-2">
+                  <span className="text-sm text-blue-100">Last Login</span>
+                  <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+                </div>
+                <div className="bg-white/20 rounded-lg px-4 py-2">
+                  <span className="text-sm text-blue-100">Platform Status</span>
+                  <p className="font-semibold text-green-300">● Active</p>
+                </div>
+              </div>
             </div>
-            <div className="bg-white/20 rounded-lg px-4 py-2">
-              <span className="text-sm text-blue-100">Platform Status</span>
-              <p className="font-semibold text-green-300">● Active</p>
-            </div>
+            
+            {/* Manual Clear Data Button */}
+            <button
+              onClick={() => {
+                if (window.confirm('Are you sure you want to clear all data? This will reset your dashboard to a clean state.')) {
+                  localStorage.clear();
+                  window.location.reload();
+                }
+              }}
+              className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium border border-red-200"
+              title="Clear all data and reset dashboard"
+            >
+              🗑️ Clear All Data
+            </button>
           </div>
         </div>
 
