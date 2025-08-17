@@ -225,6 +225,17 @@ const Dashboard = () => {
               <p className="text-gray-600 mt-2">
                 Your wealth management command center
               </p>
+              
+              {/* TEST INDICATOR - This should be visible if updates are working */}
+              <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg">
+                <p className="text-sm text-red-800 font-medium">
+                  🔴 TEST: If you see this red box, the dashboard updates are working!
+                </p>
+                <p className="text-xs text-red-600 mt-1">
+                  Last updated: {new Date().toLocaleString()}
+                </p>
+              </div>
+              
               <div className="mt-4 flex items-center space-x-4">
                 <div className="bg-white/20 rounded-lg px-4 py-2">
                   <span className="text-sm text-blue-100">Last Login</span>
