@@ -63,21 +63,27 @@ export const AuthProvider = ({ children }) => {
       // Skip API call entirely - use mock login immediately
       console.log('🔄 Using mock login (Vercel API blocked)...');
       
-      // Create mock user for demo
+      // Extract username from email for display
+      const username = email.split('@')[0];
+      const displayName = username.charAt(0).toUpperCase() + username.slice(1);
+      
+      // Create mock user with actual email username
       const mockUser = {
-        id: `demo-${Date.now()}`,
+        id: `user-${Date.now()}`,
         email: email,
-        firstName: 'Demo',
+        firstName: displayName,
         lastName: 'User',
         createdAt: new Date().toISOString()
       };
       
-      const mockToken = `demo-token-${Date.now()}`;
+      const mockToken = `user-token-${Date.now()}`;
       
       setToken(mockToken);
       setUser(mockUser);
       localStorage.setItem('token', mockToken);
-      localStorage.setItem('userData', JSON.stringify(mockUser)); // Save user data to localStorage
+      localStorage.setItem('userData', JSON.stringify(mockUser));
+      
+      console.log('✅ User logged in:', mockUser);
       
       return { success: true, message: 'Login successful!' };
       
