@@ -200,7 +200,7 @@ const Dashboard = () => {
                     const username = user.email.split('@')[0];
                     return username.charAt(0).toUpperCase() + username.slice(1);
                   } else {
-                    return 'User';
+                    return 'there';
                   }
                 })()}!
               </h1>
