@@ -67,8 +67,6 @@ const Dashboard = () => {
     // Clear ALL old data on component mount
     const clearAllOldData = () => {
       try {
-        console.log('🧹 CLEARING ALL OLD DATA...');
-        
         // Clear all localStorage items that might contain old data
         localStorage.removeItem('userTrusts');
         localStorage.removeItem('userTransfers');
@@ -76,8 +74,6 @@ const Dashboard = () => {
         localStorage.removeItem('demoTransfers');
         localStorage.removeItem('trusts');
         localStorage.removeItem('transfers');
-        
-        console.log('✅ All old data cleared successfully');
         
       } catch (error) {
         console.error('Error clearing old data:', error);
@@ -104,14 +100,6 @@ const Dashboard = () => {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, [loadUserData]);
-
-  // Debug: Log user data to see what's available
-  useEffect(() => {
-    console.log('🔍 Current user data:', user);
-    console.log('🔍 User firstName:', user?.firstName);
-    console.log('🔍 User lastName:', user?.lastName);
-    console.log('🔍 User email:', user?.email);
-  }, [user]);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
@@ -182,8 +170,6 @@ const Dashboard = () => {
       new Date(transfer.date) >= thirtyDaysAgo
     ).length;
     
-    console.log('📊 Dashboard stats calculated:', { totalTrusts, totalBalance, totalBeneficiaries, recentTransfersCount });
-    
     return {
       totalTrusts,
       totalBalance,
@@ -209,9 +195,6 @@ const Dashboard = () => {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
                 Welcome back, {(() => {
-                  // Debug logging
-                  console.log('🔍 Rendering user name:', { user, firstName: user?.firstName, email: user?.email });
-                  
                   if (user?.firstName) {
                     return user.firstName;
                   } else if (user?.email) {
@@ -225,16 +208,6 @@ const Dashboard = () => {
               <p className="text-gray-600 mt-2">
                 Your wealth management command center
               </p>
-              
-              {/* TEST INDICATOR - This should be visible if updates are working */}
-              <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg">
-                <p className="text-sm text-red-800 font-medium">
-                  🔴 TEST: If you see this red box, the dashboard updates are working!
-                </p>
-                <p className="text-xs text-red-600 mt-1">
-                  Last updated: {new Date().toLocaleString()}
-                </p>
-              </div>
               
               <div className="mt-4 flex items-center space-x-4">
                 <div className="bg-white/20 rounded-lg px-4 py-2">
@@ -261,25 +234,6 @@ const Dashboard = () => {
             >
               🗑️ Clear All Data
             </button>
-          </div>
-          
-          {/* Debug User Info */}
-          <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <h3 className="text-sm font-semibold text-yellow-800 mb-2">🔍 Debug: User Data</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-yellow-700">
-              <div>
-                <strong>User Object:</strong> {user ? '✅ Loaded' : '❌ Not Loaded'}
-              </div>
-              <div>
-                <strong>First Name:</strong> {user?.firstName || 'Not Set'}
-              </div>
-              <div>
-                <strong>Email:</strong> {user?.email || 'Not Set'}
-              </div>
-            </div>
-            <div className="mt-2 text-xs text-yellow-600">
-              <strong>localStorage userData:</strong> {localStorage.getItem('userData') ? '✅ Found' : '❌ Not Found'}
-            </div>
           </div>
         </div>
 
@@ -466,60 +420,6 @@ const Dashboard = () => {
             </div>
           </div>
         )}
-
-        {/* DEBUG SECTION - Show what data exists */}
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
-          <h3 className="text-lg font-semibold text-yellow-800 mb-4">🔍 DEBUG: Current Data Status</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div className="bg-white p-4 rounded-lg border border-yellow-200">
-              <h4 className="font-medium text-yellow-800 mb-2">Trusts Data:</h4>
-              <p className="text-sm text-yellow-700">Count: {trusts.length}</p>
-              <p className="text-sm text-yellow-700">Data: {JSON.stringify(trusts.slice(0, 2))}</p>
-            </div>
-            <div className="bg-white p-4 rounded-lg border border-yellow-200">
-              <h4 className="font-medium text-yellow-800 mb-2">Transfers Data:</h4>
-              <p className="text-sm text-yellow-700">Count: {recentTransfers.length}</p>
-              <p className="text-sm text-yellow-700">Data: {JSON.stringify(recentTransfers.slice(0, 2))}</p>
-            </div>
-          </div>
-          
-          <div className="flex flex-wrap gap-4">
-            <button
-              onClick={() => {
-                console.log('🧹 Clearing localStorage...');
-                localStorage.clear();
-                console.log('✅ localStorage cleared');
-                alert('All data cleared! Page will reload...');
-                window.location.reload();
-              }}
-              className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-            >
-              🗑️ FORCE CLEAR ALL DATA
-            </button>
-            
-            <button
-              onClick={() => {
-                console.log('📊 Current localStorage:', localStorage);
-                console.log('📊 Current user:', user);
-                console.log('📊 Current trusts:', trusts);
-                console.log('📊 Current transfers:', recentTransfers);
-                alert('Check browser console for data details!');
-              }}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
-              🔍 LOG DATA TO CONSOLE
-            </button>
-            
-            <button
-              onClick={() => {
-                window.location.reload();
-              }}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-            >
-              🔄 RELOAD PAGE
-            </button>
-          </div>
-        </div>
 
         {/* Trust Accounts */}
         <div className="bg-white rounded-xl shadow-lg mb-8 border border-gray-100">
