@@ -64,6 +64,19 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
+    // Clear any old dummy data on component mount
+    const clearOldData = () => {
+      try {
+        // Remove any data that looks like old dummy data
+        localStorage.removeItem('userTrusts');
+        localStorage.removeItem('userTransfers');
+        console.log('🧹 Cleared old dummy data from localStorage');
+      } catch (error) {
+        console.error('Error clearing old data:', error);
+      }
+    };
+    
+    clearOldData();
     loadUserData();
     
     // Set up real-time data refresh
@@ -83,6 +96,14 @@ const Dashboard = () => {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, [loadUserData]);
+
+  // Debug: Log user data to see what's available
+  useEffect(() => {
+    console.log('🔍 Current user data:', user);
+    console.log('🔍 User firstName:', user?.firstName);
+    console.log('🔍 User lastName:', user?.lastName);
+    console.log('🔍 User email:', user?.email);
+  }, [user]);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
@@ -152,6 +173,8 @@ const Dashboard = () => {
     const recentTransfers = recentTransfers.filter(transfer => 
       new Date(transfer.date) >= thirtyDaysAgo
     ).length;
+    
+    console.log('📊 Dashboard stats calculated:', { totalTrusts, totalBalance, totalBeneficiaries, recentTransfers });
     
     return {
       totalTrusts,

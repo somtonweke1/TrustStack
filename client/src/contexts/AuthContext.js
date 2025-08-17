@@ -19,12 +19,24 @@ export const AuthProvider = ({ children }) => {
     try {
       // Since we're using mock authentication, just check if token exists
       if (token) {
-        // Create a mock user profile from the token
+        // Try to get user data from localStorage first (from registration)
+        const savedUserData = localStorage.getItem('userData');
+        if (savedUserData) {
+          try {
+            const userData = JSON.parse(savedUserData);
+            setUser(userData);
+            return;
+          } catch (e) {
+            console.log('Could not parse saved user data, using token-based user');
+          }
+        }
+        
+        // Fallback: Create a mock user profile from the token
         const mockUser = {
           id: token.split('-')[1] || 'user-1',
-          email: 'demo@truststack.com',
-          firstName: 'Demo',
-          lastName: 'User',
+          email: 'user@truststack.com',
+          firstName: 'User',
+          lastName: 'Account',
           isVerified: true
         };
         setUser(mockUser);
@@ -65,6 +77,7 @@ export const AuthProvider = ({ children }) => {
       setToken(mockToken);
       setUser(mockUser);
       localStorage.setItem('token', mockToken);
+      localStorage.setItem('userData', JSON.stringify(mockUser)); // Save user data to localStorage
       
       return { success: true, message: 'Login successful!' };
       
@@ -96,6 +109,7 @@ export const AuthProvider = ({ children }) => {
       setToken(mockToken);
       setUser(mockUser);
       localStorage.setItem('token', mockToken);
+      localStorage.setItem('userData', JSON.stringify(mockUser)); // Save user data to localStorage
       
       return { success: true, message: 'Registration successful!' };
       
@@ -112,6 +126,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setToken(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('userData'); // Clear saved user data on logout
   };
 
   const updateUser = (updatedUser) => {
