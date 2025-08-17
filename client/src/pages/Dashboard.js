@@ -215,7 +215,7 @@ const Dashboard = () => {
                 </div>
                 <div className="bg-white/20 rounded-lg px-4 py-2">
                   <span className="text-sm text-blue-100">Platform Status</span>
-                  <p className="font-semibold text-green-300">● Active</p>
+                  <p className="text-base font-semibold text-green-300">● Active</p>
                 </div>
               </div>
             </div>
