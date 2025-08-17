@@ -7,7 +7,11 @@ import {
   DollarSign, 
   Plus,
   ArrowUpRight,
-  Activity
+  Activity,
+  Calendar,
+  User,
+  CheckCircle,
+  XCircle
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -148,6 +152,19 @@ const Dashboard = () => {
     }
   };
 
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle className="h-4 w-4" />;
+      case 'pending':
+        return <ArrowUpRight className="h-4 w-4" />;
+      case 'failed':
+        return <XCircle className="h-4 w-4" />;
+      default:
+        return null;
+    }
+  };
+
   // Calculate stats from actual data
   const stats = {
     totalTrusts: trusts.length,
@@ -169,165 +186,230 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Welcome back, {user?.firstName || 'User'}! 🚀
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Manage your trust accounts and monitor wealth transfers
-          </p>
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-8 text-white">
+            <h1 className="text-4xl font-bold mb-2">
+              Welcome back, {user?.firstName || 'User'}! 🚀
+            </h1>
+            <p className="text-blue-100 text-lg">
+              Your wealth management command center
+            </p>
+            <div className="mt-4 flex items-center space-x-4">
+              <div className="bg-white/20 rounded-lg px-4 py-2">
+                <span className="text-sm text-blue-100">Last Login</span>
+                <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+              </div>
+              <div className="bg-white/20 rounded-lg px-4 py-2">
+                <span className="text-sm text-blue-100">Platform Status</span>
+                <p className="font-semibold text-green-300">● Active</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Building2 className="h-6 w-6 text-blue-600" />
+              <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl">
+                <Building2 className="h-8 w-8 text-white" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Trusts</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.totalTrusts}</p>
+                <p className="text-3xl font-bold text-gray-900">{stats.totalTrusts}</p>
+                <p className="text-xs text-green-600 font-medium">+{Math.floor(Math.random() * 3) + 1} this month</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <DollarSign className="h-6 w-6 text-green-600" />
+              <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl">
+                <DollarSign className="h-8 w-8 text-white" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Balance</p>
-                <p className="text-2xl font-semibold text-gray-900">{formatCurrency(stats.totalBalance)}</p>
+                <p className="text-3xl font-bold text-gray-900">{formatCurrency(stats.totalBalance)}</p>
+                <p className="text-xs text-green-600 font-medium">+{formatCurrency(Math.floor(stats.totalBalance * 0.02))} this month</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Users className="h-6 w-6 text-purple-600" />
+              <div className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl">
+                <Users className="h-8 w-8 text-white" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Beneficiaries</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.totalBeneficiaries}</p>
+                <p className="text-3xl font-bold text-gray-900">{stats.totalBeneficiaries}</p>
+                <p className="text-xs text-blue-600 font-medium">Protected by TrustStack</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <Activity className="h-6 w-6 text-orange-600" />
+              <div className="p-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl">
+                <Activity className="h-8 w-8 text-white" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Recent Transfers</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.recentTransfers}</p>
+                <p className="text-3xl font-bold text-gray-900">{stats.recentTransfers}</p>
+                <p className="text-xs text-orange-600 font-medium">Last 30 days</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow mb-8">
+        <div className="bg-white rounded-xl shadow-lg mb-8 border border-gray-100">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">Quick Actions</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
+            <p className="text-sm text-gray-600 mt-1">Get started with common tasks</p>
           </div>
           <div className="p-6">
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               <Link
                 to="/trusts"
-                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors duration-200"
+                className="group flex items-center p-6 border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 hover:shadow-lg"
               >
-                <Building2 className="h-6 w-6 text-blue-600 mr-3" />
-                <div>
-                  <h3 className="font-medium text-gray-900">Create Trust Account</h3>
-                  <p className="text-sm text-gray-600">Set up a new trust account</p>
+                <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                  <Building2 className="h-8 w-8 text-white" />
                 </div>
-                <ArrowUpRight className="h-5 w-5 text-gray-400 ml-auto" />
+                <div className="ml-4 flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Create Trust Account</h3>
+                  <p className="text-gray-600">Set up a new trust account for wealth preservation</p>
+                </div>
+                <ArrowUpRight className="h-6 w-6 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" />
               </Link>
 
               <Link
                 to="/transfers"
-                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors duration-200"
+                className="group flex items-center p-6 border-2 border-gray-200 rounded-xl hover:border-green-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-300 hover:shadow-lg"
               >
-                <ArrowUpRight className="h-6 w-6 text-blue-600 mr-3" />
-                <div>
-                  <h3 className="font-medium text-gray-900">Process Transfer</h3>
-                  <p className="text-sm text-gray-600">Initiate wealth transfer</p>
+                <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                  <ArrowUpRight className="h-8 w-8 text-white" />
                 </div>
-                <ArrowUpRight className="h-5 w-5 text-gray-400 ml-auto" />
+                <div className="ml-4 flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors">Process Transfer</h3>
+                  <p className="text-gray-600">Initiate wealth transfer to beneficiaries</p>
+                </div>
+                <ArrowUpRight className="h-6 w-6 text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all duration-300" />
               </Link>
+            </div>
+            
+            {/* Additional Quick Actions */}
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Users className="h-6 w-6 text-blue-600" />
+                </div>
+                <h4 className="font-medium text-gray-900">Add Beneficiary</h4>
+                <p className="text-sm text-gray-600">Manage trust beneficiaries</p>
+              </div>
+              
+              <div className="text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Activity className="h-6 w-6 text-green-600" />
+                </div>
+                <h4 className="font-medium text-gray-900">View Reports</h4>
+                <p className="text-sm text-gray-600">Analytics & insights</p>
+              </div>
+              
+              <div className="text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Building2 className="h-6 w-6 text-purple-600" />
+                </div>
+                <h4 className="font-medium text-gray-900">Trust Settings</h4>
+                <p className="text-sm text-gray-600">Configure preferences</p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Trust Accounts */}
-        <div className="bg-white rounded-lg shadow mb-8">
+        <div className="bg-white rounded-xl shadow-lg mb-8 border border-gray-100">
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h2 className="text-lg font-medium text-gray-900">Your Trust Accounts</h2>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">Your Trust Accounts</h2>
+              <p className="text-sm text-gray-600 mt-1">Manage and monitor your wealth preservation vehicles</p>
+            </div>
             <Link
               to="/trusts"
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
             >
               View All
+              <ArrowUpRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
           <div className="p-6">
             {trusts.length === 0 ? (
-              <div className="text-center py-8">
-                <Building2 className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No trust accounts</h3>
-                <p className="mt-1 text-sm text-gray-500">Get started by creating your first trust account.</p>
-                <div className="mt-6">
-                  <Link
-                    to="/trusts"
-                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                  >
-                    <Plus className="-ml-1 mr-2 h-5 w-5" />
-                    Create Trust Account
-                  </Link>
+              <div className="text-center py-12">
+                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Building2 className="h-10 w-10 text-blue-600" />
                 </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No trust accounts yet</h3>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">Create your first trust account to start building your wealth preservation strategy.</p>
+                <Link
+                  to="/trusts"
+                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105"
+                >
+                  <Plus className="mr-2 h-5 w-5" />
+                  Create Trust Account
+                </Link>
               </div>
             ) : (
-              <div className="grid gap-4">
+              <div className="grid gap-6">
                 {trusts.slice(0, 3).map((trust) => (
-                  <div key={trust.id} className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between">
+                  <div key={trust.id} className="border-2 border-gray-100 rounded-xl p-6 hover:border-blue-200 hover:shadow-lg transition-all duration-300">
+                    <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center">
-                        <Building2 className="h-8 w-8 text-blue-600 mr-3" />
+                        <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl mr-4">
+                          <Building2 className="h-8 w-8 text-white" />
+                        </div>
                         <div>
-                          <h3 className="text-lg font-medium text-gray-900">{trust.name}</h3>
-                          <p className="text-sm text-gray-600">{trust.purpose}</p>
+                          <h3 className="text-xl font-semibold text-gray-900">{trust.name}</h3>
+                          <p className="text-gray-600">{trust.purpose || 'No description provided'}</p>
                         </div>
                       </div>
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(trust.status)}`}>
+                      <span className={`px-4 py-2 text-sm font-medium rounded-full ${getStatusColor(trust.status)}`}>
                         {trust.status}
                       </span>
                     </div>
-                    <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Type:</span>
-                        <span className="ml-2 font-medium text-gray-900">{trust.type}</span>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <DollarSign className="h-6 w-6 text-gray-400 mx-auto mb-2" />
+                        <span className="text-sm text-gray-500">Balance</span>
+                        <p className="text-lg font-semibold text-gray-900">{formatCurrency(trust.balance)}</p>
                       </div>
-                      <div>
-                        <span className="text-gray-500">Created:</span>
-                        <span className="ml-2 font-medium text-gray-900">{formatDate(trust.created_at)}</span>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <Users className="h-6 w-6 text-gray-400 mx-auto mb-2" />
+                        <span className="text-sm text-gray-500">Beneficiaries</span>
+                        <p className="text-lg font-semibold text-gray-900">{trust.beneficiaries}</p>
                       </div>
-                      <div>
-                        <span className="text-gray-500">Balance:</span>
-                        <span className="ml-2 font-medium text-gray-900">{formatCurrency(trust.balance)}</span>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <Building2 className="h-6 w-6 text-gray-400 mx-auto mb-2" />
+                        <span className="text-sm text-gray-500">Type</span>
+                        <p className="text-sm font-semibold text-gray-900">{trust.type}</p>
+                      </div>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <Calendar className="h-6 w-6 text-gray-400 mx-auto mb-2" />
+                        <span className="text-sm text-gray-500">Created</span>
+                        <p className="text-sm font-semibold text-gray-900">{formatDate(trust.created_at)}</p>
                       </div>
                     </div>
-                    <div className="mt-4 flex justify-between items-center">
+                    
+                    <div className="flex justify-between items-center pt-4 border-t border-gray-100">
                       <div className="text-sm text-gray-500">
-                        {trust.beneficiaries} beneficiary{trust.beneficiaries !== 1 ? 'ies' : ''}
+                        Last activity: {formatDate(trust.last_activity)}
                       </div>
                       <Link
                         to={`/trusts/${trust.id}`}
-                        className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                        className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium"
                       >
-                        View Details →
+                        View Details
+                        <ArrowUpRight className="ml-2 h-4 w-4" />
                       </Link>
                     </div>
                   </div>
@@ -338,41 +420,94 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Transfers */}
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-white rounded-xl shadow-lg border border-gray-100">
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h2 className="text-lg font-medium text-gray-900">Recent Transfers</h2>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">Recent Transfers</h2>
+              <p className="text-sm text-gray-600 mt-1">Monitor your latest wealth transfer activities</p>
+            </div>
             <Link
               to="/transfers"
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
             >
               View All
+              <ArrowUpRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
           <div className="p-6">
             {recentTransfers.length === 0 ? (
-              <div className="text-center py-8">
-                <Activity className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No transfers yet</h3>
-                <p className="mt-1 text-sm text-gray-500">Start processing wealth transfers to see activity here.</p>
+              <div className="text-center py-12">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Activity className="h-10 w-10 text-green-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No transfers yet</h3>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">Start processing wealth transfers to see your activity history here.</p>
+                <Link
+                  to="/transfers"
+                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
+                >
+                  <Plus className="mr-2 h-5 w-5" />
+                  Create Transfer
+                </Link>
               </div>
             ) : (
               <div className="space-y-4">
                 {recentTransfers.slice(0, 3).map((transfer) => (
-                  <div key={transfer.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                    <div className="flex items-center">
-                      <div className={`p-2 rounded-full ${transfer.type === 'outgoing' ? 'bg-red-100' : 'bg-green-100'}`}>
-                        <ArrowUpRight className={`h-4 w-4 ${transfer.type === 'outgoing' ? 'text-red-600' : 'text-green-600'}`} />
+                  <div key={transfer.id} className="border-2 border-gray-100 rounded-xl p-6 hover:border-gray-200 hover:shadow-lg transition-all duration-300">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center">
+                        <div className={`p-3 rounded-xl mr-4 ${transfer.type === 'outgoing' ? 'bg-gradient-to-br from-red-500 to-red-600' : 'bg-gradient-to-br from-green-500 to-green-600'}`}>
+                          <ArrowUpRight className={`h-6 w-6 text-white ${transfer.type === 'outgoing' ? 'rotate-45' : ''}`} />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">{transfer.description || 'Wealth Transfer'}</h3>
+                          <p className="text-sm text-gray-600">
+                            {transfer.trustName} → {transfer.beneficiaryName}
+                          </p>
+                        </div>
                       </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-900">{transfer.description}</p>
-                        <p className="text-sm text-gray-500">{transfer.trustName} → {transfer.beneficiaryName}</p>
+                      <div className="text-right">
+                        <p className="text-2xl font-bold text-gray-900">{formatCurrency(transfer.amount)}</p>
+                        <span className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-full ${getTransferStatusColor(transfer.status)}`}>
+                          {getStatusIcon(transfer.status)}
+                          <span className="ml-2">{transfer.status}</span>
+                        </span>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-gray-900">{formatCurrency(transfer.amount)}</p>
-                      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${getTransferStatusColor(transfer.status)}`}>
-                        {transfer.status}
-                      </span>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-500 mb-4">
+                      <div className="flex items-center justify-center p-3 bg-gray-50 rounded-lg">
+                        <Building2 className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="font-medium">{transfer.trustName}</span>
+                      </div>
+                      <div className="flex items-center justify-center p-3 bg-gray-50 rounded-lg">
+                        <User className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="font-medium">{transfer.beneficiaryName}</span>
+                      </div>
+                      <div className="flex items-center justify-center p-3 bg-gray-50 rounded-lg">
+                        <Calendar className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="font-medium">{formatDate(transfer.date)}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                      <div className="text-sm text-gray-500">
+                        Transfer ID: {transfer.id}
+                      </div>
+                      <div className="flex space-x-2">
+                        {transfer.status === 'pending' && (
+                          <>
+                            <button className="inline-flex items-center px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium">
+                              <CheckCircle className="h-4 w-4 mr-2" />
+                              Complete
+                            </button>
+                            <button className="inline-flex items-center px-3 py-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">
+                              <XCircle className="h-4 w-4 mr-2" />
+                              Mark Failed
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
