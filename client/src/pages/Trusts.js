@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { 
   Plus, 
   Building2, 
@@ -12,10 +11,7 @@ import {
   Upload,
   Download,
   Eye,
-  Edit,
-  FolderOpen,
-  Shield,
-  AlertCircle
+  Shield
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 

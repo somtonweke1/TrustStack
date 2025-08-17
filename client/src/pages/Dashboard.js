@@ -178,17 +178,17 @@ const Dashboard = () => {
     // Calculate transfers in last 30 days
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const recentTransfers = recentTransfers.filter(transfer => 
+    const recentTransfersCount = recentTransfers.filter(transfer => 
       new Date(transfer.date) >= thirtyDaysAgo
     ).length;
     
-    console.log('📊 Dashboard stats calculated:', { totalTrusts, totalBalance, totalBeneficiaries, recentTransfers });
+    console.log('📊 Dashboard stats calculated:', { totalTrusts, totalBalance, totalBeneficiaries, recentTransfersCount });
     
     return {
       totalTrusts,
       totalBalance,
       totalBeneficiaries,
-      recentTransfers
+      recentTransfers: recentTransfersCount
     };
   }, [trusts, recentTransfers]);
 
