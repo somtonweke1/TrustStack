@@ -1,18 +1,44 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
-  Home, 
   Building2, 
   ArrowUpRight, 
   Menu, 
   X,
+  FileText,
   User,
-  FileText
+  Settings,
+  LogOut,
+  ChevronDown
 } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const profileDropdownRef = useRef(null);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -109,11 +135,50 @@ const Layout = ({ children }) => {
             >
               <Menu className="h-6 w-6" />
             </button>
+            
+            {/* Profile Section - Moved to Right */}
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
-                  <User className="h-4 w-4 text-white" />
-                </div>
+              <div className="relative" ref={profileDropdownRef}>
+                <button
+                  onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                  className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
+                    <User className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">
+                    {user?.firstName || user?.email?.split('@')[0] || 'Profile'}
+                  </span>
+                  <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${profileDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {/* Profile Dropdown */}
+                {profileDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="text-sm font-medium text-gray-900">
+                        {user?.firstName || user?.email?.split('@')[0] || 'User'}
+                      </p>
+                      <p className="text-xs text-gray-500">{user?.email}</p>
+                    </div>
+                    
+                    <button
+                      onClick={() => setProfileDropdownOpen(false)}
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-2"
+                    >
+                      <Settings className="h-4 w-4" />
+                      <span>Profile Settings</span>
+                    </button>
+                    
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      <span>Log Out</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
