@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import AITrustInsights from '../components/AITrustInsights';
+import { useAuth } from '../contexts/AuthContext';
 import { 
   Building2, 
   Users, 
@@ -11,6 +13,7 @@ import toast from 'react-hot-toast';
 
 const TrustDetail = () => {
   const { id } = useParams();
+  const { token } = useAuth();
   const [trust, setTrust] = useState(null);
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,51 +28,43 @@ const TrustDetail = () => {
   });
 
   const fetchTrustDetails = useCallback(async () => {
-    // Mock data instead of API call
-    const mockTrust = {
-      id: id,
-      name: 'Family Trust Fund',
-      description: 'Multi-generational family wealth preservation',
-      currentBalance: 250000,
-      status: 'active',
-      created_at: '2024-01-15',
-      last_activity: '2024-01-20'
-    };
-    
-    const mockBeneficiaries = [
-      {
-        id: '1',
-        firstName: 'John',
-        lastName: 'Smith',
-        email: 'john@example.com',
-        phone: '+1-555-0123',
-        relationship: 'Son',
-        allocationPercentage: 40
-      },
-      {
-        id: '2',
-        firstName: 'Sarah',
-        lastName: 'Johnson',
-        email: 'sarah@example.com',
-        phone: '+1-555-0124',
-        relationship: 'Daughter',
-        allocationPercentage: 35
-      },
-      {
-        id: '3',
-        firstName: 'Mike',
-        lastName: 'Wilson',
-        email: 'mike@example.com',
-        phone: '+1-555-0125',
-        relationship: 'Nephew',
-        allocationPercentage: 25
+    try {
+      setLoading(true);
+      
+      // Fetch trust details from real API
+      const trustResponse = await fetch(`/api/trusts/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!trustResponse.ok) {
+        throw new Error('Failed to fetch trust details');
       }
-    ];
-    
-    setTrust(mockTrust);
-    setBeneficiaries(mockBeneficiaries);
-    setLoading(false);
-  }, [id]);
+
+      const trustData = await trustResponse.json();
+      setTrust(trustData);
+
+      // Fetch beneficiaries from real API
+      const beneficiariesResponse = await fetch(`/api/trusts/${id}/beneficiaries`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (beneficiariesResponse.ok) {
+        const beneficiariesData = await beneficiariesResponse.json();
+        setBeneficiaries(beneficiariesData);
+      }
+    } catch (error) {
+      console.error('Error fetching trust details:', error);
+      toast.error('Failed to load trust details');
+    } finally {
+      setLoading(false);
+    }
+  }, [id, token]);
 
   useEffect(() => {
     fetchTrustDetails();
@@ -83,24 +78,37 @@ const TrustDetail = () => {
       return;
     }
 
-    // Mock creation instead of API call
-    const newBeneficiary = {
-      id: `beneficiary-${Date.now()}`,
-      ...beneficiaryForm,
-      trustId: id
-    };
-    
-    setBeneficiaries([...beneficiaries, newBeneficiary]);
-    toast.success('Beneficiary added successfully!');
-    setShowAddBeneficiary(false);
-    setBeneficiaryForm({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      relationship: '',
-      allocationPercentage: ''
-    });
+    try {
+      // Create beneficiary through real API
+      const response = await fetch(`/api/trusts/${id}/beneficiaries`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(beneficiaryForm)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create beneficiary');
+      }
+
+      const newBeneficiary = await response.json();
+      setBeneficiaries([...beneficiaries, newBeneficiary]);
+      toast.success('Beneficiary added successfully!');
+      setShowAddBeneficiary(false);
+      setBeneficiaryForm({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        relationship: '',
+        allocationPercentage: ''
+      });
+    } catch (error) {
+      console.error('Error creating beneficiary:', error);
+      toast.error('Failed to create beneficiary');
+    }
   };
 
   const handleChange = (e) => {
@@ -234,6 +242,22 @@ const TrustDetail = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* AI Trust Insights */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">🤖 AI Trust Insights</h2>
+              <p className="text-gray-600">AI-powered analysis and recommendations for this trust</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="px-3 py-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-semibold rounded-full">
+                AI Powered
+              </div>
+            </div>
+          </div>
+          <AITrustInsights trustId={id} />
         </div>
 
         {/* Trust Details */}

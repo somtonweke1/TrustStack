@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import AIDashboard from '../components/AIDashboard';
 import { 
   Building2, 
   Users,
@@ -11,7 +12,10 @@ import {
   ArrowUpRight,
   XCircle,
   Activity,
-  User
+  User,
+  TrendingUp,
+  Brain,
+  Target
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -291,6 +295,22 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* AI Portfolio Insights */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">🤖 AI Portfolio Insights</h2>
+              <p className="text-gray-600">Powered by advanced AI analysis for smarter trust management</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="px-3 py-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-semibold rounded-full">
+                AI Powered
+              </div>
+            </div>
+          </div>
+          <AIDashboard />
         </div>
 
         {/* Trust Accounts */}

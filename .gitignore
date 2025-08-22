@@ -74,6 +74,11 @@ Thumbs.db
 *.sqlite
 *.db
 
+# Private development documents
+ROADMAP.md
+DEMO_SCENARIOS.md
+
 # Stripe test keys (never commit real keys)
 stripe-keys.txt
 .vercel
+.env*.local

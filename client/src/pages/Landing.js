@@ -8,20 +8,24 @@ import {
   ArrowRight,
   Sparkles,
   Zap,
-  Globe,
-  Lock
+  FileText,
+  Lock,
+  BarChart3,
+  CheckCircle,
+  Clock,
+  Target
 } from 'lucide-react';
             
 const Landing = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [currentCompanyIndex, setCurrentCompanyIndex] = useState(0);
+  const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
-  const companies = [
-    { name: 'Stripe', color: 'from-purple-500 to-indigo-600' },
-    { name: 'PayPal', color: 'from-blue-500 to-blue-600' },
-    { name: 'Square', color: 'from-green-500 to-emerald-600' },
-    { name: 'Adyen', color: 'from-orange-500 to-red-600' },
-    { name: 'Plaid', color: 'from-teal-500 to-cyan-600' }
+  const features = [
+    { name: 'Trust Documents', color: 'from-blue-500 to-blue-600' },
+    { name: 'Client Management', color: 'from-green-500 to-emerald-600' },
+    { name: 'Professional Tools', color: 'from-purple-500 to-indigo-600' },
+    { name: 'Legal Compliance', color: 'from-orange-500 to-red-600' },
+    { name: 'Business Growth', color: 'from-teal-500 to-cyan-600' }
   ];
 
   useEffect(() => {
@@ -29,17 +33,17 @@ const Landing = () => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
-    const companyInterval = setInterval(() => {
-      setCurrentCompanyIndex((prev) => (prev + 1) % companies.length);
+    const featureInterval = setInterval(() => {
+      setCurrentFeatureIndex((prev) => (prev + 1) % features.length);
     }, 3000);
 
     window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      clearInterval(companyInterval);
+      clearInterval(featureInterval);
     };
-  }, [companies.length]);
+  }, [features.length]);
 
   return (
     <div className="min-h-screen bg-white font-sans antialiased overflow-hidden">
@@ -122,7 +126,7 @@ const Landing = () => {
           letter-spacing: -0.03em;
         }
         
-        .company-underline {
+        .feature-underline {
           text-decoration: underline;
           text-decoration-thickness: 4px;
           text-underline-offset: 8px;
@@ -182,7 +186,7 @@ const Landing = () => {
                 to="/register" 
                 className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 min-w-[120px] text-center"
               >
-                Get Started
+                Start Free Trial
               </Link>
             </div>
           </div>
@@ -193,12 +197,12 @@ const Landing = () => {
       <section className="pt-44 pb-36 px-8 relative">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className={`text-7xl md:text-8xl font-light text-gray-900 mb-16 leading-tight fade-in-up stagger-1`}>
-            <span className={`bg-gradient-to-r ${companies[currentCompanyIndex].color} bg-clip-text text-transparent font-semibold transition-all duration-1000 company-underline`}>
-              {companies[currentCompanyIndex].name}
-            </span> for Inheritance Rails
+            <span className={`bg-gradient-to-r ${features[currentFeatureIndex].color} bg-clip-text text-transparent font-semibold transition-all duration-1000 feature-underline`}>
+              QuickBooks
+            </span> for Trust Management
           </h1>
           <p className={`text-2xl md:text-3xl font-light text-gray-600 mb-20 leading-relaxed max-w-5xl mx-auto fade-in-up stagger-2`}>
-            Transform wealth transfer visions into concrete payment rails. Make inheritance and trust management as seamless as online payments.
+            The first comprehensive SaaS platform that lets financial advisors generate legally compliant trust documents in minutes while managing their entire client portfolio through professional tools.
           </p>
           
           <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center fade-in-up stagger-3`}>
@@ -207,11 +211,11 @@ const Landing = () => {
               className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-12 py-5 rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 group border-0 min-w-[240px] text-center flex items-center justify-center"
             >
               <Zap className="mr-3 h-6 w-6" />
-              Start Building Trusts
+              Start Free Trial
               <ArrowRight className="ml-3 h-6 w-6 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-80" />
             </Link>
             <button className="border-2 border-gray-300 text-gray-700 px-12 py-5 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white min-w-[240px] text-center flex items-center justify-center shadow-md hover:shadow-lg border border-gray-200 hover:border-gray-300">
-              Watch Demo
+              Book Demo
             </button>
           </div>
         </div>
@@ -221,73 +225,117 @@ const Landing = () => {
       <section className="py-36 px-8 bg-gradient-to-b from-white to-gray-50/30">
         <div className="max-w-7xl mx-auto">
           <h2 className={`text-5xl md:text-6xl font-light text-center text-gray-900 mb-28 fade-in-up stagger-1`}>
-            Everything you need to manage wealth transfers
+            Everything you need to grow your trust practice
           </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {/* Trust Management */}
+            {/* Trust Document Generator */}
             <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-2 group`}>
               <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <Building2 className="h-12 w-12 text-blue-600" />
+                <FileText className="h-12 w-12 text-blue-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Trust Account Management</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Trust Document Generator</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Create, manage, and monitor trust accounts with full compliance tracking and real-time updates.
+                Create legally compliant trust documents in minutes, not weeks, with our AI-powered templates and compliance checks.
               </p>
             </div>
 
-            {/* Beneficiary Management */}
+            {/* Client Management Portal */}
             <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-3 group`}>
               <div className="w-24 h-24 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
                 <Users className="h-12 w-12 text-emerald-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Beneficiary Management</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Client Management Portal</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Add, manage, and allocate assets to beneficiaries with precise control and transparency.
+                Manage your entire client portfolio with professional tools, automated workflows, and real-time updates.
               </p>
             </div>
 
-            {/* Secure Transfers */}
+            {/* Professional Dashboard */}
             <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-4 group`}>
               <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-purple-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <ArrowUpRight className="h-12 w-12 text-purple-600" />
+                <BarChart3 className="h-12 w-12 text-purple-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Secure Wealth Transfers</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Professional Dashboard</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Process inheritance transfers with bank-grade security and real-time payment processing.
+                Track your business performance with comprehensive analytics, revenue insights, and growth metrics.
               </p>
             </div>
 
-            {/* Compliance Engine */}
+            {/* Built-in Compliance */}
             <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-5 group`}>
               <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
                 <Shield className="h-12 w-12 text-orange-600" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Built-in Compliance</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Automated regulatory compliance with KYC, AML, and audit trail requirements built-in.
+                Automated regulatory compliance with built-in legal checks, audit trails, and professional standards.
               </p>
             </div>
 
-            {/* Multi-Currency */}
+            {/* Time Savings */}
             <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-1 group`}>
               <div className="w-24 h-24 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <Globe className="h-12 w-12 text-indigo-600" />
+                <Clock className="h-12 w-12 text-indigo-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Multi-Currency Support</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Save 20+ Hours Per Document</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Handle international wealth transfers with support for multiple currencies and exchange rates.
+                Reduce document creation time from weeks to minutes with our streamlined workflow and templates.
               </p>
             </div>
 
-            {/* Audit Trail */}
+            {/* Business Growth */}
             <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-2 group`}>
               <div className="w-24 h-24 bg-gradient-to-br from-red-100 to-red-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <Lock className="h-12 w-12 text-red-600" />
+                <Target className="h-12 w-12 text-red-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Complete Audit Trail</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Scale Your Practice</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Full transaction history, compliance logs, and audit trails for complete transparency.
+                Handle more clients efficiently with automated processes and professional tools that grow with your business.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Target Audience Section */}
+      <section className="py-36 px-8 bg-white">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-16 fade-in-up stagger-1`}>
+            Built for Financial Advisors
+          </h2>
+          <p className={`text-xl font-light text-gray-600 mb-20 max-w-4xl mx-auto fade-in-up stagger-2`}>
+            TrustStack is designed specifically for financial advisors, wealth managers, and estate planners who want to:
+          </p>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+            <div className={`text-center fade-in-up stagger-3 group`}>
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <CheckCircle className="h-10 w-10 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Save Time</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Generate trust documents in minutes instead of weeks
+              </p>
+            </div>
+            
+            <div className={`text-center fade-in-up stagger-4 group`}>
+              <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <Users className="h-10 w-10 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Professional Experience</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Provide clients with Apple-quality tools and interfaces
+              </p>
+            </div>
+            
+            <div className={`text-center fade-in-up stagger-5 group`}>
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <BarChart3 className="h-10 w-10 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Scale Efficiently</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Handle more clients without proportional time increase
               </p>
             </div>
           </div>
@@ -295,7 +343,7 @@ const Landing = () => {
       </section>
 
       {/* Premium How It Works */}
-      <section className="py-36 px-8 bg-white">
+      <section className="py-36 px-8 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-28 fade-in-up stagger-1`}>
             How TrustStack Works
@@ -306,9 +354,9 @@ const Landing = () => {
               <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <span className="text-white text-4xl font-light">1</span>
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Create Trust Account</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Generate Documents</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Set up your trust with beneficiary details and funding allocation
+                Create professional trust documents with our AI-powered templates
               </p>
             </div>
             
@@ -316,9 +364,9 @@ const Landing = () => {
               <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <span className="text-white text-4xl font-light">2</span>
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Process Transfers</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Manage Clients</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Initiate secure wealth transfers with built-in compliance checks
+                Organize your client portfolio with our comprehensive management tools
               </p>
             </div>
             
@@ -326,9 +374,9 @@ const Landing = () => {
               <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <span className="text-white text-4xl font-light">3</span>
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Monitor & Manage</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Grow Your Practice</h3>
               <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Track all activities with real-time updates and comprehensive reporting
+                Track performance and scale your business with professional insights
               </p>
             </div>
           </div>
@@ -341,17 +389,17 @@ const Landing = () => {
         
         <div className="max-w-6xl mx-auto text-center relative z-10">
           <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-12 fade-in-up stagger-1`}>
-            Ready to transform wealth transfers?
+            Ready to transform your practice?
           </h2>
           <p className={`text-2xl font-light text-gray-600 mb-20 fade-in-up stagger-2`}>
-            Join the future of inheritance management with TrustStack
+            Join thousands of financial advisors using TrustStack to grow their business
           </p>
           <Link 
             to="/register" 
             className={`inline-flex items-center px-16 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0 min-w-[280px] justify-center group`}
           >
             <Sparkles className="mr-4 h-6 w-6" />
-            Get Started Free
+            Start Free Trial
             <ArrowRight className="ml-4 h-6 w-6 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-80" />
           </Link>
         </div>
@@ -371,17 +419,17 @@ const Landing = () => {
                 <span className="text-2xl font-light text-gray-600">TrustStack</span>
               </div>
               <p className="text-gray-600 mb-6 max-w-md">
-                Transform wealth transfer visions into concrete payment rails. Making inheritance and trust management as seamless as online payments.
+                The complete trust management platform for financial advisors. Generate documents, manage clients, and grow your practice with professional tools.
               </p>
               <div className="flex space-x-4">
                 <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600 font-medium">FDIC</span>
+                  <span className="text-gray-600 font-medium text-xs">SOC2</span>
                 </div>
                 <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600 font-medium">SOC2</span>
+                  <span className="text-gray-600 font-medium text-xs">GDPR</span>
                 </div>
                 <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600 font-medium">PCI</span>
+                  <span className="text-gray-600 font-medium text-xs">HIPAA</span>
                 </div>
               </div>
             </div>
@@ -390,9 +438,9 @@ const Landing = () => {
             <div>
               <h4 className="font-semibold text-gray-900 mb-4">Product</h4>
               <ul className="space-y-3">
-                <li><a href="/trust-management" className="text-gray-600 hover:text-blue-600 transition-colors">Trust Management</a></li>
-                <li><a href="/beneficiary-services" className="text-gray-600 hover:text-blue-600 transition-colors">Beneficiary Services</a></li>
-                <li><a href="/wealth-transfers" className="text-gray-600 hover:text-blue-600 transition-colors">Wealth Transfers</a></li>
+                <li><a href="/trust-documents" className="text-gray-600 hover:text-blue-600 transition-colors">Trust Document Generator</a></li>
+                <li><a href="/client-management" className="text-gray-600 hover:text-blue-600 transition-colors">Client Management</a></li>
+                <li><a href="/professional-dashboard" className="text-gray-600 hover:text-blue-600 transition-colors">Professional Dashboard</a></li>
                 <li><a href="/compliance-tools" className="text-gray-600 hover:text-blue-600 transition-colors">Compliance Tools</a></li>
                 <li><a href="/api-docs" className="text-gray-600 hover:text-blue-600 transition-colors">API Documentation</a></li>
               </ul>
@@ -432,7 +480,7 @@ const Landing = () => {
                 © 2025 TrustStack. All rights reserved.
               </div>
               <div className="text-sm text-gray-500">
-                TrustStack is a financial technology company, not a bank. Banking services provided by our partner banks, Members FDIC.
+                TrustStack is a B2B SaaS platform for financial advisors. Not a bank or financial institution.
               </div>
             </div>
           </div>

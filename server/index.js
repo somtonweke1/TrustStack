@@ -60,6 +60,7 @@ app.use('/api/trusts', require('./routes/trusts'));
 app.use('/api/beneficiaries', require('./routes/beneficiaries'));
 app.use('/api/transfers', require('./routes/transfers'));
 app.use('/api/webhooks', require('./routes/webhooks'));
+app.use('/api/ai', require('./routes/ai-insights'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

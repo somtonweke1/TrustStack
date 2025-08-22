@@ -6,23 +6,28 @@ let pool = null;
 
 // Try to create real database connection
 try {
-  pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-    max: 20,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
-  });
+  if (process.env.DATABASE_URL) {
+    pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    });
 
-  // Test the connection
-  pool.query('SELECT NOW()', (err) => {
-    if (err) {
-      console.log('⚠️ Real database connection failed, using mock database');
-      pool = null;
-    } else {
-      console.log('✅ Connected to real PostgreSQL database');
-    }
-  });
+    // Test the connection
+    pool.query('SELECT NOW()', (err) => {
+      if (err) {
+        console.log('⚠️ Real database connection failed, using mock database');
+        pool = null;
+      } else {
+        console.log('✅ Connected to real PostgreSQL database');
+      }
+    });
+  } else {
+    console.log('⚠️ No DATABASE_URL provided, using mock database');
+    pool = null;
+  }
 } catch (error) {
   console.log('⚠️ Database configuration error, using mock database');
   pool = null;

@@ -12,7 +12,14 @@ import Trusts from './pages/Trusts';
 import TrustDetail from './pages/TrustDetail';
 import Transfers from './pages/Transfers';
 import Documents from './pages/Documents';
+import AIInsights from './pages/AIInsights';
 import Layout from './components/Layout';
+
+// Professional B2B SaaS components
+import SubscriptionPlans from './components/SubscriptionPlans';
+import TrustDocumentGenerator from './components/TrustDocumentGenerator';
+import ClientManagementPortal from './components/ClientManagementPortal';
+import ProfessionalDashboard from './components/ProfessionalDashboard';
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
@@ -88,6 +95,47 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <Documents />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/ai-insights" element={
+              <ProtectedRoute>
+                <Layout>
+                  <AIInsights />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            {/* Professional B2B SaaS routes */}
+            <Route path="/pricing" element={
+              <ProtectedRoute>
+                <Layout>
+                  <SubscriptionPlans />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/documents" element={
+              <ProtectedRoute>
+                <Layout>
+                  <TrustDocumentGenerator />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/clients" element={
+              <ProtectedRoute>
+                <Layout>
+                  <ClientManagementPortal />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/professional" element={
+              <ProtectedRoute>
+                <Layout>
+                  <ProfessionalDashboard />
                 </Layout>
               </ProtectedRoute>
             } />
