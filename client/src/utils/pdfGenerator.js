@@ -57,7 +57,7 @@ class PDFGenerator {
     this.addEnhancedFooter(pdf);
     
     // Add professional signature section
-    yPosition = this.addProfessionalSignatureSection(pdf, formData, yPosition);
+    this.addProfessionalSignatureSection(pdf, formData, yPosition);
     
     // Add compliance checklist
     this.addComplianceChecklist(pdf);

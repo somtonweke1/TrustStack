@@ -328,7 +328,7 @@ export const applyAppleTypography = (variant) => {
 };
 
 // Export everything as a single object for easy importing
-export default {
+const appleDesignSystem = {
   colors: AppleColors,
   typography: AppleTypography,
   spacing: AppleSpacing,
@@ -340,3 +340,5 @@ export default {
   applySpacing: applyAppleSpacing,
   applyTypography: applyAppleTypography,
 };
+
+export default appleDesignSystem;

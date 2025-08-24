@@ -1,146 +1,43 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import AIDashboard from '../components/AIDashboard';
 import { 
   Building2, 
+  TrendingUp, 
+  Calculator,
+  FileText,
   Users,
-  DollarSign, 
-  Calendar,
-  PlusIcon,
+  Clock,
+  AlertTriangle,
   CheckCircle,
-  ArrowUpRight,
   XCircle,
-  Activity,
-  User,
-  TrendingUp,
-  Brain,
+  ArrowUpRight,
   Target
 } from 'lucide-react';
 
 const Dashboard = () => {
-  const { user } = useAuth();
-  const [trusts, setTrusts] = useState([]);
-  const [recentTransfers, setRecentTransfers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { user, logout } = useAuth();
+  const [activeTab, setActiveTab] = useState('overview');
 
-  const loadUserData = useCallback(() => {
-    try {
-      // Load user data from localStorage
-      const savedTrusts = JSON.parse(localStorage.getItem('userTrusts') || '[]');
-      const savedTransfers = JSON.parse(localStorage.getItem('userTransfers') || '[]');
-      
-      // Filter out any obvious dummy data (very old data or data with suspicious patterns)
-      const realTrusts = savedTrusts.filter(trust => {
-        // Keep data that's not obviously fake
-        if (!trust.created_at) return true; // Keep data without dates for now
-        
-        const trustDate = new Date(trust.created_at);
-        const now = new Date();
-        const daysDiff = (now - trustDate) / (1000 * 60 * 60 * 24);
-        
-        // Remove data older than 30 days (likely old dummy data)
-        return daysDiff <= 30;
-      });
-      
-      const realTransfers = savedTransfers.filter(transfer => {
-        // Keep data that's not obviously fake
-        if (!transfer.created_at) return true; // Keep data without dates for now
-        
-        const transferDate = new Date(transfer.created_at);
-        const now = new Date();
-        const daysDiff = (now - transferDate) / (1000 * 60 * 60 * 24);
-        
-        // Remove data older than 30 days (likely old dummy data)
-        return daysDiff <= 30;
-      });
-      
-      setTrusts(realTrusts);
-      setRecentTransfers(realTransfers);
-    } catch (error) {
-      console.error('Error loading user data:', error);
-      setTrusts([]);
-      setRecentTransfers([]);
-    } finally {
-      setLoading(false);
+  // Empty state - no hardcoded data
+  const [hasCompletedAssessment, setHasCompletedAssessment] = useState(false);
+  const [transitionData, setTransitionData] = useState(null);
+  
+  useEffect(() => {
+    // Check if user has completed business assessment
+    const assessmentData = localStorage.getItem('businessAssessment');
+    if (assessmentData) {
+      setHasCompletedAssessment(true);
+      setTransitionData(JSON.parse(assessmentData));
     }
   }, []);
 
-  useEffect(() => {
-    // Clear ALL old data on component mount
-    const clearAllOldData = () => {
-      try {
-        // Clear all localStorage items that might contain old data
-        localStorage.removeItem('userTrusts');
-        localStorage.removeItem('userTransfers');
-        localStorage.removeItem('demoTrusts');
-        localStorage.removeItem('demoTransfers');
-        localStorage.removeItem('trusts');
-        localStorage.removeItem('transfers');
-        
-      } catch (error) {
-        console.error('Error clearing old data:', error);
-      }
-    };
-    
-    clearAllOldData();
-    loadUserData();
-    
-    // Set up real-time data refresh
-    const interval = setInterval(() => {
-      loadUserData();
-    }, 5000); // Refresh every 5 seconds
-    
-    // Listen for storage changes (when data is updated in other components)
-    const handleStorageChange = () => {
-      loadUserData();
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, [loadUserData]);
-
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
   const getStatusColor = (status) => {
-    switch (status) {
-      case 'active':
-        return 'text-green-600 bg-green-100';
-      case 'pending':
-        return 'text-yellow-600 bg-yellow-100';
-      case 'suspended':
-        return 'text-red-600 bg-red-100';
-      default:
-        return 'text-gray-600 bg-gray-100';
-    }
-  };
-
-  const getTransferStatusColor = (status) => {
     switch (status) {
       case 'completed':
         return 'text-green-600 bg-green-100';
-      case 'pending':
+      case 'in-progress':
         return 'text-yellow-600 bg-yellow-100';
-      case 'failed':
+      case 'pending':
         return 'text-red-600 bg-red-100';
       default:
         return 'text-gray-600 bg-gray-100';
@@ -150,358 +47,623 @@ const Dashboard = () => {
   const getStatusIcon = (status) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="h-4 w-4" />;
+        return <CheckCircle className="w-4 h-4" />;
+      case 'in-progress':
+        return <Clock className="w-4 h-4" />;
       case 'pending':
-        return <ArrowUpRight className="h-4 w-4" />;
-      case 'failed':
-        return <XCircle className="h-4 w-4" />;
+        return <AlertTriangle className="w-4 h-4" />;
       default:
-        return null;
+        return <XCircle className="w-4 h-4" />;
     }
   };
 
-  // Calculate real-time stats from actual user data
-  const stats = useMemo(() => {
-    const totalTrusts = trusts.length;
-    const totalBalance = trusts.reduce((sum, trust) => sum + (trust.balance || 0), 0);
-    const totalBeneficiaries = trusts.reduce((sum, trust) => sum + (trust.beneficiaryCount || 0), 0);
-    
-    // Calculate transfers in last 30 days
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const recentTransfersCount = recentTransfers.filter(transfer => 
-      new Date(transfer.date) >= thirtyDaysAgo
-    ).length;
-    
-    return {
-      totalTrusts,
-      totalBalance,
-      totalBeneficiaries,
-      recentTransfers: recentTransfersCount
-    };
-  }, [trusts, recentTransfers]);
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const formatDate = (date) => {
+    const now = new Date();
+    const daysDiff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+    
+    if (daysDiff === 0) return 'Today';
+    if (daysDiff === 1) return 'Yesterday';
+    if (daysDiff < 7) return `${daysDiff} days ago`;
+    return date.toLocaleDateString();
+  };
+
+  const getReadinessColor = (score) => {
+    if (score >= 80) return 'text-green-600';
+    if (score >= 60) return 'text-yellow-600';
+    if (score >= 40) return 'text-orange-600';
+    return 'text-red-600';
+  };
+
+  const getReadinessLevel = (score) => {
+    if (score >= 80) return 'Ready';
+    if (score >= 60) return 'Getting There';
+    if (score >= 40) return 'Needs Work';
+    return 'Critical';
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg">
+                <Building2 className="h-6 w-6 text-white" />
+              </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Welcome back, {(() => {
-                  if (user?.firstName) {
-                    return user.firstName;
-                  } else if (user?.email) {
-                    const username = user.email.split('@')[0];
-                    return username.charAt(0).toUpperCase() + username.slice(1);
-                  } else {
-                    return 'there';
-                  }
-                })()}!
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  TrustStack Dashboard
               </h1>
-              <p className="text-gray-600 mt-2">
-                Secure trust management and wealth transfer platform
-              </p>
-              
-              <div className="mt-4 flex items-center space-x-4">
-                <div className="bg-white/20 rounded-lg px-4 py-2">
-                  <span className="text-sm text-blue-100">Last Login</span>
-                  <p className="text-sm text-blue-200">{new Date().toLocaleDateString()}</p>
-                </div>
-                <div className="bg-white/20 rounded-lg px-4 py-2">
-                  <span className="text-sm text-blue-100">Platform Status</span>
-                  <p className="text-base font-semibold text-green-300">● Active</p>
-                </div>
+                <p className="text-sm text-gray-600">
+                  Welcome back, {user?.firstName || 'Business Owner'}
+                </p>
               </div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <button className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors">
+                Help
+              </button>
+              <button
+                onClick={logout}
+                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
+              >
+                Sign Out
+              </button>
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex flex-col h-full">
-              <div className="flex items-center mb-4">
-                <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg">
-                  <Building2 className="h-6 w-6 text-white" />
-                </div>
-                <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-600">Trusts</p>
-                  <p className="text-3xl font-bold text-gray-900">{stats.totalTrusts}</p>
-                </div>
-              </div>
-              <div className="mt-auto">
-                <span className="inline-block px-3 py-1 text-xs text-blue-600 font-medium bg-blue-50 rounded-full">Active</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex flex-col h-full">
-              <div className="flex items-center mb-4">
-                <div className="p-2 bg-gradient-to-br from-green-500 to-green-600 rounded-lg">
-                  <DollarSign className="h-6 w-6 text-white" />
-                </div>
-                <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-600">Balance</p>
-                  <p className="text-3xl font-bold text-gray-900">{formatCurrency(stats.totalBalance)}</p>
-                </div>
-              </div>
-              <div className="mt-auto">
-                <span className="inline-block px-3 py-1 text-xs text-green-600 font-medium bg-green-50 rounded-full">Value</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex flex-col h-full">
-              <div className="flex items-center mb-4">
-                <div className="p-2 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-600">Beneficiaries</p>
-                  <p className="text-3xl font-bold text-gray-900">{stats.totalBeneficiaries}</p>
-                </div>
-              </div>
-              <div className="mt-auto">
-                <span className="inline-block px-3 py-1 text-xs text-purple-600 font-medium bg-purple-50 rounded-full">Protected</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex flex-col h-full">
-              <div className="flex items-center mb-4">
-                <div className="p-2 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg">
-                  <Activity className="h-6 w-6 text-white" />
-                </div>
-                <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-600">Transfers</p>
-                  <p className="text-3xl font-bold text-gray-900">{stats.recentTransfers}</p>
-                </div>
-              </div>
-              <div className="mt-auto">
-                <span className="inline-block px-3 py-1 text-xs text-orange-600 font-medium bg-orange-50 rounded-full">Recent</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* AI Portfolio Insights */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">🤖 AI Portfolio Insights</h2>
-              <p className="text-gray-600">Powered by advanced AI analysis for smarter trust management</p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="px-3 py-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-semibold rounded-full">
-                AI Powered
-              </div>
-            </div>
-          </div>
-          <AIDashboard />
-        </div>
-
-        {/* Trust Accounts */}
-        <div className="bg-white rounded-xl shadow-lg mb-8 border border-gray-100">
-          <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900">Your Trust Accounts</h2>
-              <p className="text-sm text-gray-600 mt-1">Manage and monitor your wealth preservation vehicles</p>
-            </div>
-            <Link
-              to="/trusts"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
-              View All
-              <ArrowUpRight className="ml-2 h-4 w-4" />
-            </Link>
-          </div>
-          <div className="p-6">
-            {trusts.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Building2 className="h-10 w-10 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Start Building Your Legacy</h3>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">Create your first trust account to begin your wealth preservation journey. TrustStack makes it simple and secure.</p>
-                <Link
-                  to="/trusts"
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105"
+      {/* Navigation Tabs */}
+      <nav className="bg-white/80 backdrop-blur-sm border-b border-gray-200 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex space-x-8">
+            {[
+              { id: 'overview', name: 'Overview', icon: Building2 },
+              { id: 'strategy', name: 'Strategy Builder', icon: Calculator },
+              { id: 'documents', name: 'Documents', icon: FileText },
+              { id: 'network', name: 'Professional Network', icon: Users },
+              { id: 'assessment', name: 'Assessment', icon: Target }
+            ].map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? 'border-blue-600 text-blue-600'
+                      : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300'
+                  }`}
                 >
-                  <PlusIcon className="mr-2 h-5 w-5" />
-                  Create Your First Trust
-                </Link>
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'overview' && (
+          <div className="space-y-8">
+            {!hasCompletedAssessment ? (
+              // Empty State - No Assessment Completed
+              <div className="bg-white rounded-xl border border-gray-200 p-12 shadow-xl text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
+                  <FileText className="h-10 w-10 text-white" />
+                </div>
+                <h2 className="text-3xl font-semibold text-gray-900 mb-6">Start Your Business Assessment</h2>
+                <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+                  Take our 15-minute diagnostic to discover your business transition risks and get a personalized readiness score.
+                </p>
+                <button 
+                  onClick={() => setActiveTab('assessment')}
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:from-blue-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg"
+                >
+                  Start Assessment
+                </button>
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Clock className="w-6 h-6 text-green-600" />
+                </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">15 Minutes</h3>
+                    <p className="text-sm text-gray-600">Quick and comprehensive assessment</p>
+              </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Calculator className="w-6 h-6 text-blue-600" />
+              </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Instant Results</h3>
+                    <p className="text-sm text-gray-600">Get your readiness score immediately</p>
+            </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Target className="w-6 h-6 text-purple-600" />
+          </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Personalized Plan</h3>
+                    <p className="text-sm text-gray-600">Custom roadmap for your business</p>
+                </div>
+                </div>
               </div>
             ) : (
-              <div className="grid gap-6">
-                {trusts.slice(0, 3).map((trust) => (
-                  <div key={trust.id} className="border-2 border-gray-100 rounded-xl p-6 hover:border-blue-200 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center">
-                        <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl mr-4">
-                          <Building2 className="h-8 w-8 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold text-gray-900">{trust.name}</h3>
-                          <p className="text-gray-600">{trust.purpose || 'No description provided'}</p>
-                        </div>
-                      </div>
-                      <span className={`px-4 py-2 text-sm font-medium rounded-full ${getStatusColor(trust.status)}`}>
-                        {trust.status}
-                      </span>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-                      <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <DollarSign className="h-6 w-6 text-gray-400 mx-auto mb-2" />
-                        <span className="text-sm text-gray-500">Balance</span>
-                        <p className="text-lg font-semibold text-gray-900">{formatCurrency(trust.balance)}</p>
-                      </div>
-                      <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <Users className="h-6 w-6 text-gray-400 mx-auto mb-2" />
-                        <span className="text-sm text-gray-500">Beneficiaries</span>
-                        <p className="text-lg font-semibold text-gray-900">{trust.beneficiaryCount}</p>
-                      </div>
-                      <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <Building2 className="h-6 w-6 text-gray-400 mx-auto mb-2" />
-                        <span className="text-sm text-gray-500">Type</span>
-                        <p className="text-sm font-semibold text-gray-900">{trust.type}</p>
-                      </div>
-                      <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <Calendar className="h-6 w-6 text-gray-400 mx-auto mb-2" />
-                        <span className="text-sm text-gray-500">Created</span>
-                        <p className="text-sm font-semibold text-gray-900">{formatDate(trust.created_at)}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                      <div className="text-sm text-gray-500">
-                        Last activity: {formatDate(trust.last_activity)}
-                      </div>
-                      <Link
-                        to={`/trusts/${trust.id}`}
-                        className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium"
-                      >
-                        View Details
-                        <ArrowUpRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </div>
+              // Show Assessment Results
+              <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-xl">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-900">Transition Readiness Score</h2>
+                  <span className={`text-3xl font-bold ${getReadinessColor(transitionData?.readinessScore || 0)}`}>
+                    {transitionData?.readinessScore || 0}/100
+                  </span>
+                </div>
+                <div className="mb-4">
+                  <div className="w-full bg-gray-200 rounded-full h-4">
+                    <div 
+                      className={`h-4 rounded-full ${
+                        (transitionData?.readinessScore || 0) >= 80 ? 'bg-gradient-to-r from-green-500 to-green-600' :
+                        (transitionData?.readinessScore || 0) >= 60 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                        (transitionData?.readinessScore || 0) >= 40 ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-red-500 to-red-600'
+                      }`}
+                      style={{ width: `${transitionData?.readinessScore || 0}%` }}
+                    ></div>
                   </div>
-                ))}
+                </div>
+                <p className="text-gray-600">
+                  Status: <span className="font-medium">{getReadinessLevel(transitionData?.readinessScore || 0)}</span>
+                </p>
               </div>
             )}
+
+            {hasCompletedAssessment && transitionData && (
+              /* Key Metrics Grid - Only show if assessment completed */
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Tax Liability</p>
+                      <p className="text-2xl font-bold text-gray-900">{formatCurrency(transitionData.taxLiability || 0)}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-gradient-to-br from-red-100 to-red-200 rounded-xl flex items-center justify-center shadow-md">
+                      <TrendingUp className="h-6 w-6 text-red-600" />
+              </div>
+            </div>
+                  <div className="mt-4">
+                    <span className="text-sm text-red-600 font-medium">{transitionData.taxRisk || 'Unknown'}</span>
           </div>
         </div>
 
-        {/* Recent Transfers */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-100">
-          <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">Recent Transfers</h2>
-              <p className="text-sm text-gray-600 mt-1">Monitor your latest wealth transfer activities</p>
+                      <p className="text-sm font-medium text-gray-600">Liquidity Gap</p>
+                      <p className="text-2xl font-bold text-gray-900">{formatCurrency(transitionData.liquidityGap || 0)}</p>
             </div>
-            <Link
-              to="/transfers"
-              className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-            >
-              View All
-              <ArrowUpRight className="ml-2 h-4 w-4" />
-            </Link>
-          </div>
-          <div className="p-6">
-            {recentTransfers.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Activity className="h-10 w-10 text-green-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Ready to Transfer Wealth?</h3>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">Once you create trusts, you can start processing wealth transfers to beneficiaries. Every transfer is secure and tracked.</p>
-                <Link
-                  to="/transfers"
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
-                >
-                  <PlusIcon className="mr-2 h-5 w-5" />
-                  Start Your First Transfer
-                </Link>
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl flex items-center justify-center shadow-md">
+                      <Calculator className="h-6 w-6 text-orange-600" />
               </div>
-            ) : (
-              <div className="space-y-4">
-                {recentTransfers.slice(0, 3).map((transfer) => (
-                  <div key={transfer.id} className="border-2 border-gray-100 rounded-xl p-6 hover:border-gray-200 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center">
-                        <div className={`p-3 rounded-xl mr-4 ${transfer.type === 'outgoing' ? 'bg-gradient-to-br from-red-500 to-red-600' : 'bg-gradient-to-br from-green-500 to-green-600'}`}>
-                          <ArrowUpRight className={`h-6 w-6 text-white ${transfer.type === 'outgoing' ? 'rotate-45' : ''}`} />
-                        </div>
+            </div>
+                  <div className="mt-4">
+                    <span className="text-sm text-orange-600 font-medium">{transitionData.liquidityRisk || 'Unknown'}</span>
+          </div>
+                </div>
+
+                <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900">{transfer.description || 'Wealth Transfer'}</h3>
-                          <p className="text-sm text-gray-600">
-                            {transfer.trustName} → {transfer.beneficiaryName}
-                          </p>
+                      <p className="text-sm font-medium text-gray-600">Successor Readiness</p>
+                      <p className="text-2xl font-bold text-gray-900">{transitionData.successorReadiness || 0}%</p>
+                        </div>
+                    <div className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-xl flex items-center justify-center shadow-md">
+                      <Users className="h-6 w-6 text-yellow-600" />
+                    </div>
+                      </div>
+                  <div className="mt-4">
+                    <span className="text-sm text-yellow-600 font-medium">{transitionData.successorStatus || 'Unknown'}</span>
+                      </div>
+                    </div>
+                    
+                <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Document Completion</p>
+                      <p className="text-2xl font-bold text-gray-900">{transitionData.documentCompletion || 0}%</p>
+                      </div>
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center shadow-md">
+                      <FileText className="h-6 w-6 text-blue-600" />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <span className="text-sm text-blue-600 font-medium">{transitionData.documentStatus || 'Unknown'}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {hasCompletedAssessment && transitionData?.activities && transitionData.activities.length > 0 && (
+              /* Recent Activities - Only show if assessment completed and activities exist */
+              <div className="bg-white rounded-xl border border-gray-200 shadow-xl">
+                <div className="px-8 py-6 border-b border-gray-200">
+                  <h3 className="text-xl font-semibold text-gray-900">Recent Activities</h3>
+                </div>
+                <div className="divide-y divide-gray-200">
+                  {transitionData.activities.map((activity) => (
+                    <div key={activity.id} className="px-8 py-6 hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${getStatusColor(activity.status).split(' ')[1]} shadow-md`}>
+                            {getStatusIcon(activity.status)}
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-medium text-gray-900">{activity.title}</h4>
+                            <p className="text-sm text-gray-600">{activity.description}</p>
+              </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(activity.status)}`}>
+                            {activity.status.replace('-', ' ')}
+                          </span>
+                          <span className="text-sm text-gray-500">{formatDate(new Date(activity.date))}</span>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-2xl font-bold text-gray-900">{formatCurrency(transfer.amount)}</p>
-                        <span className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-full ${getTransferStatusColor(transfer.status)}`}>
-                          {getStatusIcon(transfer.status)}
-                          <span className="ml-2">{transfer.status}</span>
-                        </span>
-                      </div>
                     </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-500 mb-4">
-                      <div className="flex items-center justify-center p-3 bg-gray-50 rounded-lg">
-                        <Building2 className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="font-medium">{transfer.trustName}</span>
+                  ))}
                       </div>
-                      <div className="flex items-center justify-center p-3 bg-gray-50 rounded-lg">
-                        <User className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="font-medium">{transfer.beneficiaryName}</span>
                       </div>
-                      <div className="flex items-center justify-center p-3 bg-gray-50 rounded-lg">
-                        <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="font-medium">{formatDate(transfer.date)}</span>
+            )}
+
+            {/* Quick Actions - Always show, but change based on assessment status */}
+            <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-xl">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {!hasCompletedAssessment ? (
+                  <>
+                    <button 
+                      onClick={() => setActiveTab('assessment')}
+                      className="flex items-center justify-center space-x-3 p-6 border-2 border-blue-200 bg-blue-50 rounded-xl hover:border-blue-300 hover:bg-blue-100 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+                    >
+                      <FileText className="w-6 h-6 text-blue-600" />
+                      <span className="text-sm font-medium text-gray-900">Start Business Assessment</span>
+                    </button>
+                    <div className="flex items-center justify-center space-x-3 p-6 border-2 border-gray-200 bg-gray-50 rounded-xl opacity-50 cursor-not-allowed shadow-md">
+                      <Calculator className="w-6 h-6 text-gray-400" />
+                      <span className="text-sm font-medium text-gray-500">Strategy Builder (Complete Assessment First)</span>
                       </div>
+                    <div className="flex items-center justify-center space-x-3 p-6 border-2 border-gray-200 bg-gray-50 rounded-xl opacity-50 cursor-not-allowed shadow-md">
+                      <Users className="w-6 h-6 text-gray-400" />
+                      <span className="text-sm font-medium text-gray-500">Professional Network (Complete Assessment First)</span>
                     </div>
-                    
-                    <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                      <div className="text-sm text-gray-500">
-                        Transfer ID: {transfer.id}
-                      </div>
-                      <div className="flex space-x-2">
-                        {transfer.status === 'pending' && (
-                          <>
-                            <button className="inline-flex items-center px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium">
-                              <CheckCircle className="h-4 w-4 mr-2" />
-                              Complete
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      onClick={() => setActiveTab('strategy')}
+                      className="flex items-center justify-center space-x-3 p-6 border-2 border-gray-200 rounded-xl hover:border-green-300 hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+                    >
+                      <Calculator className="w-6 h-6 text-green-600" />
+                      <span className="text-sm font-medium text-gray-900">Build Exit Strategy</span>
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('documents')}
+                      className="flex items-center justify-center space-x-3 p-6 border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+                    >
+                      <FileText className="w-6 h-6 text-blue-600" />
+                      <span className="text-sm font-medium text-gray-900">Generate Documents</span>
                             </button>
-                            <button className="inline-flex items-center px-3 py-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">
-                              <XCircle className="h-4 w-4 mr-2" />
-                              Mark Failed
+                    <button 
+                      onClick={() => setActiveTab('network')}
+                      className="flex items-center justify-center space-x-3 p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+                    >
+                      <Users className="w-6 h-6 text-purple-600" />
+                      <span className="text-sm font-medium text-gray-900">Find Experts</span>
                             </button>
                           </>
                         )}
                       </div>
                     </div>
                   </div>
-                ))}
+        )}
+
+                {activeTab === 'assessment' && (
+          <div className="space-y-8">
+            <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-xl">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Business Assessment</h2>
+              <p className="text-gray-600 mb-8">Take our comprehensive 15-minute assessment to understand your business transition readiness.</p>
+              
+              {/* Assessment Form */}
+              <div className="space-y-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-semibold text-sm">1</span>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900">Business Information</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Annual Revenue</label>
+                      <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Select revenue range</option>
+                        <option value="under-1m">Under $1M</option>
+                        <option value="1m-5m">$1M - $5M</option>
+                        <option value="5m-25m">$5M - $25M</option>
+                        <option value="over-25m">Over $25M</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Business Age</label>
+                      <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Select business age</option>
+                        <option value="under-5">Under 5 years</option>
+                        <option value="5-15">5-15 years</option>
+                        <option value="15-30">15-30 years</option>
+                        <option value="over-30">Over 30 years</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-semibold text-sm">2</span>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900">Succession Planning</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Do you have identified successors?</label>
+                      <div className="space-y-2">
+                        <label className="flex items-center">
+                          <input type="radio" name="successors" value="family" className="mr-3" />
+                          <span>Yes, family members</span>
+                        </label>
+                        <label className="flex items-center">
+                          <input type="radio" name="successors" value="employees" className="mr-3" />
+                          <span>Yes, key employees</span>
+                        </label>
+                        <label className="flex items-center">
+                          <input type="radio" name="successors" value="none" className="mr-3" />
+                          <span>No identified successors</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-semibold text-sm">3</span>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900">Exit Timeline</h3>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">When do you plan to exit?</label>
+                    <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                      <option value="">Select timeline</option>
+                      <option value="1-3">1-3 years</option>
+                      <option value="3-5">3-5 years</option>
+                      <option value="5-10">5-10 years</option>
+                      <option value="uncertain">Uncertain</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex justify-center pt-6">
+                  <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:from-blue-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    Complete Assessment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'strategy' && (
+          <div className="space-y-8">
+            <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-xl">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Strategy Builder</h2>
+              {!hasCompletedAssessment ? (
+                <div className="text-center py-12">
+                  <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Complete Your Assessment First</h3>
+                  <p className="text-gray-600 mb-6">Take the business assessment to unlock personalized exit strategies.</p>
+                  <button 
+                    onClick={() => setActiveTab('assessment')}
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-300"
+                  >
+                    Start Assessment
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <p className="text-gray-600 mb-8">Choose your exit pathway based on your assessment results.</p>
+                  
+                  {/* Three Strategy Paths */}
+                  <div className="grid lg:grid-cols-3 gap-6">
+                    <div className="border border-blue-200 rounded-xl p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <Users className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Family Transfer</h3>
+                      <p className="text-gray-600 mb-4">Keep it in the bloodline with proper governance and training.</p>
+                      <ul className="space-y-2 text-sm text-gray-600">
+                        <li>• Valuation discounts</li>
+                        <li>• Training programs</li>
+                        <li>• Family governance</li>
+                      </ul>
+                    </div>
+
+                    <div className="border border-green-200 rounded-xl p-6 hover:border-green-300 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <TrendingUp className="w-6 h-6 text-green-600" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Strategic Sale</h3>
+                      <p className="text-gray-600 mb-4">Maximize your payday with a third-party acquisition.</p>
+                      <ul className="space-y-2 text-sm text-gray-600">
+                        <li>• Business optimization</li>
+                        <li>• M&A preparation</li>
+                        <li>• Buyer identification</li>
+                      </ul>
+                    </div>
+
+                    <div className="border border-purple-200 rounded-xl p-6 hover:border-purple-300 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <Building2 className="w-6 h-6 text-purple-600" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Employee Buyout</h3>
+                      <p className="text-gray-600 mb-4">Reward loyalty through ESOP or management buyout.</p>
+                      <ul className="space-y-2 text-sm text-gray-600">
+                        <li>• ESOP feasibility</li>
+                        <li>• Employee communication</li>
+                        <li>• Financing structure</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'documents' && (
+          <div className="space-y-8">
+            <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-xl">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Document Suite</h2>
+              {!hasCompletedAssessment ? (
+                <div className="text-center py-12">
+                  <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Complete Your Assessment First</h3>
+                  <p className="text-gray-600 mb-6">Take the business assessment to unlock document generation tools.</p>
+                  <button 
+                    onClick={() => setActiveTab('assessment')}
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-300"
+                  >
+                    Start Assessment
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <p className="text-gray-600 mb-8">Generate essential legal documents for your business transition.</p>
+                  
+                  {/* Document Categories */}
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="border border-gray-200 rounded-xl p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Estate Planning</h3>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <span className="text-gray-700">Business Will</span>
+                          <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">Generate</button>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <span className="text-gray-700">Trust Agreement</span>
+                          <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">Generate</button>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <span className="text-gray-700">Power of Attorney</span>
+                          <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">Generate</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border border-gray-200 rounded-xl p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Business Documents</h3>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <span className="text-gray-700">Buy-Sell Agreement</span>
+                          <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">Generate</button>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <span className="text-gray-700">Succession Plan</span>
+                          <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">Generate</button>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <span className="text-gray-700">Employment Agreement</span>
+                          <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">Generate</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
               </div>
             )}
+            </div>
           </div>
+        )}
+
+        {activeTab === 'network' && (
+          <div className="space-y-8">
+            <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-xl">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Professional Network</h2>
+              {!hasCompletedAssessment ? (
+                <div className="text-center py-12">
+                  <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Complete Your Assessment First</h3>
+                  <p className="text-gray-600 mb-6">Take the business assessment to access our vetted professional network.</p>
+                  <button 
+                    onClick={() => setActiveTab('assessment')}
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-300"
+                  >
+                    Start Assessment
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <p className="text-gray-600 mb-8">Connect with pre-screened experts for your business transition.</p>
+                  
+                  {/* Professional Categories */}
+                  <div className="grid lg:grid-cols-3 gap-6">
+                    <div className="border border-gray-200 rounded-xl p-6">
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <Calculator className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Valuation Experts</h3>
+                      <p className="text-gray-600 text-sm mb-4">Certified business appraisers for accurate valuation.</p>
+                      <button className="w-full bg-blue-50 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm">
+                        Find Valuators
+                      </button>
+                    </div>
+
+                    <div className="border border-gray-200 rounded-xl p-6">
+                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <FileText className="w-6 h-6 text-green-600" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">M&A Attorneys</h3>
+                      <p className="text-gray-600 text-sm mb-4">Specialized lawyers for business transactions.</p>
+                      <button className="w-full bg-green-50 text-green-600 py-2 px-4 rounded-lg hover:bg-green-100 transition-colors font-medium text-sm">
+                        Find Attorneys
+                      </button>
+                    </div>
+
+                    <div className="border border-gray-200 rounded-xl p-6">
+                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <TrendingUp className="w-6 h-6 text-purple-600" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Tax Specialists</h3>
+                      <p className="text-gray-600 text-sm mb-4">CPAs specializing in business exit tax strategy.</p>
+                      <button className="w-full bg-purple-50 text-purple-600 py-2 px-4 rounded-lg hover:bg-purple-100 transition-colors font-medium text-sm">
+                        Find Tax Experts
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
         </div>
       </div>
+        )}
+      </main>
     </div>
   );
 };

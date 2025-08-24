@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
-  SFChartBar, SFPerson2, SFDocText, SFDollarSign, SFChartLine,
-  SFCalendar, SFArrowUpRightCircle, SFArrowDownRightCircle,
-  SFEye, SFDownload, SFChevronRight, SFCheckCircle, SFClock,
-  SFAlertCircle, SFStar, SFBuilding2, SFHeart, SFShield,
-  SFTarget, SFBolt, SFAward
+  SFChartBar, SFPerson2, SFDocText, SFDollarSign,
+  SFArrowUpRightCircle, SFArrowDownRightCircle,
+  SFDownload, SFCheckCircle, SFClock
 } from './SFSymbols';
 import dataManager from '../utils/dataManager';
 import { AppleTypography, AppleSpacing, AppleBorderRadius, AppleTransitions, AppleShadows } from '../styles/appleDesignSystem';
@@ -16,14 +14,9 @@ const ProfessionalDashboard = () => {
   const [clients, setClients] = useState([]);
   const [businessInsights, setBusinessInsights] = useState({});
   const [performanceTrends, setPerformanceTrends] = useState([]);
-  const [revenueForecast, setRevenueForecast] = useState([]);
-  const [clientSegments, setClientSegments] = useState({});
 
-  useEffect(() => {
-    loadRealData();
-  }, []);
 
-  const loadRealData = () => {
+  const loadRealData = useCallback(() => {
     const metrics = dataManager.getMetrics();
     const activities = dataManager.getRecentActivities();
     const deadlines = dataManager.getUpcomingDeadlines();
@@ -37,14 +30,13 @@ const ProfessionalDashboard = () => {
     // Generate advanced insights
     const insights = generateAdvancedInsights(metrics, clientList);
     const trends = generatePerformanceTrends(metrics, clientList);
-    const forecast = generateRevenueForecast(metrics, clientList);
-    const segments = generateClientSegments(clientList);
-
     setBusinessInsights(insights);
     setPerformanceTrends(trends);
-    setRevenueForecast(forecast);
-    setClientSegments(segments);
-  };
+  }, []);
+
+  useEffect(() => {
+    loadRealData();
+  }, [loadRealData]);
 
   const generateAdvancedInsights = (metrics, clientList) => {
     const totalClients = clientList.length;
@@ -64,40 +56,15 @@ const ProfessionalDashboard = () => {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
     return months.map((month, index) => ({
       month,
-      clients: Math.max(1, clientList.length + Math.floor(Math.random() * 3) - 1),
-      documents: Math.max(1, (metrics.documentsGenerated || 0) + Math.floor(Math.random() * 5) - 2),
-      revenue: Math.max(1000, (metrics.monthlyRevenue || 1000) + Math.floor(Math.random() * 2000) - 1000)
+      clients: clientList.length,
+      documents: metrics.documentsGenerated || 0,
+      revenue: metrics.monthlyRevenue || 0
     }));
   };
 
-  const generateRevenueForecast = (metrics, clientList) => {
-    const months = ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const baseRevenue = metrics.monthlyRevenue || 1000;
-    const growthRate = 0.15; // 15% monthly growth
 
-    return months.map((month, index) => {
-      const projectedRevenue = baseRevenue * Math.pow(1 + growthRate, index + 1);
-      return {
-        month,
-        revenue: Math.round(projectedRevenue),
-        confidence: Math.max(60, 100 - (index * 5)) // Confidence decreases over time
-      };
-    });
-  };
 
-  const generateClientSegments = (clientList) => {
-    const highValue = clientList.filter(c => c.netWorth && c.netWorth > 1000000).length;
-    const standard = clientList.filter(c => c.netWorth && c.netWorth > 100000 && c.netWorth <= 1000000).length;
-    const basic = clientList.filter(c => !c.netWorth || c.netWorth <= 100000).length;
 
-    return { highValue, standard, basic };
-  };
-
-  const calculateRetentionRate = () => {
-    const totalClients = clients.length;
-    const retainedClients = clients.filter(c => c.status === 'Active').length;
-    return totalClients > 0 ? Math.round((retainedClients / totalClients) * 100) : 0;
-  };
 
   const getMetricCard = (title, value, icon, trend, color = 'blue') => (
     <div style={{
@@ -107,9 +74,11 @@ const ProfessionalDashboard = () => {
       boxShadow: AppleShadows.small.boxShadow,
       border: '1px solid var(--separator-transparent, #C6C6C8)',
       transition: `all ${AppleTransitions.normal} ${AppleTransitions.ease}`,
-      cursor: 'pointer'
+      cursor: 'pointer',
+      transform: 'translateY(0)',
+      opacity: 1
     }}
-    className="hover-lift"
+    className="metric-card animate-fade-in-up hover:scale-105 hover:shadow-xl transition-all duration-500 ease-out"
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: AppleSpacing.md }}>
         <div style={{
@@ -159,7 +128,9 @@ const ProfessionalDashboard = () => {
       backgroundColor: 'var(--system-background-grouped, #F2F2F7)',
       minHeight: '100vh',
       padding: AppleSpacing.lg
-    }}>
+    }}
+    className="animate-fade-in"
+    >
       {/* Header */}
       <div style={{
         backgroundColor: 'var(--system-background-primary, #FFFFFF)',
@@ -168,7 +139,9 @@ const ProfessionalDashboard = () => {
         marginBottom: AppleSpacing.xl,
         boxShadow: AppleShadows.small.boxShadow,
         border: '1px solid var(--separator-transparent, #C6C6C8)'
-      }}>
+      }}
+      className="animate-slide-in-down"
+      >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: AppleSpacing.lg }}>
           <div>
             <h1 style={{
@@ -217,11 +190,21 @@ const ProfessionalDashboard = () => {
         gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
         gap: AppleSpacing.lg,
         marginBottom: AppleSpacing.xl
-      }}>
-        {getMetricCard('Total Clients', clients.length, <SFPerson2 />, 12, 'blue')}
-        {getMetricCard('Monthly Revenue', `$${(realMetrics.monthlyRevenue || 0).toLocaleString()}`, <SFDollarSign />, 8, 'green')}
-        {getMetricCard('Documents Generated', realMetrics.documentsGenerated || 0, <SFDocText />, 15, 'orange')}
-        {getMetricCard('Active Subscriptions', realMetrics.activeSubscriptions || 0, <SFChartBar />, 5, 'indigo')}
+      }}
+      className="animate-fade-in-up"
+      >
+        <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          {getMetricCard('Total Clients', clients.length, <SFPerson2 />, 12, 'blue')}
+        </div>
+        <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          {getMetricCard('Monthly Revenue', `$${(realMetrics.monthlyRevenue || 0).toLocaleString()}`, <SFDollarSign />, 8, 'green')}
+        </div>
+        <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          {getMetricCard('Documents Generated', realMetrics.documentsGenerated || 0, <SFDocText />, 15, 'orange')}
+        </div>
+        <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          {getMetricCard('Active Subscriptions', realMetrics.activeSubscriptions || 0, <SFChartBar />, 5, 'indigo')}
+        </div>
       </div>
 
       {/* Business Insights */}

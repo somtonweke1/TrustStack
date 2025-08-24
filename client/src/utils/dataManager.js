@@ -175,6 +175,9 @@ class DataManager {
           metrics.documents.generated.push({ month: currentMonth, count: value });
         }
         break;
+      default:
+        // No action for unknown categories
+        break;
     }
     
     this.setData('metrics', metrics);
@@ -373,6 +376,5 @@ class DataManager {
 }
 
 // Singleton instance
-const dataManager = new DataManager();
 const dataManagerInstance = new DataManager();
 export default dataManagerInstance;

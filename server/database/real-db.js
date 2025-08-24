@@ -76,97 +76,12 @@ class RealDatabase {
         )
       `);
 
-      // Insert sample data for demonstration
-      this.insertSampleData();
+      // Database is ready for real data
+      console.log('✅ Database initialized successfully');
     });
   }
 
-  insertSampleData() {
-    // Check if data already exists
-    this.db.get("SELECT COUNT(*) as count FROM users", (err, row) => {
-      if (err) {
-        console.error('Error checking users:', err);
-        return;
-      }
-      
-      if (row.count === 0) {
-        // Insert sample user
-        this.db.run(`
-          INSERT INTO users (email, name) VALUES (?, ?)
-        `, ['demo@truststack.com', 'Demo User'], (err) => {
-          if (err) {
-            console.error('Error inserting user:', err);
-            return;
-          }
-          
-          const userId = this.lastID;
-          
-          // Insert sample trusts
-          const trusts = [
-            ['Family Wealth Trust', 'Revocable Living Trust', 8000000, 'active', 'pending', 60],
-            ['Business Succession Trust', 'Irrevocable Trust', 5000000, 'active', 'verified', 25],
-            ['Charitable Remainder Trust', 'Charitable Trust', 2000000, 'active', 'verified', 35]
-          ];
-          
-          trusts.forEach((trust, index) => {
-            this.db.run(`
-              INSERT INTO trust_accounts (user_id, trust_name, trust_type, current_balance, status, compliance_status, risk_score)
-              VALUES (?, ?, ?, ?, ?, ?, ?)
-            `, [userId, ...trust], (err) => {
-              if (err) {
-                console.error('Error inserting trust:', err);
-                return;
-              }
-              
-              const trustId = this.lastID;
-              
-              // Insert sample beneficiaries
-              const beneficiaries = [
-                ['John Smith Jr.', 'Son', 40.0],
-                ['Sarah Smith', 'Daughter', 35.0],
-                ['Family Foundation', 'Charity', 25.0]
-              ];
-              
-              beneficiaries.forEach(beneficiary => {
-                this.db.run(`
-                  INSERT INTO beneficiaries (trust_id, name, relationship, allocation_percentage)
-                  VALUES (?, ?, ?, ?)
-                `, [trustId, ...beneficiary]);
-              });
-              
-              // Insert sample transfers
-              const transfers = [
-                [500000, 'distribution', 'completed'],
-                [250000, 'contribution', 'pending'],
-                [100000, 'distribution', 'completed']
-              ];
-              
-              transfers.forEach(transfer => {
-                this.db.run(`
-                  INSERT INTO transfers (trust_id, amount, transfer_type, status)
-                  VALUES (?, ?, ?, ?)
-                `, [trustId, ...transfer]);
-              });
-              
-              // Insert sample compliance logs
-              const complianceLogs = [
-                ['trust', trustId, 'annual_review', 'pending', new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()],
-                ['trust', trustId, 'tax_filing', 'completed', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()],
-                ['trust', trustId, 'beneficiary_update', 'pending', new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString()]
-              ];
-              
-              complianceLogs.forEach(log => {
-                this.db.run(`
-                  INSERT INTO compliance_logs (entity_type, entity_id, compliance_type, status, due_date)
-                  VALUES (?, ?, ?, ?, ?)
-                `, log);
-              });
-            });
-          });
-        });
-      }
-    });
-  }
+
 
   query(sql, params = []) {
     return new Promise((resolve, reject) => {

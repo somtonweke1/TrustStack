@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Eye, Download, Trash2, Plus, ChevronRight, CheckCircle, Clock, AlertCircle, User, Building2, DollarSign, Calendar, Shield } from 'lucide-react';
+import { FileText, Download, Clock } from 'lucide-react';
 import dataManager from '../utils/dataManager';
 import pdfGenerator from '../utils/pdfGenerator';
 
@@ -11,8 +11,8 @@ const TrustDocumentGenerator = () => {
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
-  const [previewDocument, setPreviewDocument] = useState(null);
+  const [showGuidedFlow, setShowGuidedFlow] = useState(false);
+
   const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
@@ -124,6 +124,9 @@ const TrustDocumentGenerator = () => {
           baseData.propertyAddress = client.address || '';
           baseData.propertyValue = client.netWorth ? `$${client.netWorth.toLocaleString()}` : '';
           baseData.retentionPeriod = '10';
+          break;
+        default:
+          // No additional fields for this template
           break;
       }
     }
@@ -240,54 +243,27 @@ const TrustDocumentGenerator = () => {
     }
   };
 
-  const handlePreviewDocument = async () => {
-    if (!validateForm()) {
-      setGenerationStatus('Please fix the errors above before previewing the document');
-      return;
-    }
 
-    try {
-      const client = clients.find(c => c.id === selectedClient);
-      if (!client) {
-        throw new Error('Client not found');
-      }
-
-      // Generate preview (this could be a simplified version)
-      setPreviewDocument({
-        templateId: selectedTemplate,
-        clientName: client.name,
-        formData: formData,
-        preview: true
-      });
-      setShowPreview(true);
-    } catch (error) {
-      console.error('Error previewing document:', error);
-      setGenerationStatus('Error previewing document. Please try again.');
-    }
-  };
 
   const getTemplateIcon = (templateId) => {
     const template = templates.find(t => t.id === templateId);
     return template ? template.icon : '📄';
   };
 
-  const getTemplateColor = (templateId) => {
-    const template = templates.find(t => t.id === templateId);
-    return template ? template.color : 'from-gray-500 to-gray-600';
-  };
+
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-6 animate-fade-in">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8 animate-slide-in-down">
           <div className="flex items-center space-x-4 mb-6">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-              <FileText className="h-8 w-8 text-white" />
+              <FileText className="w-8 h-8 text-white" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Trust Document Generator</h1>
-              <p className="text-gray-600">Create legally compliant trust documents in minutes, not weeks</p>
+              <p className="text-gray-600">Create legally compliant trust documents in minutes</p>
             </div>
           </div>
           
@@ -305,13 +281,73 @@ const TrustDocumentGenerator = () => {
           )}
         </div>
 
+        {/* Gusto Strategy: Family Legacy OS Features */}
+        <div className="grid md:grid-cols-3 gap-6 mt-8">
+          <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-blue-900">Document Vault</h3>
+            </div>
+            <p className="text-blue-700 text-sm">Secure storage for all family legal documents with AI-powered organization</p>
+          </div>
+          
+          <div className="bg-green-50 rounded-xl p-6 border border-green-200">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 5.477 5.754 5 7.5 5s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-green-900">Family Education</h3>
+            </div>
+            <p className="text-green-700 text-sm">Interactive learning modules for family members about wealth management</p>
+          </div>
+          
+          <div className="bg-purple-50 rounded-xl p-6 border border-purple-200">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-purple-900">Advisor Network</h3>
+            </div>
+            <p className="text-purple-700 text-sm">Connect with vetted financial, legal, and tax professionals</p>
+          </div>
+        </div>
+
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Column - Template Selection & Form */}
           <div className="lg:col-span-2 space-y-8">
             {/* Template Selection */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 animate-fade-in-up">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">1. Select Trust Template</h2>
-              <div className="grid md:grid-cols-2 gap-4">
+              
+              {/* TurboTax Strategy: Guided Q&A Flow */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 border border-blue-200">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-blue-900">Guided Trust Planning</h3>
+                </div>
+                <p className="text-blue-700 mb-4">Answer a few questions and we'll recommend the perfect trust structure for your specific assets</p>
+                
+                <button 
+                  onClick={() => setShowGuidedFlow(true)}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Start Guided Planning
+                </button>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-4 animate-fade-in-up">
                 {templates.map((template) => (
                   <div
                     key={template.id}
@@ -584,14 +620,7 @@ const TrustDocumentGenerator = () => {
 
                 {/* Action Buttons */}
                 <div className="flex space-x-4 mt-8">
-                  <button
-                    onClick={handlePreviewDocument}
-                    disabled={isGenerating}
-                    className="flex items-center space-x-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
-                  >
-                    <Eye className="h-4 w-4" />
-                    <span>Preview</span>
-                  </button>
+
                   
                   <button
                     onClick={generateDocument}
@@ -681,6 +710,81 @@ const TrustDocumentGenerator = () => {
           </div>
         </div>
       </div>
+      
+      {/* TurboTax Strategy: Guided Planning Modal */}
+      {showGuidedFlow && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Guided Trust Planning</h2>
+              <button 
+                onClick={() => setShowGuidedFlow(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                <h3 className="font-semibold text-blue-900 mb-2">Question 1: What type of assets do you own?</h3>
+                <div className="space-y-2">
+                  {['Real Estate', 'Business Interests', 'Investment Portfolio', 'Life Insurance', 'Mixed Assets'].map((asset) => (
+                    <label key={asset} className="flex items-center space-x-3 cursor-pointer">
+                      <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                      <span className="text-blue-800">{asset}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                <h3 className="font-semibold text-green-900 mb-2">Question 2: What are your primary goals?</h3>
+                <div className="space-y-2">
+                  {['Asset Protection', 'Tax Minimization', 'Succession Planning', 'Charitable Giving', 'Wealth Transfer'].map((goal) => (
+                    <label key={goal} className="flex items-center space-x-3 cursor-pointer">
+                      <input type="checkbox" className="rounded border-gray-300 text-green-600 focus:ring-green-500" />
+                      <span className="text-green-800">{goal}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                <h3 className="font-semibold text-purple-900 mb-2">Question 3: Family structure considerations?</h3>
+                <div className="space-y-2">
+                  {['Minor Children', 'Blended Family', 'Business Partners', 'International Assets', 'Multiple Generations'].map((consideration) => (
+                    <label key={consideration} className="flex items-center space-x-3 cursor-pointer">
+                      <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                      <span className="text-purple-800">{consideration}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="flex space-x-4">
+                <button 
+                  onClick={() => setShowGuidedFlow(false)}
+                  className="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={() => {
+                    // AI recommendation logic would go here
+                    setShowGuidedFlow(false);
+                  }}
+                  className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Get AI Recommendation
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

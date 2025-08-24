@@ -16,7 +16,7 @@ import {
   SFChartBar
 } from './SFSymbols';
 import { useAuth } from '../contexts/AuthContext';
-import { AppleColors, AppleTypography, AppleSpacing, AppleBorderRadius, AppleTransitions, AppleShadows } from '../styles/appleDesignSystem';
+import { AppleTypography, AppleSpacing, AppleBorderRadius, AppleTransitions, AppleShadows } from '../styles/appleDesignSystem';
 
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

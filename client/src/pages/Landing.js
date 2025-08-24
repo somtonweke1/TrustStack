@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom';
 import { 
   Building2, 
   Shield, 
-  ArrowUpRight, 
   Users, 
   ArrowRight,
   Sparkles,
   Zap,
   FileText,
-  Lock,
   BarChart3,
   CheckCircle,
   Clock,
-  Target
+  Target,
+  AlertTriangle,
+  TrendingUp
 } from 'lucide-react';
             
 const Landing = () => {
@@ -46,7 +46,7 @@ const Landing = () => {
   }, [features.length]);
 
   return (
-    <div className="min-h-screen bg-white font-sans antialiased overflow-hidden">
+    <div className="min-h-screen bg-white font-sans antialiased overflow-hidden animate-fade-in">
       {/* Premium CSS Variables */}
       <style jsx>{`
         :root {
@@ -143,6 +143,28 @@ const Landing = () => {
           transform: translateY(-2px);
           box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.4);
         }
+        
+        .animated-text {
+          background: linear-gradient(-45deg, #2563EB, #7C3AED, #EC4899, #EF4444, #F59E0B, #10B981, #06B6D4, #2563EB);
+          background-size: 400% 400%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          font-weight: 600;
+          animation: gradient-shift 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradient-shift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
       `}</style>
 
       {/* Dynamic Background Elements */}
@@ -194,295 +216,321 @@ const Landing = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-44 pb-36 px-8 relative">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className={`text-7xl md:text-8xl font-light text-gray-900 mb-16 leading-tight fade-in-up stagger-1`}>
-            <span className={`bg-gradient-to-r ${features[currentFeatureIndex].color} bg-clip-text text-transparent font-semibold transition-all duration-1000 feature-underline`}>
-              QuickBooks
-            </span> for Trust Management
+      <section className="min-h-screen flex items-center justify-center px-8 relative pt-16">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-light text-gray-900 mb-8 fade-in-up tracking-tight leading-tight">
+            Your Business Legacy, 
+            <span className="animated-text block mt-2"> Executed.</span>
           </h1>
-          <p className={`text-2xl md:text-3xl font-light text-gray-600 mb-20 leading-relaxed max-w-5xl mx-auto fade-in-up stagger-2`}>
-            The first comprehensive SaaS platform that lets financial advisors generate legally compliant trust documents in minutes while managing their entire client portfolio through professional tools.
+          <p className="text-xl md:text-2xl lg:text-3xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto fade-in-up stagger-1 font-light">
+            Stop losing sleep over business succession. Get a clear plan.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center fade-in-up stagger-3`}>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center fade-in-up stagger-2 mb-12">
             <Link 
               to="/register" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-12 py-5 rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 group border-0 min-w-[240px] text-center flex items-center justify-center"
+              className="premium-button text-white px-12 py-4 rounded-full font-medium text-lg transform hover:scale-105 transition-all duration-300"
             >
-              <Zap className="mr-3 h-6 w-6" />
-              Start Free Trial
-              <ArrowRight className="ml-3 h-6 w-6 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-80" />
+              Start My Assessment
             </Link>
-            <button className="border-2 border-gray-300 text-gray-700 px-12 py-5 rounded-full font-medium text-lg hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105 bg-white min-w-[240px] text-center flex items-center justify-center shadow-md hover:shadow-lg border border-gray-200 hover:border-gray-300">
-              Book Demo
+          </div>
+          
+          {/* Core Value Proposition */}
+          <div className="fade-in-up stagger-3">
+            <div className="inline-flex items-center space-x-3 bg-white/70 backdrop-blur-lg border border-gray-200 rounded-2xl px-8 py-4 shadow-xl">
+              <Shield className="w-5 h-5 text-blue-600" />
+              <span className="text-gray-700 font-medium text-lg">
+                "What happens to my business when I'm gone?"
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Core Value Proposition */}
+      <section className="py-32 px-8 bg-white fade-in-up stagger-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+                        <h2 className="text-5xl font-light text-gray-900 mb-6 tracking-tight">
+              Why <span className="stripe-text">TrustStack?</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-light leading-relaxed">
+              70% of family businesses fail during transition. We fix that.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-12">
+            {/* Value 1 */}
+            <div className="parallax-card bg-white/50 backdrop-blur-sm border border-gray-200 rounded-3xl p-8 shadow-xl">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-400 to-red-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg">
+                <AlertTriangle className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4 tracking-tight">The $500K Mistake</h3>
+              <p className="text-gray-600 leading-relaxed mb-6 font-light">
+                Unprepared exits cost hundreds of thousands. We prevent that.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                                    <span className="text-gray-700">Avoid devastating tax bills</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-gray-700">Prevent family conflicts</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-gray-700">Maximize exit value</span>
+            </div>
+              </div>
+            </div>
+
+            {/* Value 2 */}
+            <div className="parallax-card bg-white/50 backdrop-blur-sm border border-gray-200 rounded-3xl p-8 shadow-xl">
+              <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4 tracking-tight">One Platform</h3>
+              <p className="text-gray-600 leading-relaxed mb-6 font-light">
+                Stop juggling 5 different experts. Get one unified solution.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                                    <span className="text-gray-700">All experts in sync</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-gray-700">Cut coordination costs by 60%</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-gray-700">Eliminate miscommunication</span>
+            </div>
+              </div>
+            </div>
+
+            {/* Value 3 */}
+            <div className="parallax-card bg-white/50 backdrop-blur-sm border border-gray-200 rounded-3xl p-8 shadow-xl">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg">
+                <TrendingUp className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4 tracking-tight">30x ROI</h3>
+              <p className="text-gray-600 leading-relaxed mb-6 font-light">
+                $15K annual cost. $500K+ in savings. The math is simple.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                                    <span className="text-gray-700">30x ROI minimum</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-gray-700">Costs less than hourly rates</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-gray-700">Save hundreds of thousands</span>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works: The Three-Phase Product Journey */}
+      <section className="py-32 px-8 bg-gradient-to-br from-blue-50 to-indigo-50 fade-in-up stagger-5">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+                        <h2 className="text-5xl font-light text-gray-900 mb-6 tracking-tight">
+              How It <span className="stripe-text">Works</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-light leading-relaxed">
+              Three phases. One goal. Your business legacy secured.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-16">
+            {/* Phase 1: Discovery & Dashboard */}
+            <div className="parallax-card bg-white rounded-3xl p-10 shadow-xl border border-gray-200">
+              <div className="flex items-center space-x-4 mb-8">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <FileText className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-semibold text-gray-900">Phase 1: Discovery</h3>
+              </div>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                <span className="font-semibold text-gray-900">See your risks</span> — 15-minute diagnostic reveals your biggest threats.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">15-minute diagnostic reveals your biggest risks</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Visual dashboard shows tax exposure</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Calculate your liquidity crisis score</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Phase 2: Strategy Builder */}
+            <div className="parallax-card bg-white rounded-3xl p-10 shadow-xl border border-gray-200">
+              <div className="flex items-center space-x-4 mb-8">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <BarChart3 className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-semibold text-gray-900">Phase 2: Strategy</h3>
+              </div>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                <span className="font-semibold text-gray-900">Get your plan</span> — customized roadmap with steps and timelines.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Family Transfer: Keep it in the bloodline</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Strategic Sale: Maximize your payday</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Employee Buyout: Reward loyalty</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Phase 3: Execution Hub */}
+            <div className="parallax-card bg-white rounded-3xl p-10 shadow-xl border border-gray-200">
+              <div className="flex items-center space-x-4 mb-8">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <Sparkles className="h-6 w-6 text-white" />
+                </div>
+                                <h3 className="text-2xl font-semibold text-gray-900">Phase 3: Execute</h3>
+              </div>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                <span className="font-semibold text-gray-900">Make it happen</span> — we handle paperwork and coordinate your team.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Auto-generate legal documents</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Connect with pre-screened experts</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Secure vault for everything important</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Business Model */}
+            <div className="parallax-card bg-white rounded-3xl p-10 shadow-xl border border-gray-200">
+              <div className="flex items-center space-x-4 mb-8">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                                <h3 className="text-2xl font-semibold text-gray-900">Pricing</h3>
+              </div>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                <span className="font-semibold text-gray-900">Simple tiers</span> — from assessment to full execution.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Assess: $1K (less than one lawyer meeting)</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Execute: $5K/year (vs. $50K+ piecemeal)</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Concierge: $15K/year (full done-for-you)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-32 px-8 bg-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20"></div>
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-5xl font-light mb-8 tracking-tight">
+            Ready to <span className="stripe-text">Start?</span>
+          </h2>
+          <p className="text-xl text-gray-300 mb-12 leading-relaxed font-light">
+            Get your business exit plan in 15 minutes.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                      <Link 
+              to="/register" 
+              className="premium-button text-white px-12 py-4 rounded-full font-medium text-xl"
+            >
+              Get My Exit Plan Now
+            </Link>
+            <button className="border-2 border-white/30 text-white px-12 py-4 rounded-full font-medium text-xl hover:border-white hover:bg-white/10 transition-all duration-300 hover:scale-105">
+              Schedule Demo
             </button>
           </div>
         </div>
       </section>
 
-      {/* Premium Features Grid */}
-      <section className="py-36 px-8 bg-gradient-to-b from-white to-gray-50/30">
-        <div className="max-w-7xl mx-auto">
-          <h2 className={`text-5xl md:text-6xl font-light text-center text-gray-900 mb-28 fade-in-up stagger-1`}>
-            Everything you need to grow your trust practice
-          </h2>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {/* Trust Document Generator */}
-            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-2 group`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <FileText className="h-12 w-12 text-blue-600" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Trust Document Generator</h3>
-              <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Create legally compliant trust documents in minutes, not weeks, with our AI-powered templates and compliance checks.
-              </p>
-            </div>
-
-            {/* Client Management Portal */}
-            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-3 group`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <Users className="h-12 w-12 text-emerald-600" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Client Management Portal</h3>
-              <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Manage your entire client portfolio with professional tools, automated workflows, and real-time updates.
-              </p>
-            </div>
-
-            {/* Professional Dashboard */}
-            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-4 group`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-purple-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <BarChart3 className="h-12 w-12 text-purple-600" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Professional Dashboard</h3>
-              <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Track your business performance with comprehensive analytics, revenue insights, and growth metrics.
-              </p>
-            </div>
-
-            {/* Built-in Compliance */}
-            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-5 group`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <Shield className="h-12 w-12 text-orange-600" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Built-in Compliance</h3>
-              <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Automated regulatory compliance with built-in legal checks, audit trails, and professional standards.
-              </p>
-            </div>
-
-            {/* Time Savings */}
-            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-1 group`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <Clock className="h-12 w-12 text-indigo-600" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Save 20+ Hours Per Document</h3>
-              <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Reduce document creation time from weeks to minutes with our streamlined workflow and templates.
-              </p>
-            </div>
-
-            {/* Business Growth */}
-            <div className={`p-12 rounded-3xl premium-glass border border-white/20 hover:border-blue-200/30 transition-all duration-700 parallax-card fade-in-up stagger-2 group`}>
-              <div className="w-24 h-24 bg-gradient-to-br from-red-100 to-red-200 rounded-3xl flex items-center justify-center mb-8 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <Target className="h-12 w-12 text-red-600" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Scale Your Practice</h3>
-              <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Handle more clients efficiently with automated processes and professional tools that grow with your business.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Target Audience Section */}
-      <section className="py-36 px-8 bg-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-16 fade-in-up stagger-1`}>
-            Built for Financial Advisors
-          </h2>
-          <p className={`text-xl font-light text-gray-600 mb-20 max-w-4xl mx-auto fade-in-up stagger-2`}>
-            TrustStack is designed specifically for financial advisors, wealth managers, and estate planners who want to:
-          </p>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-            <div className={`text-center fade-in-up stagger-3 group`}>
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <CheckCircle className="h-10 w-10 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Save Time</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Generate trust documents in minutes instead of weeks
-              </p>
-            </div>
-            
-            <div className={`text-center fade-in-up stagger-4 group`}>
-              <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <Users className="h-10 w-10 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Professional Experience</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Provide clients with Apple-quality tools and interfaces
-              </p>
-            </div>
-            
-            <div className={`text-center fade-in-up stagger-5 group`}>
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <BarChart3 className="h-10 w-10 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Scale Efficiently</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Handle more clients without proportional time increase
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Premium How It Works */}
-      <section className="py-36 px-8 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-28 fade-in-up stagger-1`}>
-            How TrustStack Works
-          </h2>
-          
-          <div className="grid md:grid-cols-3 gap-20">
-            <div className={`text-center fade-in-up stagger-2 group`}>
-              <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-                <span className="text-white text-4xl font-light">1</span>
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Generate Documents</h3>
-              <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Create professional trust documents with our AI-powered templates
-              </p>
-            </div>
-            
-            <div className={`text-center fade-in-up stagger-3 group`}>
-              <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-                <span className="text-white text-4xl font-light">2</span>
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Manage Clients</h3>
-              <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Organize your client portfolio with our comprehensive management tools
-              </p>
-            </div>
-            
-            <div className={`text-center fade-in-up stagger-4 group`}>
-              <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-                <span className="text-white text-4xl font-light">3</span>
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Grow Your Practice</h3>
-              <p className="text-lg font-light text-gray-600 leading-relaxed">
-                Track performance and scale your business with professional insights
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Premium Final CTA */}
-      <section className="py-36 px-8 bg-gradient-to-br from-blue-50 to-blue-100 relative overflow-hidden">
-        <div className="absolute inset-0 geometric-bg opacity-50"></div>
-        
-        <div className="max-w-6xl mx-auto text-center relative z-10">
-          <h2 className={`text-5xl md:text-6xl font-light text-gray-900 mb-12 fade-in-up stagger-1`}>
-            Ready to transform your practice?
-          </h2>
-          <p className={`text-2xl font-light text-gray-600 mb-20 fade-in-up stagger-2`}>
-            Join thousands of financial advisors using TrustStack to grow their business
-          </p>
-          <Link 
-            to="/register" 
-            className={`inline-flex items-center px-16 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 fade-in-up stagger-3 border-0 min-w-[280px] justify-center group`}
-          >
-            <Sparkles className="mr-4 h-6 w-6" />
-            Start Free Trial
-            <ArrowRight className="ml-4 h-6 w-6 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-80" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Premium Footer */}
-      <footer className="py-20 px-8 bg-white border-t border-gray-100">
+      {/* Footer */}
+      <footer className="py-16 px-8 bg-gray-900 text-white">
         <div className="max-w-6xl mx-auto">
-          {/* Main Footer Content */}
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            {/* Company Info */}
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-4 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <Building2 className="h-7 w-7 text-white" />
+          <div className="grid md:grid-cols-4 gap-8 mb-12">
+            <div>
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center">
+                  <Building2 className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-2xl font-light text-gray-600">TrustStack</span>
+                <span className="text-xl font-light tracking-tight">TrustStack</span>
               </div>
-              <p className="text-gray-600 mb-6 max-w-md">
-                The complete trust management platform for financial advisors. Generate documents, manage clients, and grow your practice with professional tools.
+              <p className="text-gray-400 leading-relaxed font-light">
+                Your Business Legacy, Executed.
               </p>
-              <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600 font-medium text-xs">SOC2</span>
-                </div>
-                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600 font-medium text-xs">GDPR</span>
-                </div>
-                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600 font-medium text-xs">HIPAA</span>
-                </div>
-              </div>
             </div>
-
-            {/* Product Links */}
             <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Product</h4>
-              <ul className="space-y-3">
-                <li><a href="/trust-documents" className="text-gray-600 hover:text-blue-600 transition-colors">Trust Document Generator</a></li>
-                <li><a href="/client-management" className="text-gray-600 hover:text-blue-600 transition-colors">Client Management</a></li>
-                <li><a href="/professional-dashboard" className="text-gray-600 hover:text-blue-600 transition-colors">Professional Dashboard</a></li>
-                <li><a href="/compliance-tools" className="text-gray-600 hover:text-blue-600 transition-colors">Compliance Tools</a></li>
-                <li><a href="/api-docs" className="text-gray-600 hover:text-blue-600 transition-colors">API Documentation</a></li>
+              <h4 className="font-semibold mb-4">Platform</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Trust Management</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Professional Tools</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">AI Insights</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Document Generation</a></li>
               </ul>
             </div>
-
-            {/* Company Links */}
             <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Company</h4>
-              <ul className="space-y-3">
-                <li><a href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">About Us</a></li>
-                <li><a href="/careers" className="text-gray-600 hover:text-blue-600 transition-colors">Careers</a></li>
-                <li><a href="/press" className="text-gray-600 hover:text-blue-600 transition-colors">Press</a></li>
-                <li><a href="/partners" className="text-gray-600 hover:text-blue-600 transition-colors">Partners</a></li>
-                <li><a href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors">Contact</a></li>
+              <h4 className="font-semibold mb-4">Resources</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">API Reference</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
           </div>
-
-          {/* Legal Links */}
-          <div className="border-t border-gray-200 pt-8 mb-8">
-            <div className="flex flex-wrap gap-6 text-sm text-gray-500">
-              <a href="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
-              <a href="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</a>
-              <a href="/cookies" className="hover:text-blue-600 transition-colors">Cookie Policy</a>
-              <a href="/dpa" className="hover:text-blue-600 transition-colors">Data Processing Agreement</a>
-              <a href="/aup" className="hover:text-blue-600 transition-colors">Acceptable Use Policy</a>
-              <a href="/security" className="hover:text-blue-600 transition-colors">Security</a>
-              <a href="/compliance" className="hover:text-blue-600 transition-colors">Compliance</a>
-              <a href="/regulatory" className="hover:text-blue-600 transition-colors">Regulatory Disclosures</a>
-            </div>
-          </div>
-
-          {/* Bottom Footer */}
-          <div className="border-t border-gray-200 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="text-sm text-gray-500 mb-4 md:mb-0">
-                © 2025 TrustStack. All rights reserved.
-              </div>
-              <div className="text-sm text-gray-500">
-                TrustStack is a B2B SaaS platform for financial advisors. Not a bank or financial institution.
-              </div>
-            </div>
+          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
+            <p>&copy; 2025 TrustStack. All rights reserved.</p>
           </div>
         </div>
       </footer>

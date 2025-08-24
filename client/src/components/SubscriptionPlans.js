@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Check, Star, Zap, Crown } from 'lucide-react';
 
 const SubscriptionPlans = () => {
-  const [selectedPlan, setSelectedPlan] = useState('starter');
+  const [selectedPlan] = useState('starter');
   const [billingCycle, setBillingCycle] = useState('monthly');
 
   const plans = [

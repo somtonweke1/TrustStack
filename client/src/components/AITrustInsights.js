@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import apiConfig from '../config/api';
 
@@ -8,13 +8,7 @@ const AITrustInsights = ({ trustId, onInsightsLoaded }) => {
   const [error, setError] = useState(null);
   const { token } = useAuth();
 
-  useEffect(() => {
-    if (trustId && token) {
-      fetchAIInsights();
-    }
-  }, [trustId, token]);
-
-  const fetchAIInsights = async () => {
+  const fetchAIInsights = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -40,7 +34,13 @@ const AITrustInsights = ({ trustId, onInsightsLoaded }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [trustId, token, onInsightsLoaded]);
+
+  useEffect(() => {
+    if (trustId && token) {
+      fetchAIInsights();
+    }
+  }, [trustId, token, fetchAIInsights]);
 
   if (loading) {
     return (
@@ -94,21 +94,12 @@ const AITrustInsights = ({ trustId, onInsightsLoaded }) => {
     }
   };
 
-  const getRiskColor = (level) => {
-    switch (level) {
-      case 'Critical': return 'text-red-600 bg-red-100';
-      case 'High': return 'text-orange-600 bg-orange-100';
-      case 'Medium': return 'text-yellow-600 bg-yellow-100';
-      case 'Low': return 'text-blue-600 bg-blue-100';
-      case 'Minimal': return 'text-green-600 bg-green-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
-  };
+
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Overall Trust Health */}
-      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden animate-slide-in-up">
         <div className="bg-gradient-to-r from-indigo-50 to-purple-50 px-8 py-6 border-b border-gray-100">
           <div className="flex items-center justify-between">
             <div>

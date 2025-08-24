@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, UserPlus, Edit, Trash2, Calendar, TrendingUp, DollarSign, Target, MoreHorizontal, Plus, ChevronRight, CheckCircle, Clock, AlertCircle, Star, Building2, Heart, Shield, Search, Filter, Download, Eye } from 'lucide-react';
+import { Users, UserPlus, Edit, Trash2, Calendar, DollarSign, CheckCircle, Search, Download } from 'lucide-react';
 import dataManager from '../utils/dataManager';
 
 const ClientManagementPortal = () => {
@@ -11,7 +11,7 @@ const ClientManagementPortal = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterTrustType, setFilterTrustType] = useState('all');
   const [sortBy, setSortBy] = useState('name');
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder] = useState('asc');
   const [validationErrors, setValidationErrors] = useState({});
   
   const [newClient, setNewClient] = useState({
@@ -56,7 +56,7 @@ const ClientManagementPortal = () => {
       errors.email = 'Please enter a valid email address';
     }
     
-    if (clientData.phone && !/^[\+]?[1-9][\d]{0,15}$/.test(clientData.phone.replace(/\s/g, ''))) {
+    if (clientData.phone && !/^[+]?[1-9]\d{0,15}$/.test(clientData.phone.replace(/\s/g, ''))) {
       errors.phone = 'Please enter a valid phone number';
     }
     
@@ -207,14 +207,7 @@ const ClientManagementPortal = () => {
     }
   };
 
-  const getPriorityColor = (priority) => {
-    switch (priority?.toLowerCase()) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
+
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
