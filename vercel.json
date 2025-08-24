@@ -16,7 +16,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/client/build/$1"
+      "dest": "/client/build/index.html"
     }
   ],
   "buildCommand": "cd client && npm install && npm run build",
