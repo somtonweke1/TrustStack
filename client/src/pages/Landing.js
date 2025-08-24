@@ -4,46 +4,28 @@ import {
   Building2, 
   Shield, 
   Users, 
-  ArrowRight,
   Sparkles,
-  Zap,
   FileText,
   BarChart3,
   CheckCircle,
-  Clock,
-  Target,
   AlertTriangle,
   TrendingUp
 } from 'lucide-react';
             
 const Landing = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
-
-  const features = [
-    { name: 'Trust Documents', color: 'from-blue-500 to-blue-600' },
-    { name: 'Client Management', color: 'from-green-500 to-emerald-600' },
-    { name: 'Professional Tools', color: 'from-purple-500 to-indigo-600' },
-    { name: 'Legal Compliance', color: 'from-orange-500 to-red-600' },
-    { name: 'Business Growth', color: 'from-teal-500 to-cyan-600' }
-  ];
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
-    const featureInterval = setInterval(() => {
-      setCurrentFeatureIndex((prev) => (prev + 1) % features.length);
-    }, 3000);
-
     window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      clearInterval(featureInterval);
     };
-  }, [features.length]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white font-sans antialiased overflow-hidden animate-fade-in">
@@ -216,7 +198,7 @@ const Landing = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-8 relative pt-16">
+      <section className="min-h-screen flex items-center justify-center px-8 relative pt-24">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-light text-gray-900 mb-8 fade-in-up tracking-tight leading-tight">
             Your Business Legacy, 

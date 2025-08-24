@@ -10,7 +10,6 @@ import {
   AlertTriangle,
   CheckCircle,
   XCircle,
-  ArrowUpRight,
   Target
 } from 'lucide-react';
 
