@@ -486,28 +486,28 @@ const Landing = () => {
             <div>
               <h4 className="font-semibold mb-4">Platform</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Trust Management</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Professional Tools</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">AI Insights</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Document Generation</a></li>
+                <li><button className="hover:text-white transition-colors text-left">Trust Management</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Professional Tools</button></li>
+                <li><button className="hover:text-white transition-colors text-left">AI Insights</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Document Generation</button></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API Reference</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
+                <li><button className="hover:text-white transition-colors text-left">Documentation</button></li>
+                <li><button className="hover:text-white transition-colors text-left">API Reference</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Help Center</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Community</button></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                <li><button className="hover:text-white transition-colors text-left">About</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Blog</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Careers</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Contact</button></li>
               </ul>
             </div>
           </div>
