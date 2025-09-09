@@ -15,9 +15,18 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://trust-stack.vercel.app', 'https://truststack.com', 'https://app.truststack.com']
-    : ['http://localhost:3000'],
-  credentials: true
+    ? [
+        'https://trust-stack.vercel.app', 
+        'https://truststack.com', 
+        'https://app.truststack.com',
+        'https://truststack.vercel.app',
+        'https://www.truststack.com'
+      ]
+    : ['http://localhost:3000', 'http://localhost:3001'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  optionsSuccessStatus: 200
 }));
 
 // Rate limiting

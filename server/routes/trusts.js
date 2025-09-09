@@ -62,8 +62,23 @@ router.post('/', authenticateToken, [
     });
 
   } catch (error) {
-    console.error('Create trust error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Create trust error:', {
+      message: error.message,
+      stack: error.stack,
+      userId: req.user?.userId,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Don't expose internal errors in production
+    const errorMessage = process.env.NODE_ENV === 'production' 
+      ? 'Failed to create trust account. Please try again.' 
+      : error.message;
+      
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: errorMessage,
+      ...(process.env.NODE_ENV === 'development' && { details: error.message })
+    });
   }
 });
 
@@ -94,8 +109,22 @@ router.get('/', authenticateToken, async (req, res) => {
     res.json({ trusts });
 
   } catch (error) {
-    console.error('Get trusts error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Get trusts error:', {
+      message: error.message,
+      stack: error.stack,
+      userId: req.user?.userId,
+      timestamp: new Date().toISOString()
+    });
+    
+    const errorMessage = process.env.NODE_ENV === 'production' 
+      ? 'Failed to retrieve trust accounts. Please try again.' 
+      : error.message;
+      
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: errorMessage,
+      ...(process.env.NODE_ENV === 'development' && { details: error.message })
+    });
   }
 });
 
@@ -149,8 +178,23 @@ router.get('/:id', authenticateToken, async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Get trust error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Get trust error:', {
+      message: error.message,
+      stack: error.stack,
+      userId: req.user?.userId,
+      trustId: req.params.id,
+      timestamp: new Date().toISOString()
+    });
+    
+    const errorMessage = process.env.NODE_ENV === 'production' 
+      ? 'Failed to retrieve trust account. Please try again.' 
+      : error.message;
+      
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: errorMessage,
+      ...(process.env.NODE_ENV === 'development' && { details: error.message })
+    });
   }
 });
 
@@ -228,8 +272,23 @@ router.put('/:id', authenticateToken, [
     });
 
   } catch (error) {
-    console.error('Update trust error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Update trust error:', {
+      message: error.message,
+      stack: error.stack,
+      userId: req.user?.userId,
+      trustId: req.params.id,
+      timestamp: new Date().toISOString()
+    });
+    
+    const errorMessage = process.env.NODE_ENV === 'production' 
+      ? 'Failed to update trust account. Please try again.' 
+      : error.message;
+      
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: errorMessage,
+      ...(process.env.NODE_ENV === 'development' && { details: error.message })
+    });
   }
 });
 
@@ -286,8 +345,23 @@ router.get('/:id/summary', authenticateToken, async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Get trust summary error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Get trust summary error:', {
+      message: error.message,
+      stack: error.stack,
+      userId: req.user?.userId,
+      trustId: req.params.id,
+      timestamp: new Date().toISOString()
+    });
+    
+    const errorMessage = process.env.NODE_ENV === 'production' 
+      ? 'Failed to retrieve trust summary. Please try again.' 
+      : error.message;
+      
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: errorMessage,
+      ...(process.env.NODE_ENV === 'development' && { details: error.message })
+    });
   }
 });
 

@@ -1,42 +1,29 @@
 const { Pool } = require('pg');
+const { createTables } = require('./migrate');
 
-// Create a simple in-memory database setup for immediate use
+// Create a comprehensive database setup for production
 const setupDatabase = async () => {
   try {
-    // For now, let's use a simple approach
     console.log('🔧 Setting up database connection...');
     
-    // This will be replaced by environment variables
+    // Create connection pool
     const pool = new Pool({
       connectionString: process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/truststack',
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
     });
 
     // Test connection
     const client = await pool.connect();
     console.log('✅ Database connected successfully!');
     
-    // Create tables if they don't exist
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
-        first_name VARCHAR(100) NOT NULL,
-        last_name VARCHAR(100) NOT NULL,
-        phone VARCHAR(20),
-        date_of_birth DATE,
-        ssn_hash VARCHAR(255),
-        kyc_status VARCHAR(50) DEFAULT 'pending',
-        aml_status VARCHAR(50) DEFAULT 'pending',
-        is_verified BOOLEAN DEFAULT FALSE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
+    // Run full migration to create all tables
+    await createTables();
     
-    console.log('✅ Users table created/verified');
     client.release();
+    console.log('✅ Database setup completed successfully!');
     
     return pool;
   } catch (error) {
