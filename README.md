@@ -4,7 +4,7 @@
 
 TrustStack is a comprehensive, world-class platform that transforms how financial advisors, trust officers, and legal professionals manage their trust administration business. We provide the tools, automation, and insights needed to scale your practice and deliver exceptional client value.
 
-## 🎯 **WHO WE'RE SELLING TO**
+##  **WHO WE'RE SELLING TO**
 
 ### **Primary Target: Financial Advisors & Wealth Managers**
 - **Independent Financial Advisors** - Scale your practice with professional trust services
