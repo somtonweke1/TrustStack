@@ -75,7 +75,7 @@ TrustStack is a comprehensive, world-class platform that transforms how financia
 
 
 
-## ✨ **CORE FEATURES**
+##  **CORE FEATURES**
 
 ### **✅ IMPLEMENTED & WORKING**
 
