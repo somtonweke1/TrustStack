@@ -185,7 +185,7 @@ TrustStack is a comprehensive, world-class platform that transforms how financia
 - **Full Features**: Access to all subscription tiers
 - **No Setup**: Ready to use immediately
 
-## 📊 **BUSINESS VALUE PROPOSITION**
+##  **BUSINESS VALUE PROPOSITION**
 
 ### **For Financial Advisors**
 - **Increase AUM** - Add trust administration services to your practice
@@ -207,7 +207,7 @@ TrustStack is a comprehensive, world-class platform that transforms how financia
 - **Client Capacity**: 3-5x more clients with same resources
 - **Professional Image**: Enhanced client perception and trust
 
-## 🎯 **USE CASES & SCENARIOS**
+##  **USE CASES & SCENARIOS**
 
 ### **Scenario 1: Independent Financial Advisor**
 - **Current State**: Managing 50 clients, limited trust services
