@@ -1,4 +1,4 @@
-# TrustStack 🏦
+# TrustStack 
 
 **B2B SaaS Platform for Financial Advisors & Trust Professionals**
 
