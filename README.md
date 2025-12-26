@@ -272,7 +272,7 @@ TrustStack is a comprehensive, world-class platform that transforms how financia
 
 ##  **SUCCESS STORY**
 
-TrustStack has evolved from concept to a **world-class, production-ready B2B SaaS platform** with:
+TrustStack has evolved from concept to a ** production-ready B2B SaaS platform** with:
 
 - **Complete Feature Set** - All core business functionality implemented
 - **Professional UI/UX** - Apple Design Language for exceptional user experience
